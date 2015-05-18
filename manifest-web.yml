@@ -1,6 +1,7 @@
 ---
 timeout: 180
 instances: 1
+memory: 256M
 buildpack: toms-java-buildpack
 applications:
 - name: webtrader
