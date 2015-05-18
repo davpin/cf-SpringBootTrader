@@ -1,0 +1,25 @@
+// Sets version variable.
+// Major is hardcoded.
+// Minor is harcoded.
+// build is taken from environment variable "SOURCE_BUILD_NUMBER"
+version = new ProjectVersion(1,0,System.env.SOURCE_BUILD_NUMBER)
+
+class ProjectVersion {
+	Integer major
+	Integer minor
+	String build
+	ProjectVersion(Integer major, Integer minor, String build) {
+		this.major = major
+		this.minor = minor
+		this.build = build
+	}
+	@Override
+	String toString() {
+		String fullVersion = "$major.$minor"
+		
+		if (build) {
+			fullVersion += ".$build"
+		}
+		fullVersion
+	}
+}

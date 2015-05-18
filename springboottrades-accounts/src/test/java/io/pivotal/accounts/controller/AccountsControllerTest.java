@@ -1,0 +1,130 @@
+package io.pivotal.accounts.controller;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import io.pivotal.accounts.configuration.ServiceTestConfiguration;
+
+import io.pivotal.accounts.service.AccountService;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class AccountsControllerTest {
+	private static String API_ROLE = "API_USER";
+	MockMvc mockMvc;
+
+	@InjectMocks
+	AccountController controller;
+
+	@Mock
+	AccountService service;
+
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
+
+		this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+	}
+
+	@Before
+	public void login() {
+		/*Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+		grantedAuthorities.add(new SimpleGrantedAuthority(API_ROLE));
+		UserDetails user = new CustomUser(ServiceTestConfiguration.USER_ID,
+				ServiceTestConfiguration.PASSWORD, grantedAuthorities,
+				ServiceTestConfiguration.PROFILE_ID,
+				ServiceTestConfiguration.AUTH_TOKEN);
+		Authentication authentication = new TestingAuthenticationToken(user,
+				ServiceTestConfiguration.PASSWORD,
+				(List<GrantedAuthority>) grantedAuthorities);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		*/
+	}
+
+	@After
+	public void logout() {
+		//SecurityContextHolder.clearContext();
+	}
+
+	@Test
+	public void doPostAccount() throws Exception {
+		when(service.saveAccount(ServiceTestConfiguration.account()))
+				.thenReturn(ServiceTestConfiguration.PROFILE_ID);
+
+		mockMvc.perform(
+				post("/account").contentType(MediaType.APPLICATION_JSON)
+						.content(
+								convertObjectToJson(ServiceTestConfiguration
+										.account())))
+				.andExpect(status().isCreated()).andDo(print());
+	}
+
+	@Test
+	public void doGetAccount() throws Exception {
+		when(service.findAccount(ServiceTestConfiguration.PROFILE_ID))
+				.thenReturn(ServiceTestConfiguration.account());
+
+		mockMvc.perform(
+				get("/account/" + ServiceTestConfiguration.PROFILE_ID)
+						.contentType(MediaType.APPLICATION_JSON).content(
+								convertObjectToJson(ServiceTestConfiguration
+										.account())))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(
+						content().contentTypeCompatibleWith(
+								MediaType.APPLICATION_JSON))
+				.andExpect(
+						jsonPath("$.id").value(
+								ServiceTestConfiguration.PROFILE_ID))
+				.andExpect(
+						jsonPath("$.creationdate").value(
+								ServiceTestConfiguration.ACCOUNT_DATE.getTime()))
+				.andExpect(
+						jsonPath("$.openbalance").value(
+								ServiceTestConfiguration.ACCOUNT_OPEN_BALANCE
+										.doubleValue()))
+				.andExpect(
+						jsonPath("$.logoutcount").value(
+								ServiceTestConfiguration.LOGOUT_COUNT
+										.intValue()))
+				.andExpect(
+						jsonPath("$.balance").value(
+								ServiceTestConfiguration.ACCOUNT_BALANCE
+										.doubleValue()))
+				.andExpect(
+						jsonPath("$.lastlogin").value(
+								ServiceTestConfiguration.ACCOUNT_DATE.getTime()))
+				.andExpect(
+						jsonPath("$.logincount").value(
+								ServiceTestConfiguration.LOGIN_COUNT))
+				.andDo(print());
+	}
+
+	private byte[] convertObjectToJson(Object request) throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		return mapper.writeValueAsBytes(request);
+	}
+}

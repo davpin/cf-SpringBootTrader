@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<title>Spring Trader</title>
+<link rel="stylesheet" type="text/css" media="all" href="../webjars/bootstrap/2.3.2/js/bootstrap.css"
+	th:href="@{webjars/bootstrap/2.3.2/css/bootstrap.css}" />
+<link rel="stylesheet" type="text/css" media="all" href="../static/css/style.css"
+	th:href="@{/css/style.css}" />
+	<script th:src="@{webjars/bootstrap/2.3.2/js/bootstrap.js}"></script>
+	<script th:src="@{webjars/jquery/1.9.0/jquery.js}"></script>
+</head>
+<body>
+     
+	<div sec:authorize="isAuthenticated()" th:include="fragments/navbar_fragment :: navbar"
+		class="navbar-fixed-top">
+		</div>
+		
+	<div class="container page">
+		<div th:include="fragments/marketsummary_fragment :: summary"></div>
+
+		<div sec:authorize="hasRole('USER')">
+			<div th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
+			Got to USER Hi, <span sec:authentication="name">Username</span>
+			<form th:action="@{/logout}" method="post">
+				<input type="submit" value="Sign Out" />
+			</form>
+		</div>
+
+		<div sec:authorize="isAnonymous()">
+			<div th:include="fragments/login_fragment :: login"></div>
+		</div>
+	</div>
+
+
+</body>
+</html>

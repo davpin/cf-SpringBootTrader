@@ -1,0 +1,8 @@
+---
+timeout: 180
+instances: 1
+buildpack: toms-java-buildpack
+applications:
+- name: accounts
+  path: springboottrades-accounts/build/libs/accounts-1.0.jar
+  services: [ traderdb ]

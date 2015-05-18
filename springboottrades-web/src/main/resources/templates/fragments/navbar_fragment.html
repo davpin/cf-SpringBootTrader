@@ -1,0 +1,53 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="navbar" class="navbar-fixed-top">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse"> <!--a class="btn btn-navbar"-->
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a href="/" th:href="@{/}" class="logo brand">Home</a>
+				<div class="nav-collapse">
+					<ul class="nav nav-top">
+						<li class="divider-vertical"></li>
+						<li><a id="nb-dashboard" class="nav-link"><span id="nb-icon-dashboard"
+								class="icon-home icon-white"></span>Home</a></li>
+						<li class="divider-vertical"></li>
+						<li><a id="nb-portfolio" class="nav-link"><span id="nb-portfolio-icon"
+								class="icon-custom icon-portfolio"></span>Portfolio</a></li>
+						<li class="divider-vertical"></li>
+						<li><a id="nb-trade" class="nav-link"><span id="nb-trade-icon"
+								class="icon-custom icon-trade"></span>Trade</a></li>
+						<li class="divider-vertical"></li>
+					</ul>
+					<div class="navbar-text pull-right">
+						<ul class="nav">
+							<li class="divider-vertical"></li>
+							<li class="dropdown" id="fat-menu"><a class="dropdown-toggle pull-right"
+								data-toggle="dropdown"> <span class="icon-custom icon-user"></span> <span
+									id="nb-username" sec:authentication="name">Username</span> <span
+									class="icon-down-arrow"></span>
+							</a>
+								<div class="dropdown-menu" role="menu">
+									<ul class="dropdown-nav">
+										<li><a id="profile" href="/">Profile</a></li>
+										<li><a id="help" href="/">Help</a></li>
+										<li class="divider"></li>
+										<li><a id="logout" onclick="this.form.submit()">Logout</a></li>
+									</ul>
+								</div></li>
+							<li class="divider-vertical"></li>
+							<li>
+								<form th:action="@{/logout}" method="post">
+									<input type="submit" value="Sign Out" class="nav-link" />
+								</form>
+
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+</html>

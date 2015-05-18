@@ -1,0 +1,159 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.3.RELEASE'
+        springCloudVersion = '1.0.1.RELEASE'
+		springCFCloudVersion = '1.1.1.RELEASE'
+		springSecurityVersion = '4.0.1.RELEASE'
+		springVersion = '4.1.6.RELEASE'
+		springEurekaVersion = '1.0.2.RELEASE'
+		junitVersion = '4.12'
+		jacksonVersion = '2.5.3'
+		mysqlVersion = '5.1.35'
+		bootstrapVersion = '2.3.2'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+    
+    buildscript {
+        dependencies {
+            classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        }
+    }
+}
+
+
+// Apply versioning to all projects from versioning script.
+allprojects {
+	apply from: "$rootDir/gradle/versioning.gradle"
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+	apply plugin: 'jacoco'
+	
+
+	jacoco {
+		toolVersion = "0.7.1.201405082137"
+	//	reportsDir = file("$buildDir/customJacocoReportDir")
+	}
+	jacocoTestReport { group = "Reporting" 
+		description = "Generate Jacoco coverage reports after running tests." 
+		additionalSourceDirs = files(sourceSets.main.allJava.srcDirs) 
+		}
+	
+	test { finalizedBy jacocoTestReport }
+	
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+	dependencies {
+		
+		//test packages
+		
+		testCompile "junit:junit:$junitVersion"
+		
+	}
+}
+
+project(':springboottrades-common') {
+	jar {
+		baseName = 'common'
+	}
+	dependencies {
+		compile "org.springframework.cloud:spring-cloud-cloudfoundry-connector:${springCFCloudVersion}"
+	}
+}
+
+project(':springboottrades-accounts') {
+	apply plugin: 'spring-boot'
+    jar {
+        baseName = 'accounts'
+    }
+	description = "Micro-service to deal with accounts and user logins"
+	
+    dependencies {
+		compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+		//compile "org.springframework.security:spring-security-web:$springSecurityVersion"
+		compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+		//compile "org.springframework.security:spring-security-config:$springSecurityVersion"
+
+		// test packages
+		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+		testRuntime "com.jayway.jsonpath:json-path"
+		testRuntime "org.hsqldb:hsqldb"
+    }
+}
+
+project(':springboottrades-quotes') {
+	apply plugin: 'spring-boot'
+    jar {
+        baseName = 'quotes'
+    }
+	description = "Micro-service to retrieve up to date quotes"
+    dependencies {
+		compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+		compile "org.springframework:spring-web:${springVersion}"
+		compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+		
+		//runtime
+		runtime "mysql:mysql-connector-java:${mysqlVersion}"
+		
+		//test packages
+		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+		testRuntime "com.jayway.jsonpath:json-path"
+    }
+}
+
+project(':springboottrades-portfolio') {
+	apply plugin: 'spring-boot'
+    jar {
+        baseName = 'portfolio'
+    }
+	description = "Micro-service to manage portfolios"
+    dependencies {
+		compile project(":springboottrades-common")
+		compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+		compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+		compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
+		
+		//runtime
+		runtime "mysql:mysql-connector-java:${mysqlVersion}"
+		
+		//test packages
+		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+		testRuntime "org.hsqldb:hsqldb"
+    }
+}
+
+project(':springboottrades-web') {
+	apply plugin: 'spring-boot'
+
+    jar {
+        baseName = 'web'
+    }
+	description = "Web interface to the springboot set of services"
+    dependencies {
+		compile project(":springboottrades-common")
+		compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
+		compile "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
+		compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+		compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE"
+		
+		runtime "org.webjars:bootstrap:${bootstrapVersion}"
+		
+		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}

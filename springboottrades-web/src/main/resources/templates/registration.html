@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+  <html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+  <head>
+      <title>Spring Trader</title>
+      <link rel="stylesheet" type="text/css" media="all" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"/>
+      <link rel="stylesheet" type="text/css" media="all" href="../static/css/style.css" th:href="@{/css/style.css}"/>
+  </head>
+  <body>
+  <div sec:authorize="isAnonymous()" class="container page">       
+       <div th:include="fragments/registration_fragment :: registration"></div>
+  </div>
+
+</body>
+</html>
