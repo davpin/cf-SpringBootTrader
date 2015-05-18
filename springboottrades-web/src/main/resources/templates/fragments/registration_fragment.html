@@ -1,16 +1,13 @@
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="registration" class="row clearfix">
 	<div class="span9 columns">
-		<form action="#" th:action="@{/registration}" method="post"
-			class="form-horizontal" th:object="${account}">
+		<form action="#" th:action="@{/registration}" method="post" class="form-horizontal"
+			th:object="${account}">
 			<h3>
-				Registration<span>Please enter test data for creating the
-					account</span>
+				Registration<span>Please enter test data for creating the account</span>
 			</h3>
-			<div id="registration-error"
-				class="hide span8 alert alert-block alert-error fade in">
+			<div id="registration-error" class="hide span8 alert alert-block alert-error fade in">
 				<a data-dismiss="alert" class="close">x</a>
 				<h4 class="alert-heading"></h4>
 				<p></p>
@@ -18,38 +15,34 @@
 			<div class="row">
 				<div class="span4">
 					<div id="fullname-control" class="control-group">
-						<label for="fullname-input" class="control-label">Full
-							Name:</label>
+						<label for="fullname-input" class="control-label">Full Name:</label>
 						<div class="controls">
-							<input type="text" value="" id="fullname-input"
-								class="span4 focused" th:field="*{fullname}" /><br /> <span
-								id="fullnameError" class="help-inline hide">Full Name
-								error</span>
+							<input type="text" value="" id="fullname-input" class="span4 focused"
+								th:field="*{fullname}" /><br /> <span id="fullnameError"
+								class="help-inline hide">Full Name error</span>
 						</div>
 					</div>
 					<div id="email-control" class="control-group">
 						<label class="control-label">Email:</label>
 						<div class="controls">
-							<input type="text" value="" id="email-input"
-								class="span4 focused" th:field="*{email}" /><br /> <span
-								id="emailError" class="help-inline hide">Email Error</span>
+							<input type="text" value="" id="email-input" class="span4 focused"
+								th:field="*{email}" /><br /> <span id="emailError" class="help-inline hide">Email
+								Error</span>
 						</div>
 					</div>
 					<div id="password-control" class="control-group">
 						<label class="control-label">Password:</label>
 						<div class="controls">
-							<input type="password" value="" id="reg-password-input"
-								class="span4 focused" th:field="*{passwd}" /><br /> <span
-								id="passwdError" class="help-inline hide">Password Error</span>
+							<input type="password" value="" id="reg-password-input" class="span4 focused"
+								th:field="*{passwd}" /><br /> <span id="passwdError" class="help-inline hide">Password
+								Error</span>
 						</div>
 					</div>
 					<div id="matchpasswd-control" class="control-group">
-						<label for="matchpasswd-input" class="control-label">Password
-							confirmation:</label>
+						<label for="matchpasswd-input" class="control-label">Password confirmation:</label>
 						<div class="controls">
-							<input type="password" id="matchpasswd-input"
-								class="span4 focused" /><br /> <span id="matchpasswd-error"
-								class="help-inline hide">Password Confirmation error</span>
+							<input type="password" id="matchpasswd-input" class="span4 focused" /><br /> <span
+								id="matchpasswd-error" class="help-inline hide">Password Confirmation error</span>
 						</div>
 					</div>
 				</div>
@@ -57,35 +50,31 @@
 					<div id="username-control" class="control-group">
 						<label for="reg-username-input" class="control-label">Username:</label>
 						<div class="controls">
-							<input type="text" value="" id="reg-username-input"
-								class="span4 focused" th:field="*{userid}" /><br /> <span
-								id="usernameError" class="help-inline hide">UsernameError</span>
+							<input type="text" value="" id="reg-username-input" class="span4 focused"
+								th:field="*{userid}" /><br /> <span id="usernameError" class="help-inline hide">UsernameError</span>
 						</div>
 					</div>
 					<div id="openbalance-control" class="control-group">
 						<label class="control-label">Opening Balance:</label>
 						<div class="controls">
-							<input type="number" value="" id="openbalance-input"
-								class="span4 focused" th:field="*{balance}" /><br /> <span
-								id="openbalanceError" class="help-inline hide">Open
-								Balance Error</span>
+							<input type="number" value="" id="openbalance-input" class="span4 focused"
+								th:field="*{balance}" /><br /> <span id="openbalanceError"
+								class="help-inline hide">Open Balance Error</span>
 						</div>
 					</div>
 					<div id="creditcard-control" class="control-group">
 						<label class="control-label">Credit Card Number:</label>
 						<div class="controls">
-							<input type="text" readonly="" value="1234123412341234"
-								id="creditcard-input" class="span4 focused" maxlength="16"
-								th:field="*{creditcard}" /><br /> <span id="creditcardError"
-								class="help-inline hide">CreditCardError</span>
+							<input type="text" readonly="" value="1234123412341234" id="creditcard-input"
+								class="span4 focused" maxlength="16" th:field="*{creditcard}" /><br /> <span
+								id="creditcardError" class="help-inline hide">CreditCardError</span>
 						</div>
 					</div>
 					<div id="address-control" class="control-group">
 						<label class="control-label">Address:</label>
 						<div class="controls">
-							<input type="text" value="" id="address-input"
-								class="span4 focused" th:field="*{address}" /><br /> <span
-								id="addressError" class="help-inline hide">AddressError</span>
+							<input type="text" value="" id="address-input" class="span4 focused"
+								th:field="*{address}" /><br /> <span id="addressError" class="help-inline hide">AddressError</span>
 						</div>
 					</div>
 				</div>
@@ -99,10 +88,10 @@
 	</div>
 	<div class="span2 columns sidebar">
 		<h3>Login</h3>
-		<p>If you have already registered, please enter your login and
-			password on our login page.</p>
+		<p>If you have already registered, please enter your login and password on our login
+			page.</p>
 		<p>
-			<a id="showLoginBtn" href="/" th:href="@{/doLogin}">login</a>
+			<a id="showLoginBtn" href="/" th:href="@{/}">login</a>
 		</p>
 	</div>
 </div>

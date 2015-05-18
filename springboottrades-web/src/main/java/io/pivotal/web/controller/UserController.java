@@ -28,8 +28,7 @@ public class UserController {
 	
 	@Autowired
 	private UserService accountService;
-	
-	
+		
 	@Autowired
 	private MarketService marketService;
 	
