@@ -121,7 +121,45 @@ public class AccountsControllerTest {
 								ServiceTestConfiguration.LOGIN_COUNT))
 				.andDo(print());
 	}
+	
+	@Test
+	public void doIncreaseBalance() throws Exception {
+		when(service.findAccount(ServiceTestConfiguration.USER_ID))
+				.thenReturn(ServiceTestConfiguration.account());
 
+		mockMvc.perform(
+				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/increaseBalance/" + 1000)
+						.contentType(MediaType.APPLICATION_JSON).content(
+								convertObjectToJson(ServiceTestConfiguration
+										.account())))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(
+						jsonPath("$.balance").value(
+								ServiceTestConfiguration.ACCOUNT_BALANCE
+										.doubleValue() + 1000))
+				.andDo(print());
+	}
+
+	@Test
+	public void doDecreaseBalance() throws Exception {
+		when(service.findAccount(ServiceTestConfiguration.USER_ID))
+				.thenReturn(ServiceTestConfiguration.account());
+
+		mockMvc.perform(
+				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/decreaseBalance/" + 10)
+						.contentType(MediaType.APPLICATION_JSON).content(
+								convertObjectToJson(ServiceTestConfiguration
+										.account())))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(
+						jsonPath("$.balance").value(
+								ServiceTestConfiguration.ACCOUNT_BALANCE
+										.doubleValue() - 10))
+				.andDo(print());
+	}
+	
 	private byte[] convertObjectToJson(Object request) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);
