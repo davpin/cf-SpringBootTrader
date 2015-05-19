@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-<title>Spring Trader - Registration</title>
+<title>Spring Trader</title>
 <link rel="stylesheet" type="text/css" media="all"
 	href="../webjars/bootstrap/2.3.2/js/bootstrap.css"
 	th:href="@{webjars/bootstrap/2.3.2/css/bootstrap.css}" />
@@ -13,9 +13,14 @@
 <script th:src="@{webjars/jquery/1.9.0/jquery.js}"></script>
 </head>
 <body>
-	<div sec:authorize="isAnonymous()" class="container page">
-		<div th:include="fragments/registration_fragment :: registration"></div>
+	<div sec:authorize="isAuthenticated()" th:include="fragments/navbar_fragment :: navbar"
+		class="navbar-fixed-top"></div>
+		
+	<div class="container page">
+		<div sec:authorize="isAuthenticated()" th:include="fragments/trade_fragment :: company_input"
+			th:remove="tag"></div>
+			<div sec:authorize="isAuthenticated()" th:include="fragments/trade_fragment :: quote_list"
+			th:remove="tag"></div>
 	</div>
-
 </body>
 </html>

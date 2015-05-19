@@ -1,11 +1,13 @@
 package io.pivotal.web.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import io.pivotal.web.domain.CompanyInfo;
 import io.pivotal.web.domain.MarketSummary;
 import io.pivotal.web.domain.Quote;
 
@@ -46,6 +48,19 @@ public class MarketService {
 		Quote quote = restTemplate.getForObject(quoteService.getUri().toString()+"/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
+	
+	private List<CompanyInfo> getCompanies(String name) {
+		logger.debug("Fetching companies with name or symbol matching: " + name);
+		CompanyInfo[] infos = restTemplate.getForObject(quoteService.getUri().toString()+"/company/{name}", CompanyInfo[].class, name);
+		return Arrays.asList(infos);
+	}
+	
+	public List<Quote> getQuotes(String companyName) {
+		logger.debug("Fetching quotes for companies that have: " + companyName + " in name or symbol");
+		List<CompanyInfo> companies = getCompanies(companyName);
+		List<Quote> quotes = companies.parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
+		return quotes;
+	}
 	//TODO: prime location for a redis/gemfire caching service!
 	@Scheduled(fixedRate = 5000000)
 	private void retrieveMarketSummary() {
@@ -58,6 +73,10 @@ public class MarketService {
 	
 	
 	
-	
+	protected class CompanyInfos extends ArrayList<CompanyInfo> {
+		public CompanyInfos() {
+			
+		}
+	}
 	
 }
