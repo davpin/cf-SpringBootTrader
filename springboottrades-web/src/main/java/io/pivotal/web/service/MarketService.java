@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import io.pivotal.web.domain.CompanyInfo;
 import io.pivotal.web.domain.MarketSummary;
+import io.pivotal.web.domain.Order;
 import io.pivotal.web.domain.Quote;
 
 import org.slf4j.Logger;
@@ -16,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.util.UriInfo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,7 @@ public class MarketService {
 			.getLogger(MarketService.class);
 	
 	@Autowired @Qualifier("quoteService") UriInfo quoteService;
+	@Autowired @Qualifier("portfolioService") UriInfo portfolioService;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -61,6 +65,19 @@ public class MarketService {
 		List<Quote> quotes = companies.parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
 		return quotes;
 	}
+	
+	public String sendOrder(Order order ){
+		logger.debug("send order: " + order);
+		
+		//TODO: check result of http request to ensure its ok.
+		
+		ResponseEntity<String>  result = restTemplate.postForEntity(portfolioService.getUri().toString()+"/portfolio/{accountId}", order, String.class, order.getAccountId());
+		if (result.getStatusCode() == HttpStatus.BAD_REQUEST) {
+			return "Could not save order";
+		}
+		
+		return result.getBody();
+	}
 	//TODO: prime location for a redis/gemfire caching service!
 	@Scheduled(fixedRate = 5000000)
 	private void retrieveMarketSummary() {
@@ -70,13 +87,4 @@ public class MarketService {
 		summary.setTopGainers(quotesIT);
 		summary.setTopLosers(quotesFS);
 	}
-	
-	
-	
-	protected class CompanyInfos extends ArrayList<CompanyInfo> {
-		public CompanyInfos() {
-			
-		}
-	}
-	
 }

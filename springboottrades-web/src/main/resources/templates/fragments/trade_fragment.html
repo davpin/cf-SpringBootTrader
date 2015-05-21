@@ -2,12 +2,12 @@
 
 
 <th:block th:fragment="company_input">
-	<div class="row span12">
+	<div th:if="${search != null}" class="row span12">
 		<div id="quote-control" class="well show-quote-box">
 			<form action="#" th:action="@{/trade}" method="post" th:object="${search}"
 				class="form-inline">
 				<label>Enter partial company name or symbol:</label> <input id="quote-input"
-					type="text" maxlength="5" autocomplete="off" class="span3" style="margin: 0 auto;"
+					type="text" maxlength="20" autocomplete="off" class="span3" style="margin: 0 auto;"
 					th:field="*{name}" />
 				<button id=" getQuoteBtn" class="btn btn-inverse">Get Quotes</button>
 			</form>
@@ -15,7 +15,7 @@
 	</div>
 </th:block>
 <th:block th:fragment="quote_list">
-	<div class="row span12">
+	<div th:if="${quotes != null and not(#lists.isEmpty(quotes))}" class="row span12">
 		<div id="quote-result" class="well show-well">
 			<div class="title">
 				<h3>Quotes</h3>
@@ -27,6 +27,10 @@
 						<th>Company name</th>
 						<th>Symbol</th>
 						<th>Price</th>
+						<th>Change</th>
+						<th>Change YTD</th>
+						<th>High</th>
+						<th>Low</th>
 						<th>Quantity</th>
 					</tr>
 				
@@ -35,8 +39,18 @@
 						<td th:text="${quote.name}"></td>
 						<td th:text="${quote.symbol}"></td>
 						<td th:text="${quote.lastPrice}"></td>
-						<td><input type="number" id="quantity-input" class="input-mini" min="1"
-							max="9999999999" /> <a id="buyBtn" data-toggle="modal" class="btn green-btn">Buy</a></td>
+						<td th:text="${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')}"></td>
+						<td th:text="${quote.changeYTD}"></td>
+						<td th:text="${quote.high}"></td>
+						<td th:text="${quote.low}"></td>
+						<td><form th:id="'form'+${quoteStat.index}" action="#" th:action="@{/buy}" method="post" th:object="${order}"
+				class="form-inline">
+						<input type="hidden" th:value="${quote.symbol}" id="symbol" name="symbol" />
+						<input type="hidden" th:value="${quote.lastPrice}" id="price" name="price" />
+						<input type="hidden" th:value="BUY" id="orderType" name="orderType" />
+						<input type="number" id="quantity-input" class="input-mini" min="1"
+							max="9999999999" th:field="*{quantity}" /> <a id="buyBtn" th:attr="onclick='document.getElementById(\'form'+${quoteStat.index}+'\').submit()'" class="btn green-btn">Buy</a>
+							</form></td>
 					</tr>
 				
 			</table>

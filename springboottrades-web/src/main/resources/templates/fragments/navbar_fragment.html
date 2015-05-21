@@ -11,7 +11,7 @@
 					<ul class="nav nav-top">
 						<li class="divider-vertical"></li>
 						<li><a id="nb-dashboard" class="nav-link"><span id="nb-icon-dashboard"
-								class="icon-home icon-white"></span>Home</a></li>
+								class="icon-home icon-white" th:href="@{/}"></span>Home</a></li>
 						<li class="divider-vertical"></li>
 						<li><a id="nb-portfolio" class="nav-link"><span id="nb-portfolio-icon"
 								class="icon-custom icon-portfolio"></span>Portfolio</a></li>
@@ -28,7 +28,7 @@
 									id="nb-username" sec:authentication="name">Username</span> <span
 									class="icon-down-arrow"></span>
 							</a>
-								<div class="dropdown-menu" role="menu">
+								<div class="dropdown-menu">
 									<ul class="dropdown-nav">
 										<li><a id="profile" href="/">Profile</a></li>
 										<li><a id="help" href="/">Help</a></li>

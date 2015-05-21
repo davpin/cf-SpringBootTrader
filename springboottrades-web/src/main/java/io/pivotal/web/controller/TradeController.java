@@ -1,9 +1,10 @@
 package io.pivotal.web.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import io.pivotal.web.domain.AuthenticationRequest;
+import io.pivotal.web.domain.Order;
 import io.pivotal.web.domain.Quote;
 import io.pivotal.web.domain.Search;
 import io.pivotal.web.service.MarketService;
@@ -32,7 +33,7 @@ public class TradeController {
 	@RequestMapping(value = "/trade", method = RequestMethod.GET)
 	public String showTrade(Model model) {
 		logger.debug("/trade.GET");
-		model.addAttribute("marketSummary", marketService.getMarketSummary());
+		//model.addAttribute("marketSummary", marketService.getMarketSummary());
 		
 		model.addAttribute("search", new Search());
 		//check if user is logged in!
@@ -50,7 +51,7 @@ public class TradeController {
 	public String showTrade(Model model, @ModelAttribute("search") Search search) {
 		logger.debug("/trade.POST - symbol: " + search.getName());
 		
-		model.addAttribute("marketSummary", marketService.getMarketSummary());
+		//model.addAttribute("marketSummary", marketService.getMarketSummary());
 		model.addAttribute("search", search);
 		
 		if (search.getName() == null || search.getName().equals("") ) {
@@ -64,10 +65,33 @@ public class TradeController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 		    String currentUserName = authentication.getName();
 		    logger.debug("User logged in: " + currentUserName);
-		    
+		    model.addAttribute("order", new Order());
 		    //TODO: add portfolio and account summary.
 		}
 		
 		return "trade";
 	}
+	
+	@RequestMapping(value = "/buy", method = RequestMethod.POST)
+	public String buy(Model model, @ModelAttribute("order") Order order) {
+		
+		model.addAttribute("search", new Search());
+		
+		// buy the order after setting attributes not set by the UI.
+		//check if user is logged in!
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				if (!(authentication instanceof AnonymousAuthenticationToken)) {
+				    String currentUserName = authentication.getName();
+				    logger.debug("/buy ORDER: " + order);
+				    order.setAccountId(currentUserName);
+				    order.setCompletionDate(new Date());
+				    
+				    //TODO: change sendOrder to return Order and put that in model.
+				    String result = marketService.sendOrder(order);
+				} else {
+					//should never get here!!!
+				}
+		return "trade";
+	}
+	
 }

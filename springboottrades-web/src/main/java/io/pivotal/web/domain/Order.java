@@ -1,55 +1,24 @@
-package io.pivotal.portfolio.domain;
+package io.pivotal.web.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-@Entity
-@Table(name = "ORDER")
 public class Order {
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "orderid")
 	private Integer orderId;
 
-	@Column(name = "accountid")
-	@NotNull
-	private Integer accountId;
-	
-	@Column(name = "symbol", length = 10)
-	@NotNull
+	private String accountId;
+
 	private String symbol;
 
-	@Column(name = "orderfee", precision = 14, scale = 2)
 	private BigDecimal orderFee;
 
-	@Column(name = "completiondate")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
 	private Date completionDate;
 
-	@Column(name = "ordertype")
-	@NotNull
 	private OrderType orderType;
 
-	@Column(name = "price", precision = 14, scale = 2)
-	@NotNull
 	private BigDecimal price;
 
-	@Column(name = "quantity")
-	@NotNull
 	private Integer quantity;
 
 	public Integer getOrderId() {
@@ -60,11 +29,11 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public Integer getAccountId() {
+	public String getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(Integer accountId) {
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 
