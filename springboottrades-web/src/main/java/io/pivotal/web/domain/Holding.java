@@ -9,7 +9,8 @@ public class Holding {
 	private Integer id;
 	private String symbol;
 	private Integer quantity = 0;
-	private BigDecimal purchasePrice = BigDecimal.ZERO;
+	private BigDecimal purchaseValue = BigDecimal.ZERO;
+	private BigDecimal sellValue = BigDecimal.ZERO;
 	private Set<Order> orders = new HashSet<>();
 	private BigDecimal currentValue = BigDecimal.ZERO;
 	public Integer getId() {
@@ -30,11 +31,11 @@ public class Holding {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-	public BigDecimal getPurchasePrice() {
-		return purchasePrice;
+	public BigDecimal getPurchaseValue() {
+		return purchaseValue;
 	}
-	public void setPurchasePrice(BigDecimal avePurchasePrice) {
-		this.purchasePrice = avePurchasePrice;
+	public void setPurchaseValue(BigDecimal purchaseValue) {
+		this.purchaseValue = purchaseValue;
 	}
 	public Set<Order> getOrders() {
 		return orders;
@@ -58,21 +59,29 @@ public class Holding {
 			//update stats
 			if (order.getOrderType().equals(OrderType.BUY)) {
 				setQuantity(getQuantity()+order.getQuantity());
-				setPurchasePrice(getPurchasePrice().add(order.getPrice().multiply(new BigDecimal(order.getQuantity()))));
+				setPurchaseValue(getPurchaseValue().add(order.getPrice().multiply(new BigDecimal(order.getQuantity()))));
 			} else if (order.getOrderType().equals(OrderType.SELL)) {
 				setQuantity(getQuantity()-order.getQuantity());
-				setPurchasePrice(getPurchasePrice().subtract(order.getPrice().multiply(new BigDecimal(order.getQuantity()))));
+				setSellValue(getSellValue().add(order.getPrice().multiply(new BigDecimal(order.getQuantity()))));
 			}
 		}
+	}
+
+	public BigDecimal getSellValue() {
+		return sellValue;
+	}
+	public void setSellValue(BigDecimal sellPrice) {
+		this.sellValue = sellPrice;
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Holding [id=").append(id).append(", symbol=")
 				.append(symbol).append(", quantity=").append(quantity)
-				.append(", purchasePrice=").append(purchasePrice)
-				.append(", orders=").append(orders).append(", currentValue=")
-				.append(currentValue).append("]");
+				.append(", purchasePrice=").append(purchaseValue)
+				.append(", sellPrice=").append(sellValue).append(", orders=")
+				.append(orders).append(", currentValue=").append(currentValue)
+				.append("]");
 		return builder.toString();
 	}
 }

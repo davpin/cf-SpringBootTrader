@@ -1,15 +1,13 @@
 package io.pivotal.web.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import io.pivotal.web.domain.CompanyInfo;
 import io.pivotal.web.domain.MarketSummary;
 import io.pivotal.web.domain.Order;
+import io.pivotal.web.domain.Portfolio;
 import io.pivotal.web.domain.Quote;
 import io.pivotal.web.exception.OrderNotSavedException;
 
@@ -70,7 +68,7 @@ public class MarketService {
 	public Order sendOrder(Order order ) throws OrderNotSavedException{
 		logger.debug("send order: " + order);
 		
-		//TODO: check result of http request to ensure its ok.
+		//check result of http request to ensure its ok.
 		
 		ResponseEntity<Order>  result = restTemplate.postForEntity(portfolioService.getUri().toString()+"/portfolio/{accountId}", order, Order.class, order.getAccountId());
 		if (result.getStatusCode() == HttpStatus.BAD_REQUEST) {
@@ -79,6 +77,12 @@ public class MarketService {
 		
 		return result.getBody();
 	}
+	
+	public Portfolio getPortfolio(String accountId) {
+		Portfolio folio = restTemplate.getForObject(portfolioService.getUri().toString()+"/portfolio/{accountid}", Portfolio.class, accountId);
+		return folio;
+	}
+	
 	//TODO: prime location for a redis/gemfire caching service!
 	@Scheduled(fixedRate = 5000000)
 	private void retrieveMarketSummary() {

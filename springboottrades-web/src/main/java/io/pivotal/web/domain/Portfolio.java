@@ -10,7 +10,9 @@ public class Portfolio {
 
 	private String accountId;
 	private String name;
-	private BigDecimal currentTotalValue;
+	private BigDecimal currentTotalValue = BigDecimal.ZERO;
+	private BigDecimal purchaseValue = BigDecimal.ZERO;
+	private BigDecimal sellValue = BigDecimal.ZERO;
 	private Map<String,Holding> holdings = new HashMap<>();
 	public String getAccountId() {
 		return accountId;
@@ -50,17 +52,32 @@ public class Portfolio {
 		this.currentTotalValue = BigDecimal.ZERO;
 		holdings.values().forEach(holding -> {
 			this.currentTotalValue = this.currentTotalValue.add(holding.getCurrentValue().multiply(new BigDecimal(holding.getQuantity())));
+			this.purchaseValue = this.purchaseValue.add(holding.getPurchaseValue());
+			this.sellValue = this.sellValue.add(holding.getSellValue());
 		});
 	}
 	
+	public BigDecimal getSellValue() {
+		return sellValue;
+	}
+	public void setSellValue(BigDecimal sellValue) {
+		this.sellValue = sellValue;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Portfolio [accountId=").append(accountId)
 				.append(", name=").append(name).append(", currentTotalValue=")
-				.append(currentTotalValue).append(", holdings=")
-				.append(holdings).append("]");
+				.append(currentTotalValue).append(", purchaseValue=")
+				.append(purchaseValue).append(", sellValue=").append(sellValue)
+				.append(", holdings=").append(holdings).append("]");
 		return builder.toString();
+	}
+	public BigDecimal getPurchaseValue() {
+		return purchaseValue;
+	}
+	public void setPurchaseValue(BigDecimal purchaseValue) {
+		this.purchaseValue = purchaseValue;
 	}
 	
 }

@@ -41,8 +41,9 @@ public class TradeController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 		    String currentUserName = authentication.getName();
 		    logger.debug("User logged in: " + currentUserName);
-		    
-		    //TODO: add portfolio and account summary.
+		    model.addAttribute("order", new Order());
+		    //TODO: add account summary?
+		    model.addAttribute("portfolio", marketService.getPortfolio(currentUserName));
 		}
 		
 		return "trade";
@@ -67,6 +68,7 @@ public class TradeController {
 		    logger.debug("User logged in: " + currentUserName);
 		    model.addAttribute("order", new Order());
 		    //TODO: add portfolio and account summary.
+		    model.addAttribute("portfolio", marketService.getPortfolio(currentUserName));
 		}
 		
 		return "trade";
@@ -74,7 +76,6 @@ public class TradeController {
 	
 	@RequestMapping(value = "/order", method = RequestMethod.POST)
 	public String buy(Model model, @ModelAttribute("order") Order order) {
-		
 		model.addAttribute("search", new Search());
 		
 		// buy the order after setting attributes not set by the UI.
@@ -82,13 +83,14 @@ public class TradeController {
 				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 				if (!(authentication instanceof AnonymousAuthenticationToken)) {
 				    String currentUserName = authentication.getName();
-				    logger.debug("/buy ORDER: " + order);
+				    logger.debug("/order ORDER: " + order);
 				    order.setAccountId(currentUserName);
 				    order.setCompletionDate(new Date());
 
-				    //TODO: change sendOrder to return Order and put that in model.
 				    Order result = marketService.sendOrder(order);
 				    model.addAttribute("savedOrder", result);
+				    model.addAttribute("order", new Order());
+				    model.addAttribute("portfolio", marketService.getPortfolio(currentUserName));
 				} else {
 					//should never get here!!!
 				}

@@ -1,6 +1,6 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="portfolio-summary" class="row clearfix" th:remove="tag">
+<div th:if="${portfolio != null}" th:fragment="portfolio-summary" th:remove="tag">
 	<div class="well show-well">
 		<div class="title">
 			<h3>Portfolio Summary</h3>
@@ -10,23 +10,156 @@
 				<tbody>
 					<tr>
 						<td>Number Of Holdings</td>
-						<td>5</td>
+						<td th:text="${#maps.size(portfolio.holdings)}">0</td>
 					</tr>
 					<tr>
-						<td>Purchase Basis</td>
-						<td>654321</td>
+						<td>Current Value of held shares</td>
+						<td
+							th:text="${#numbers.formatDecimal(portfolio.currentTotalValue, 0, 'COMMA', 2, 'POINT')}">0</td>
 					</tr>
 					<tr>
-						<td>Market Value</td>
-						<td>123456</td>
+						<td>Total Purchase Value</td>
+						<td
+							th:text="${#numbers.formatDecimal(portfolio.purchaseValue, 0, 'COMMA', 2, 'POINT')}">0</td>
 					</tr>
-					<tr th:class="1 &gt; 0? 'summary alert alert-block alert-error' : 'summary alert alert-block alert-success'">
+					<tr>
+						<td>Total Sold Value</td>
+						<td th:text="${#numbers.formatDecimal(portfolio.sellValue, 0, 'COMMA', 2, 'POINT')}">0</td>
+					</tr>
+					<tr
+						th:class="${portfolio.currentTotalValue + portfolio.sellValue - portfolio.purchaseValue} &lt; 0? 'summary alert alert-block alert-error' : 'summary alert alert-block alert-success'">
 						<td>Total Gain/Loss</td>
-						<td class="average">34.3</td>
+						<td class="average"
+							th:text="${#numbers.formatDecimal(portfolio.currentTotalValue + portfolio.sellValue, 0, 'COMMA', 2, 'POINT')}">0</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
+<div th:if="${portfolio != null}" th:fragment="portfolio-listing" class="row clearfix"
+	th:remove="tag">
+	<div class="span12">
+		<div class="well show-well">
+			<div class="title">
+				<h3>List of Holdings</h3>
+			</div>
+			<div class="table-outer">
+				<table id="list-of-holdings"
+					class="table table-striped table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>Symbol</th>
+							<th>Held quantity</th>
+							<th>Total purchase price</th>
+							<th>Total sold value</th>
+							<th>Current unit value</th>
+							<th>Current holding value</th>
+							<th>Total Gain/Loss</th>
+							<th colspan="2">Sell</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="entry : ${portfolio.holdings}" th:if="${entry.value.quantity &gt; 0}">
+							<td th:text="${entry.value.symbol}">symbol</td>
+							<td th:text="${entry.value.quantity}">0</td>
+							<td th:text="${entry.value.purchaseValue}">0</td>
+							<td
+								th:text="${#numbers.formatDecimal(entry.value.sellValue, 0, 'COMMA', 2, 'POINT')}">0</td>
+							<td
+								th:text="${#numbers.formatDecimal(entry.value.currentValue, 0, 'COMMA', 2, 'POINT')}">0</td>
+							<td
+								th:text="${#numbers.formatDecimal(entry.value.currentValue * entry.value.quantity, 0, 'COMMA', 2, 'POINT')}">0</td>
+							<td
+								th:class="${entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity}  &gt; 0? 'green-color gray' : 'red-color gray'">
+								<span
+								th:text="${entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity}  &gt; 0? ${#numbers.formatDecimal(entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity, 0, 'COMMA', 2, 'POINT')} +' &uarr;' : ${#numbers.formatDecimal(entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity, 0, 'COMMA', 2, 'POINT')} +' &darr;'"></span>
+							</td>
+
+							<form th:id="'sellform'+${entryStat.index}" action="#" th:action="@{/order}"
+								method="post" th:object="${order}" class="form-inline">
+								<td class="gray"><input type="hidden" th:value="${entry.value.symbol}"
+									id="symbol" name="symbol" /> <input type="hidden"
+									th:value="${#numbers.formatDecimal(entry.value.currentValue, 0, 'COMMA', 2, 'POINT')}"
+									id="price" name="price" /> <input type="hidden" th:value="SELL" id="orderType"
+									name="orderType" /> <input type="number" id="quantity-input" class="input-mini"
+									min="1" th:attr="max=${entry.value.quantity}" th:field="*{quantity}" /></td>
+								<td><a id="buyBtn"
+									th:attr="onclick='document.getElementById(\'sellform'+${entryStat.index}+'\').submit()'"
+									class=" sell btn green-btn">Sell</a></td>
+							</form>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr
+							th:class="${portfolio.currentTotalValue + portfolio.sellValue - portfolio.purchaseValue} &lt; 0? 'summary bold alert alert-block alert-error' : 'summary bold alert alert-block alert-success'">
+							<td colspan="5">Total</td>
+							<td class="large-size"
+								th:text="${#numbers.formatDecimal(portfolio.currentTotalValue, 0, 'COMMA', 2, 'POINT')}">0</td>
+							<td class="large-size"
+								th:text="${#numbers.formatDecimal(portfolio.currentTotalValue + portfolio.sellValue - portfolio.purchaseValue, 0, 'COMMA', 2, 'POINT')}">0</td>
+							<td colspan="2">&nbsp;</td>
+						</tr>
+					</tfoot>
+				</table>
+				<div id="no-holdings"></div>
+			</div>
+		</div>
+		<div class="pagination-container" />
+	</div>
+</div>
+
+<div th:if="${portfolio != null}" th:fragment="order-listing" class="row clearfix"
+	th:remove="tag">
+	<div id="orders" class="container">
+		<div class="accordion-group">
+		<!-- toggle -->
+		<div id="toggle-orders-control" class="show-transactions">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#orders"
+				data-target="#orders-control">Transactions</a> <span class="border-bg"></span>
+		</div>
+		<!-- toggle -->
+		<div id="orders-control" class="well show-well">
+			<div class="title">
+				<h3>Transactions</h3>
+			</div>
+			<table id="list-of-orders" class="table table-striped table-bordered table-condensed">
+				<thead>
+					<tr>
+						<th>Order ID</th>
+						<th>Status</th>
+						<th>Order Date</th>
+						<th>Order Fee</th>
+						<th>Order Type</th>
+						<th>Symbol</th>
+						<th>Price</th>
+						<th>Quantity</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="holding : ${portfolio.holdings}" class="info">
+						<td colspan="8" th:text="'Holding for: ' + ${holding.value.symbol}">symbol</td>
+					<tr th:each="txn : ${holding.value.orders}">
+						<td th:text="${txn.orderId}">0</td>
+						<td th:with="completed='completed'"><span
+							th:class="${completed=='completed'} ? 'completed' : 'uncompleted'"
+							th:text="${completed=='completed'} ? 'completed' : 'uncompleted'"> </span></td>
+						<td th:text="${txn.completionDate}">today</td>
+
+						<td th:text="${txn.orderFee}">0</td>
+						<td th:text="${txn.orderType}">BUY</td>
+						<td th:text="${txn.symbol}">OOOO</td>
+						<td th:text="${txn.price}">0</td>
+						<td th:text="${txn.quantity}">0</td>
+					</tr>
+					</tr>
+				</tbody>
+			</table>
+			<div id="no-orders"></div>
+		</div>
+		<div class="pagination-container" />
+	</div>
+</div>
+</div>
+
 </html>

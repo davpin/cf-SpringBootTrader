@@ -60,12 +60,10 @@ public class PortfolioServiceTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Map<String, String> params = new HashMap<String, String>();
-	    params.put("symbol", ServiceTestConfiguration.SYMBOL);
 	    
 		when(repo.findByAccountId(ServiceTestConfiguration.ACCOUNT_ID)).thenReturn(ServiceTestConfiguration.orders());
 		when(quoteService.getUri()).thenReturn(uri);
-		when(restTemplate.getForObject(uri.toString(), Quote.class, params)).thenReturn(ServiceTestConfiguration.quote());
+		when(restTemplate.getForObject(uri.toString()+"/quote/{symbol}", Quote.class, ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
 		Portfolio folio = service.getPortfolio(ServiceTestConfiguration.ACCOUNT_ID);
 	}
 	@Test

@@ -45,7 +45,8 @@ public class UserController {
 		    String currentUserName = authentication.getName();
 		    logger.debug("User logged in: " + currentUserName);
 		    
-		    //TODO: add portfolio and account summary.
+		    model.addAttribute("portfolio",marketService.getPortfolio(currentUserName));
+		    model.addAttribute("account",accountService.getAccount(currentUserName));
 		}
 		
 		return "index";

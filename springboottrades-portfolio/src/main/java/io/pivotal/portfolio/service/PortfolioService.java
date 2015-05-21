@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.util.UriInfo;
@@ -29,6 +31,8 @@ import io.pivotal.portfolio.repository.OrderRepository;
  */
 @Service
 public class PortfolioService {
+	private static final Logger logger = LoggerFactory
+			.getLogger(PortfolioService.class);
 
 	@Autowired
 	OrderRepository repository;
@@ -50,6 +54,7 @@ public class PortfolioService {
 		 * - for each order create holding.
 		 * - for each holding find current price.
 		 */
+		logger.debug("Getting portfolio for accountId: " + accountId);
 		List<Order> orders = repository.findByAccountId(accountId);
 		return createPortfolio(new Portfolio(), orders);
 	}
@@ -69,6 +74,7 @@ public class PortfolioService {
 		// getLatestQuotes in parallel
 		portfolio.getHoldings().values().parallelStream().forEach(holding -> refreshHolding(holding));
 		portfolio.refreshTotalValue();
+		logger.debug("Portfolio: " + portfolio);
 		return portfolio;
 	}
 	
@@ -78,11 +84,8 @@ public class PortfolioService {
 	}
 	
 	private Quote getQuote(String symbol) {
-		
-		
-		Map<String, String> params = new HashMap<String, String>();
-	    params.put("symbol", symbol);
-		Quote quote = restTemplate.getForObject(quoteService.getUri().toString(), Quote.class, params);
+		logger.debug("Fetching quote: " + symbol);
+		Quote quote = restTemplate.getForObject(quoteService.getUri().toString()+"/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
 	

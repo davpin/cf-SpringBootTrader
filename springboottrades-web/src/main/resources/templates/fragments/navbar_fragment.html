@@ -13,11 +13,11 @@
 						<li><a id="nb-dashboard" class="nav-link"><span id="nb-icon-dashboard"
 								class="icon-home icon-white" th:href="@{/}"></span>Home</a></li>
 						<li class="divider-vertical"></li>
-						<li><a id="nb-portfolio" class="nav-link"><span id="nb-portfolio-icon"
-								class="icon-custom icon-portfolio"></span>Portfolio</a></li>
+						<li><a id="nb-portfolio" class="nav-link" th:href="@{/portfolio}"><span
+								id="nb-portfolio-icon" class="icon-custom icon-portfolio"></span>Portfolio</a></li>
 						<li class="divider-vertical"></li>
-						<li><a id="nb-trade" class="nav-link" th:href="@{/trade}"><span id="nb-trade-icon"
-								class="icon-custom icon-trade"></span>Trade</a></li>
+						<li><a id="nb-trade" class="nav-link" th:href="@{/trade}"><span
+								id="nb-trade-icon" class="icon-custom icon-trade"></span>Trade</a></li>
 						<li class="divider-vertical"></li>
 					</ul>
 					<div class="navbar-text pull-right">
@@ -33,16 +33,12 @@
 										<li><a id="profile" href="/">Profile</a></li>
 										<li><a id="help" href="/">Help</a></li>
 										<li class="divider"></li>
-										<li><a id="logout" onclick="this.form.submit()">Logout</a></li>
+										<li><form id="logoutform" th:action="@{/logout}" method="post">
+												<a id="logout" onclick="document.getElementById('logoutform').submit()">Logout</a>
+											</form></li>
 									</ul>
 								</div></li>
-							<li class="divider-vertical"></li>
-							<li>
-								<form th:action="@{/logout}" method="post">
-									<input type="submit" value="Sign Out" class="nav-link" />
-								</form>
-
-							</li>
+								<li class="divider-vertical"></li>
 						</ul>
 					</div>
 				</div>
