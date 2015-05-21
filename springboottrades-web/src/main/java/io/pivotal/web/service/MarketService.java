@@ -11,6 +11,7 @@ import io.pivotal.web.domain.CompanyInfo;
 import io.pivotal.web.domain.MarketSummary;
 import io.pivotal.web.domain.Order;
 import io.pivotal.web.domain.Quote;
+import io.pivotal.web.exception.OrderNotSavedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,14 +67,14 @@ public class MarketService {
 		return quotes;
 	}
 	
-	public String sendOrder(Order order ){
+	public Order sendOrder(Order order ) throws OrderNotSavedException{
 		logger.debug("send order: " + order);
 		
 		//TODO: check result of http request to ensure its ok.
 		
-		ResponseEntity<String>  result = restTemplate.postForEntity(portfolioService.getUri().toString()+"/portfolio/{accountId}", order, String.class, order.getAccountId());
+		ResponseEntity<Order>  result = restTemplate.postForEntity(portfolioService.getUri().toString()+"/portfolio/{accountId}", order, Order.class, order.getAccountId());
 		if (result.getStatusCode() == HttpStatus.BAD_REQUEST) {
-			return "Could not save order";
+			throw new OrderNotSavedException("Could not save the order");
 		}
 		
 		return result.getBody();

@@ -20,6 +20,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.util.UriInfo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
@@ -38,6 +40,9 @@ public class PortfolioServiceTest {
 	
 	@Mock
 	UriInfo quoteService;
+	
+	@Mock
+	UriInfo accountService;
 	
 	@Before
 	public void setup() {
@@ -65,8 +70,22 @@ public class PortfolioServiceTest {
 	}
 	@Test
 	public void doSaveOrder() {
+		URI uri = null;
+		try {
+			uri = new URI("http://localhost");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		Order returnOrder = ServiceTestConfiguration.order();
 		returnOrder.setOrderId(1);
+		double amount = ServiceTestConfiguration.order().getQuantity()*ServiceTestConfiguration.order().getPrice().doubleValue()+ServiceTestConfiguration.order().getOrderFee().doubleValue();
+		ResponseEntity<Double> response = new ResponseEntity<Double>(100d, HttpStatus.OK);
+		
+		
+		when(accountService.getUri()).thenReturn(uri);
+		when(restTemplate.getForEntity(uri.toString()+"/accounts/{userid}/decreaseBalance/{amount}", Double.class, ServiceTestConfiguration.order().getAccountId(), amount )).thenReturn(response);
 		when(repo.save(ServiceTestConfiguration.order())).thenReturn(returnOrder);
 		Order order = service.addOrder(ServiceTestConfiguration.order());
 		assertEquals(order, returnOrder);

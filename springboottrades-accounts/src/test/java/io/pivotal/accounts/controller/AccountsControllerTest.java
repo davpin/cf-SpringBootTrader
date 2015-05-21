@@ -8,12 +8,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import io.pivotal.accounts.configuration.ServiceTestConfiguration;
-
 import io.pivotal.accounts.service.AccountService;
 
 import org.junit.After;
@@ -23,8 +23,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -111,8 +111,7 @@ public class AccountsControllerTest {
 										.intValue()))
 				.andExpect(
 						jsonPath("$.balance").value(
-								ServiceTestConfiguration.ACCOUNT_BALANCE
-										.doubleValue()))
+								ServiceTestConfiguration.ACCOUNT_BALANCE))
 				.andExpect(
 						jsonPath("$.lastlogin").value(
 								ServiceTestConfiguration.ACCOUNT_DATE.getTime()))
@@ -127,18 +126,17 @@ public class AccountsControllerTest {
 		when(service.findAccount(ServiceTestConfiguration.USER_ID))
 				.thenReturn(ServiceTestConfiguration.account());
 
-		mockMvc.perform(
+		MvcResult result = mockMvc.perform(
 				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/increaseBalance/" + 1000)
 						.contentType(MediaType.APPLICATION_JSON).content(
 								convertObjectToJson(ServiceTestConfiguration
 										.account())))
 				.andExpect(status().isOk())
 				.andDo(print())
-				.andExpect(
-						jsonPath("$.balance").value(
-								ServiceTestConfiguration.ACCOUNT_BALANCE
-										.doubleValue() + 1000))
-				.andDo(print());
+				.andExpect(content().string(String.valueOf(ServiceTestConfiguration.ACCOUNT_BALANCE.doubleValue() + 1000)))
+				.andReturn();
+		String resultStr = result.getResponse().getContentAsString();
+		
 	}
 
 	@Test
@@ -153,10 +151,7 @@ public class AccountsControllerTest {
 										.account())))
 				.andExpect(status().isOk())
 				.andDo(print())
-				.andExpect(
-						jsonPath("$.balance").value(
-								ServiceTestConfiguration.ACCOUNT_BALANCE
-										.doubleValue() - 10))
+				.andExpect(content().string(String.valueOf(ServiceTestConfiguration.ACCOUNT_BALANCE.doubleValue() - 10)))
 				.andDo(print());
 	}
 	

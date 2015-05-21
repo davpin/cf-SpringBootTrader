@@ -72,7 +72,7 @@ public class TradeController {
 		return "trade";
 	}
 	
-	@RequestMapping(value = "/buy", method = RequestMethod.POST)
+	@RequestMapping(value = "/order", method = RequestMethod.POST)
 	public String buy(Model model, @ModelAttribute("order") Order order) {
 		
 		model.addAttribute("search", new Search());
@@ -85,9 +85,10 @@ public class TradeController {
 				    logger.debug("/buy ORDER: " + order);
 				    order.setAccountId(currentUserName);
 				    order.setCompletionDate(new Date());
-				    
+
 				    //TODO: change sendOrder to return Order and put that in model.
-				    String result = marketService.sendOrder(order);
+				    Order result = marketService.sendOrder(order);
+				    model.addAttribute("savedOrder", result);
 				} else {
 					//should never get here!!!
 				}

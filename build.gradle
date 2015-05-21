@@ -104,7 +104,7 @@ project(':springboottrades-quotes') {
 		compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 		
 		//runtime
-		runtime "mysql:mysql-connector-java:${mysqlVersion}"
+
 		
 		//test packages
 		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
@@ -126,7 +126,7 @@ project(':springboottrades-portfolio') {
 		compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
 		
 		//runtime
-		runtime "mysql:mysql-connector-java:${mysqlVersion}"
+		//runtime "mysql:mysql-connector-java:${mysqlVersion}"
 		
 		//test packages
 		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"

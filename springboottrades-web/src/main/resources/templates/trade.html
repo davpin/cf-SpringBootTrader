@@ -17,6 +17,8 @@
 		class="navbar-fixed-top"></div>
 		
 	<div class="container page">
+	<div sec:authorize="isAuthenticated()" th:include="fragments/trade_fragment :: saved_order"
+			th:remove="tag"></div>
 		<div sec:authorize="isAuthenticated()" th:include="fragments/trade_fragment :: company_input"
 			th:remove="tag"></div>
 			<div sec:authorize="isAuthenticated()" th:include="fragments/trade_fragment :: quote_list"

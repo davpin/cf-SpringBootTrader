@@ -1,6 +1,6 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="summary">
-	<div class="row show-table">
+	<div th:if="${marketSummary != null}" class="row show-table">
 		<div
 			th:include="fragments/marketsummary_fragment :: summary-quote(${marketSummary.topGainers},'IT VEndors')" th:remove="tag"></div>
 		<div

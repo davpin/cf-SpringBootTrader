@@ -89,7 +89,7 @@ public class ServiceTestConfiguration  {
 	
 	//Account constants
 	public static BigDecimal ACCOUNT_OPEN_BALANCE	=   BigDecimal.valueOf(55.02);
-	public static BigDecimal ACCOUNT_BALANCE	=   BigDecimal.valueOf(40.11);
+	public static BigDecimal ACCOUNT_BALANCE	=   new BigDecimal(40.11);
 	public static Integer LOGOUT_COUNT	=  new Integer(5);
 	public static Integer LOGIN_COUNT	=  new Integer(4);
 	public static String AUTH_TOKEN	=  "faef8649-280d-4ba4-bdf6-574e758a04a7";

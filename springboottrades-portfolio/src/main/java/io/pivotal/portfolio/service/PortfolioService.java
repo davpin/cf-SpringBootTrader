@@ -8,12 +8,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.util.UriInfo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import io.pivotal.portfolio.domain.Holding;
 import io.pivotal.portfolio.domain.Order;
+import io.pivotal.portfolio.domain.OrderType;
 import io.pivotal.portfolio.domain.Portfolio;
 import io.pivotal.portfolio.domain.Quote;
 import io.pivotal.portfolio.repository.OrderRepository;
@@ -31,6 +34,7 @@ public class PortfolioService {
 	OrderRepository repository;
 	
 	@Autowired @Qualifier("quoteService") UriInfo quoteService;
+	@Autowired @Qualifier("accountService") UriInfo accountService;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -40,9 +44,9 @@ public class PortfolioService {
 	 * @param accountId The account id to retrieve for.
 	 * @return The portfolio.
 	 */
-	public Portfolio getPortfolio(Integer accountId) {
+	public Portfolio getPortfolio(String accountId) {
 		/*
-		 * Retrieve all orders for accounts id and build protfolio.
+		 * Retrieve all orders for accounts id and build portfolio.
 		 * - for each order create holding.
 		 * - for each holding find current price.
 		 */
@@ -64,6 +68,7 @@ public class PortfolioService {
 		
 		// getLatestQuotes in parallel
 		portfolio.getHoldings().values().parallelStream().forEach(holding -> refreshHolding(holding));
+		portfolio.refreshTotalValue();
 		return portfolio;
 	}
 	
@@ -83,7 +88,30 @@ public class PortfolioService {
 	
 	@Transactional
 	public Order addOrder(Order order) {
-		//TODO: check if there are enough funds!
-		return repository.save(order);	
+		
+		if (order.getOrderFee() == null) {
+			order.setOrderFee(new BigDecimal(10.50));
+		}
+		if (order.getOrderType() == OrderType.BUY) {
+			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
+			ResponseEntity<Double>  result= restTemplate.getForEntity(accountService.getUri().toString()+"/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			if (result.getStatusCode() == HttpStatus.OK) {
+				return repository.save(order);
+			} else {
+				//TODO: throw exception - not enough funds!
+				return null;
+			}
+		} else {
+			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
+			ResponseEntity<Double>  result= restTemplate.getForEntity(accountService.getUri().toString()+"/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			if (result.getStatusCode() == HttpStatus.OK) {
+				return repository.save(order);
+			} else {
+				//TODO: throw exception - negative value???
+				return null;
+			}
+		}
+		
+			
 	}
 }

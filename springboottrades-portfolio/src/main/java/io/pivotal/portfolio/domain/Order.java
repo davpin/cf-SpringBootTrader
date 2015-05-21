@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "ORDER")
+@Table(name = "ORDERS")
 public class Order {
 
 	@Id
@@ -26,7 +27,7 @@ public class Order {
 
 	@Column(name = "accountid")
 	@NotNull
-	private Integer accountId;
+	private String accountId;
 	
 	@Column(name = "symbol", length = 10)
 	@NotNull
@@ -42,6 +43,7 @@ public class Order {
 
 	@Column(name = "ordertype")
 	@NotNull
+	@Enumerated
 	private OrderType orderType;
 
 	@Column(name = "price", precision = 14, scale = 2)
@@ -60,11 +62,11 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public Integer getAccountId() {
+	public String getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(Integer accountId) {
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 

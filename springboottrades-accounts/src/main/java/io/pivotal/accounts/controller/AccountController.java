@@ -77,54 +77,54 @@ public class AccountController {
 	}
 	
 	@RequestMapping(value = "/accounts/{userId}/decreaseBalance/{amount}", method = RequestMethod.GET)
-	public ResponseEntity<Account> decreaseBalance(@PathVariable("userId") final String userId, @PathVariable("amount") final double amount) {
+	public ResponseEntity<Double> decreaseBalance(@PathVariable("userId") final String userId, @PathVariable("amount") final double amount) {
 
 		logger.debug("AccountController.decreaseBalance: id='" + userId + "', amount='"+amount+"'");
 
 		Account accountResponse = this.service.findAccount(userId);
 		
-		double currentBalance = accountResponse.getBalance().doubleValue();
+		BigDecimal currentBalance = accountResponse.getBalance();
 		
-		double newBalance = currentBalance - amount;
+		BigDecimal newBalance = currentBalance.subtract(new BigDecimal(amount));
 		
-		if ( newBalance >= 0) {
-			accountResponse.setBalance(new BigDecimal(newBalance));
+		if ( newBalance.compareTo(BigDecimal.ZERO) >= 0) {
+			accountResponse.setBalance(newBalance);
 			this.service.saveAccount(accountResponse);
-			return new ResponseEntity<Account>(accountResponse,
+			return new ResponseEntity<Double>(accountResponse.getBalance().doubleValue(),
 					getNoCacheHeaders(), HttpStatus.OK);
 
 		} else {
 			//no sufficient founds available 
-			return new ResponseEntity<Account>(accountResponse,
+			return new ResponseEntity<Double>(accountResponse.getBalance().doubleValue(),
 					getNoCacheHeaders(), HttpStatus.EXPECTATION_FAILED);
 		}
 	
 	}
 	
 	@RequestMapping(value = "/accounts/{userId}/increaseBalance/{amount}", method = RequestMethod.GET)
-	public ResponseEntity<Account> increaseBalance(@PathVariable("userId") final String userId, @PathVariable("amount") final double amount) {
+	public ResponseEntity<Double> increaseBalance(@PathVariable("userId") final String userId, @PathVariable("amount") final double amount) {
 
 		logger.debug("AccountController.increaseBalance: id='" + userId + "', amount='"+amount+"'");
 
 		Account accountResponse = this.service.findAccount(userId);
 		
-		double currentBalance = accountResponse.getBalance().doubleValue();
+		BigDecimal currentBalance = accountResponse.getBalance();
 		
 		logger.debug("AccountController.increaseBalance: current balance='" + currentBalance + "'.");
 		
 		if (amount > 0) {
 			
-			double newBalance = currentBalance+amount;
+			BigDecimal newBalance = currentBalance.add(new BigDecimal(amount));
 			logger.debug("AccountController.increaseBalance: new balance='" + newBalance + "'.");
 			
-			accountResponse.setBalance(new BigDecimal(currentBalance + amount));
+			accountResponse.setBalance(newBalance);
 			this.service.saveAccount(accountResponse);
-			return new ResponseEntity<Account>(accountResponse,
+			return new ResponseEntity<Double>(accountResponse.getBalance().doubleValue(),
 					getNoCacheHeaders(), HttpStatus.OK);
 
 		} else {
 			//amount can not be negative for increaseBalance, please use decreaseBalance
-			return new ResponseEntity<Account>(accountResponse,
+			return new ResponseEntity<Double>(accountResponse.getBalance().doubleValue(),
 					getNoCacheHeaders(), HttpStatus.EXPECTATION_FAILED);
 		}
 	

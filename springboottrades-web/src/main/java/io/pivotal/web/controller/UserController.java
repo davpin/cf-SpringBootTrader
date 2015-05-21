@@ -96,6 +96,7 @@ public class UserController {
 		AuthenticationRequest login = new AuthenticationRequest();
 		login.setUsername(account.getUserid());
 		model.addAttribute("login", login);
+		model.addAttribute("marketSummary", marketService.getMarketSummary());
 		accountService.createAccount(account);
 		return "index";
 	}

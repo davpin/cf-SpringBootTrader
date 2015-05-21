@@ -14,7 +14,7 @@ import io.pivotal.portfolio.domain.Quote;
 
 public class ServiceTestConfiguration {
 	
-	public static final Integer ACCOUNT_ID = 1;
+	public static final String ACCOUNT_ID = "user";
 	public static final String SYMBOL = "EMC";
 	public static final Integer QUANTITY = 1000;
 	public static final BigDecimal PRICE = new BigDecimal(10.00);

@@ -4,6 +4,8 @@ import io.pivotal.portfolio.domain.Order;
 import io.pivotal.portfolio.domain.Portfolio;
 import io.pivotal.portfolio.service.PortfolioService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,12 +19,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class PortfolioController {
+	private static final Logger logger = LoggerFactory
+			.getLogger(PortfolioController.class);
 	
 	@Autowired
 	private PortfolioService service;
 
 	@RequestMapping(value = "/portfolio/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Portfolio> getPortfolio(@PathVariable("id") final Integer accountId) {
+	public ResponseEntity<Portfolio> getPortfolio(@PathVariable("id") final String accountId) {
 		Portfolio folio = service.getPortfolio(accountId);
 		return new ResponseEntity<Portfolio>(folio, getNoCacheHeaders(), HttpStatus.OK);
 	}
@@ -32,16 +36,21 @@ public class PortfolioController {
 		responseHeaders.set("Cache-Control", "no-cache");
 		return responseHeaders;
 	}
-	@RequestMapping(value = "/porfolio/{id}", method = RequestMethod.POST)
-	public ResponseEntity<String> addOrder(@PathVariable("id") final Integer accountId, @RequestBody final Order order, UriComponentsBuilder builder) {
+	@RequestMapping(value = "/portfolio/{id}", method = RequestMethod.POST)
+	public ResponseEntity<Order> addOrder(@PathVariable("id") final String accountId, @RequestBody final Order order, UriComponentsBuilder builder) {
+		logger.debug("Adding Order: " + order);
+		
+		//TODO: can do a test to ensure accountId == order.getAccountId();
+		
 		Order savedOrder = service.addOrder(order);
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.setLocation(builder.path("/portfolio/{id}")
 				.buildAndExpand(accountId).toUri());
-		if (savedOrder.getOrderId() != null) {
-			return new ResponseEntity<String>(responseHeaders, HttpStatus.CREATED);
+		logger.debug("Order added: " + savedOrder);
+		if (savedOrder != null && savedOrder.getOrderId() != null) {
+			return new ResponseEntity<Order>(savedOrder, responseHeaders, HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<String>(responseHeaders, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Order>(savedOrder, responseHeaders, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

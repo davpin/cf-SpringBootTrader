@@ -43,7 +43,7 @@
 						<td th:text="${quote.changeYTD}"></td>
 						<td th:text="${quote.high}"></td>
 						<td th:text="${quote.low}"></td>
-						<td><form th:id="'form'+${quoteStat.index}" action="#" th:action="@{/buy}" method="post" th:object="${order}"
+						<td><form th:id="'form'+${quoteStat.index}" action="#" th:action="@{/order}" method="post" th:object="${order}"
 				class="form-inline">
 						<input type="hidden" th:value="${quote.symbol}" id="symbol" name="symbol" />
 						<input type="hidden" th:value="${quote.lastPrice}" id="price" name="price" />
@@ -59,4 +59,37 @@
 	</div>
 </th:block>
 
+
+<th:block th:fragment="saved_order">
+	<div th:if="${savedOrder != null}" class="row span12">
+		<div class="well show-well">
+		<div class="title">
+			<h3>Order Successful</h3>
+		</div>
+		<div class="table-outer">
+			<table class="table">
+				<tbody>
+					<tr>
+						<th>Type</th>
+						<th>Symbol</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Fee</th>
+						<th>TOTAL</th>
+						
+					</tr>
+					<tr>
+						<td th:text="${savedOrder.orderType}">symbol</td>
+						<td th:text="${savedOrder.symbol}">symbol</td>
+						<td th:text="${savedOrder.price}">price</td>
+						<td th:text="${savedOrder.quantity}">quantity</td>
+						<td th:text="${savedOrder.orderFee}">Fee</td>
+						<td th:text="${savedOrder.price}*${savedOrder.quantity}+${savedOrder.orderFee}">total</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	</div>
+</th:block>
 </html>

@@ -1,4 +1,4 @@
-package io.pivotal.portfolio.domain;
+package io.pivotal.web.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

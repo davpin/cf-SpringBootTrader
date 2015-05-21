@@ -17,6 +17,11 @@ public class CloudConfig extends AbstractCloudConfig {
 	}
 	
 	@Bean
+	public UriInfo accountService() {
+		return connectionFactory().service("accountService", UriInfo.class);
+	}
+	
+	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
