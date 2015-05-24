@@ -1,6 +1,8 @@
 package io.pivotal.web.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -29,6 +31,10 @@ import org.springframework.web.client.RestTemplate;
 public class MarketService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(MarketService.class);
+	private final static Integer QUOTES_NUMBER = 3;
+	
+	//10 minutes in milliseconds
+	private final static long REFRESH_PERIOD = 600000l;
 	
 	@Autowired @Qualifier("quoteService") UriInfo quoteService;
 	@Autowired @Qualifier("portfolioService") UriInfo portfolioService;
@@ -36,8 +42,8 @@ public class MarketService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	private static List<String> symbolsIT = Arrays.asList("EMC", "ORCL", "IBM");
-	private static List<String> symbolsFS = Arrays.asList("JPM", "C", "MS");
+	private static List<String> symbolsIT = Arrays.asList("EMC", "ORCL", "IBM", "INTC", "AMD", "HPQ", "CSCO", "AAPL");
+	private static List<String> symbolsFS = Arrays.asList("JPM", "C", "MS", "BAC", "GS", "WFC","BK");
 	
 	private MarketSummary summary = new MarketSummary();
 	
@@ -90,12 +96,19 @@ public class MarketService {
 	}
 	
 	//TODO: prime location for a redis/gemfire caching service!
-	@Scheduled(fixedRate = 5000000)
+	@Scheduled(fixedRate = REFRESH_PERIOD)
 	private void retrieveMarketSummary() {
 		logger.debug("Scheduled retrieval of Market Summary");
-		List<Quote> quotesIT = symbolsIT.parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
-		List<Quote> quotesFS = symbolsFS.parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
+		List<Quote> quotesIT = pickRandomThree(symbolsIT).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
+		List<Quote> quotesFS = pickRandomThree(symbolsFS).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
 		summary.setTopGainers(quotesIT);
 		summary.setTopLosers(quotesFS);
+	}
+	
+	private List<String> pickRandomThree(List<String> symbols) {
+		List<String> list = new ArrayList<>();
+		Collections.shuffle(symbols);
+	    list = symbols.subList(0, QUOTES_NUMBER);
+	    return list;
 	}
 }
