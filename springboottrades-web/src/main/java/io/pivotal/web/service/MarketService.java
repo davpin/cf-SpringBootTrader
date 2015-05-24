@@ -2,6 +2,7 @@ package io.pivotal.web.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import io.pivotal.web.domain.CompanyInfo;
@@ -61,7 +62,12 @@ public class MarketService {
 	public List<Quote> getQuotes(String companyName) {
 		logger.debug("Fetching quotes for companies that have: " + companyName + " in name or symbol");
 		List<CompanyInfo> companies = getCompanies(companyName);
-		List<Quote> quotes = companies.parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
+		
+		//get district companyinfos and get their respective quotes in parallel.
+		List<Quote> quotes = companies.stream().collect(Collectors.toCollection(
+			      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
+				)).parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
+		
 		return quotes;
 	}
 	
