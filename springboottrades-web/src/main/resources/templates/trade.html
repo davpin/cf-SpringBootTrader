@@ -4,14 +4,7 @@
 
 <head>
 <title>Spring Trader</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../webjars/bootstrap/2.3.2/js/bootstrap.css"
-	th:href="@{webjars/bootstrap/2.3.2/css/bootstrap.css}" />
-<link rel="stylesheet" type="text/css" media="all" href="../static/css/style.css"
-	th:href="@{/css/style.css}" />
-<script th:src="@{webjars/jquery/1.9.0/jquery.js}"></script>
-<script th:src="@{webjars/bootstrap/2.3.2/js/bootstrap.js}"></script>
-
+<div th:include="fragments/header_fragment :: header-includes" th:remove="tag"></div>
 </head>
 <body>
 	<div sec:authorize="hasRole('USER')" th:remove="tag">
