@@ -7,7 +7,7 @@ This repository holds a collection of micro services that work together to prese
 
 It was created to support workshops and demonstrations of building and using `microservices` architectures and running these in **Cloud Foundry** (although it is possible to run these on other runtimes).
 
-The workshops follow a series of exercises, or labs, and you can find links to the guides for these below.
+The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises below.
 
 #Architecture
 The system is composed of 4 microservices:
@@ -44,7 +44,13 @@ The web interface is built using bootstrap and Thymeleaf and uses a Spring contr
 
 # Workshops:
 
-1. Lab 1: Setting up the environment
-2. Lab 2: Pushing the Quote service
-3. Lab 3: Pushing all the services
-4. Lab 4
+1. [Lab 1: Setting up the environment] [lab1]
+2. [Lab 2: Pushing the Quote service] [lab2]
+3. [Lab 3: Pushing all the services] [lab3]
+4. [Lab 4: Scaling the services] [lab4]
+5. Lab 5: Blue/Green deployments
+
+[lab1]: docs/lab1.md
+[lab2]: docs/lab2.md
+[lab3]: docs/lab3.md
+[lab4]: docs/lab4.md
