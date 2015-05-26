@@ -44,13 +44,18 @@ The web interface is built using bootstrap and Thymeleaf and uses a Spring contr
 
 # Workshops:
 
+The following guides describe how to setup the environment and deploy the microservices to **Cloud Foundry**.
+
+At Pivotal we love education, not just educating ourselves, but also educating others. As such, these guides follow the *"teaching you how to fish"* principle - Rather than giving you line by line/command by command instructions, we provide guidelines and links to documentation where you can read and learn more.
+
 1. [Lab 1: Setting up the environment] [lab1]
 2. [Lab 2: Pushing the Quote service] [lab2]
 3. [Lab 3: Pushing all the services] [lab3]
 4. [Lab 4: Scaling the services] [lab4]
-5. Lab 5: Blue/Green deployments
+5. [Lab 5: Blue/Green deployments] [lab5]
 
 [lab1]: docs/lab1.md
 [lab2]: docs/lab2.md
 [lab3]: docs/lab3.md
 [lab4]: docs/lab4.md
+[lab5]: docs/lab5.md
