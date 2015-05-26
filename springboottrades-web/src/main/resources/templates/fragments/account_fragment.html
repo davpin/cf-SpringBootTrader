@@ -1,37 +1,41 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:if="${account != null}" th:fragment="user-stats">
-<div class="well show-well">
-    <div class="title"><h3>User Statistics</h3></div>
-    <div class="table-outer">
-        <table class="table">
-            <tr>
-                <td>Full Name</td>
-                <td th:text="${account.fullname}">user</td>
-            </tr>
-            <tr>
-                <td>User ID</td>
-                <td th:text="${account.userid}">user</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td th:text="${account.email}">user</td>
-            </tr>
-            <tr>
-                <td>Creation Date</td>
-                <td th:text="${account.creationdate}">today</td>
-            </tr>
-            <tr>
-                <td>Total Logins</td>
-                <td th:text="${account.logincount}">0</td>
-            </tr>
-            <tr>
-                <td>Session Creation Date</td>
-                <td th:text="${account.lastlogin}">today</td>
-            </tr>
-        </table>
-    </div>
-</div>
+	<div class="span6">
+		<div class="well show-well">
+			<div class="title">
+				<h3>User Statistics</h3>
+			</div>
+			<div class="table-outer">
+				<table class="table">
+					<tr>
+						<td>Full Name</td>
+						<td th:text="${account.fullname}">user</td>
+					</tr>
+					<tr>
+						<td>User ID</td>
+						<td th:text="${account.userid}">user</td>
+					</tr>
+					<tr>
+						<td>Email</td>
+						<td th:text="${account.email}">user</td>
+					</tr>
+					<tr>
+						<td>Creation Date</td>
+						<td th:text="${account.creationdate}">today</td>
+					</tr>
+					<tr>
+						<td>Total Logins</td>
+						<td th:text="${account.logincount}">0</td>
+					</tr>
+					<tr>
+						<td>Session Creation Date</td>
+						<td th:text="${account.lastlogin}">today</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
 
 </th:block>
 </html>

@@ -10,8 +10,8 @@
 				<div class="nav-collapse">
 					<ul class="nav nav-top">
 						<li class="divider-vertical"></li>
-						<li><a id="nb-dashboard" class="nav-link"><span id="nb-icon-dashboard"
-								class="icon-home icon-white" th:href="@{/}"></span>Home</a></li>
+						<li><a id="nb-dashboard" class="nav-link" th:href="@{/}"><span id="nb-icon-dashboard"
+								class="icon-home icon-white"></span>Home</a></li>
 						<li class="divider-vertical"></li>
 						<li><a id="nb-portfolio" class="nav-link" th:href="@{/portfolio}"><span
 								id="nb-portfolio-icon" class="icon-custom icon-portfolio"></span>Portfolio</a></li>
@@ -30,8 +30,8 @@
 							</a>
 								<div class="dropdown-menu">
 									<ul class="dropdown-nav">
-										<li><a id="profile" href="/">Profile</a></li>
-										<li><a id="help" href="/">Help</a></li>
+										<li class="disabled"><a id="profile" href="/">Profile</a></li>
+										<li class="disabled"><a id="help" href="/">Help</a></li>
 										<li class="divider"></li>
 										<li><form id="logoutform" th:action="@{/logout}" method="post">
 												<a id="logout" onclick="document.getElementById('logoutform').submit()">Logout</a>

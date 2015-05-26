@@ -16,9 +16,15 @@
 		<div th:include="fragments/marketsummary_fragment :: summary"></div>
 
 		<div sec:authorize="hasRole('USER')" th:remove="tag">
-			<div th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
-			<div th:include="fragments/portfolio_fragment :: portfolio-listing" th:remove="tag"></div>
-			<div th:include="fragments/portfolio_fragment :: order-listing" th:remove="tag"></div>
+			<div class="row">
+				<div th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
+			</div>
+			<div class="row">
+				<div th:include="fragments/portfolio_fragment :: portfolio-listing" th:remove="tag"></div>
+			</div>
+			<div class="row">
+				<div th:include="fragments/portfolio_fragment :: order-listing" th:remove="tag"></div>
+			</div>
 		</div>
 
 	</div>

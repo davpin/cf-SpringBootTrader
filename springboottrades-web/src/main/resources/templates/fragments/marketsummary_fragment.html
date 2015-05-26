@@ -50,10 +50,10 @@
 				<th>High</th>
 				<th>Low</th>
 			</tr>
-			<tr class="caps" th:each="quote : ${quoteList}">
+			<tr th:class="${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} &gt; 0? 'text-success caps' : 'text-error caps'" th:each="quote : ${quoteList}">
 				<td><strong th:text="${quote.symbol}"></strong></td>
 				<td th:text="${quote.lastPrice}"></td>
-				<td th:text="${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')}"></td>
+				<td th:text="${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} &gt; 0? ${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} +' &uarr;' : ${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} +' &darr;'"></td>
 				<td th:text="${quote.high}"></td>
 				<td th:text="${quote.low}"></td>
 			</tr>
