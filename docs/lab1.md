@@ -35,6 +35,14 @@ Clone the GIT repository to your local machine. On the command line issue the fo
 
 ```git clone https://github.com/dpinto-pivotal/cf-SpringBootTrader.git```
 
+Once you have cloned the repository, it is important to build it to create the application artifacts.
+
+The projects use [gradle](http://gradle.org) as the build tool with gradle wrapper. Thus, all it is required to build all the microservices is:
+
+```
+./gradlew build
+```
+
 ## 6. Logging in to Cloud Foundry
 
 Login to your instance of **Cloud Foundry**. Instructions on how to do this can be found at http://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login
