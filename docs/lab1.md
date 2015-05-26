@@ -59,4 +59,8 @@ Penguin:cf-SpringBootTrader dpinto$ cf target
 API endpoint:   https://CF-URI (API version: 2.23.0)
 User:           dpinto
 Org:            dpinto-org
-Space:          development```
+Space:          development
+```
+
+Now you can go to [Lab 2][lab2]
+[lab2]: docs/lab2.md

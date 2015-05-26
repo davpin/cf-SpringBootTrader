@@ -66,3 +66,6 @@ Once completed, go to the URL of the Web service in your browser.
 Congratulations! You have now deployed a set of microservices to the cloud that interact with each other.
 
 Feel free to familiarise yourself with the UI of the application.
+
+Now you can go to [Lab 4][lab4]
+[lab4]: docs/lab4.md

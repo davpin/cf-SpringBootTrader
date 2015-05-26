@@ -30,3 +30,6 @@ Ensure you have a working quote service application by sending HTTP requests to 
 `curl http://<ROUTE_TO_QUOTE_SERVICE>/quote/EMC`
 
 You have now deployed your first application to *Cloud Foundry*. Can you describe the steps the platform went through between your `cf push` command and having the application accessible?
+
+Now you can go to [Lab 3][lab3]
+[lab3]: docs/lab3.md
