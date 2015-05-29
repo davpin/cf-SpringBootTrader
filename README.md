@@ -10,7 +10,9 @@ It was created to support workshops and demonstrations of building and using `mi
 The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises below.
 
 #Architecture
-The system is composed of 4 microservices:
+The system is composed of 4 microservices. The relationship between the microservices is illustrated below.
+
+![architecture](/docs/microservices_relationship.png)
 
 ##1. Quote Microservice
 This service is a spring boot application responsible for providing up to date company and ticker/quote information. It does this by providing a REST api with 2 calls:
