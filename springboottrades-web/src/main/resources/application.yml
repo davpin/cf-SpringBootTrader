@@ -1,0 +1,35 @@
+spring:
+  profiles.active: local
+
+---
+spring:
+  profiles: local
+  quote:
+    url: localhost
+    port: 8083
+  account:
+    url: localhost
+    port: 8082
+  portfolio:
+    url: localhost
+    port: 8081
+  jpa:
+     hibernate:
+        ddl-auto: update
+server:
+  port: 8080
+---
+spring:
+  profiles: cloud
+  jpa:
+     hibernate:
+        ddl-auto: update
+---        
+logging:
+  level:
+     io:
+        pivotal: DEBUG
+//     org:
+//        springframework:
+//           web: DEBUG
+//           cloud: DEBUG

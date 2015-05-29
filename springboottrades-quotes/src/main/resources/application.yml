@@ -1,0 +1,15 @@
+spring:
+  profiles.active: local
+---
+spring:
+  profiles: local
+server:
+  port: 8083
+---
+spring:
+  profiles: cloud
+---        
+logging:
+  level:
+     io:
+        pivotal: DEBUG

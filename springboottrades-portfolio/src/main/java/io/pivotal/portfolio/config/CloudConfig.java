@@ -5,10 +5,12 @@ import org.springframework.cloud.config.java.ServiceScan;
 import org.springframework.cloud.util.UriInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @ServiceScan
+@Profile("Cloud")
 public class CloudConfig extends AbstractCloudConfig {
 
 	@Bean

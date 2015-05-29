@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @ServiceScan
+@Profile("cloud")
 public class CloudConfig extends AbstractCloudConfig {
 
 	@Bean

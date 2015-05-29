@@ -50,7 +50,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
 				.asList(MediaType.APPLICATION_JSON));
 		//mappingJacksonHttpMessageConverter.getObjectMapper().configure(
 		//		Feature.WRITE_DATES_AS_TIMESTAMPS, true);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
 		// There is no need to set the timezone as Jackson uses GMT and not the
 		// local time zone (which is exactly what you want)
 		// Note: While SimpleDateFormat is not threadsafe, Jackson Marshaller's

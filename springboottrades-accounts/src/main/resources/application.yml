@@ -1,0 +1,22 @@
+spring:
+  profiles.active: local
+
+---
+spring:
+  profiles: local
+  jpa:
+     hibernate:
+        ddl-auto: update
+server:
+  port: 8082
+---
+spring:
+  profiles: cloud
+  jpa:
+     hibernate:
+        ddl-auto: update
+---        
+logging:
+  level:
+     io:
+        pivotal: DEBUG

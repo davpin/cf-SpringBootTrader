@@ -2,7 +2,9 @@
 timeout: 180
 instances: 1
 memory: 256M
-buildpack: toms-java-buildpack
+#buildpack: toms-java-buildpack
+env:
+    SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: accounts
   path: springboottrades-accounts/build/libs/accounts-1.0.jar
