@@ -8,3 +8,4 @@ env:
 applications:
 - name: quotes
   path: springboottrades-quotes/build/libs/quotes-1.0.jar
+  services: [ eureka-service ]
