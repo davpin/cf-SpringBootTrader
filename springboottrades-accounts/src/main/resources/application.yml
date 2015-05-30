@@ -1,22 +1,35 @@
 spring:
   profiles.active: local
+  application:
+     name: accounts
+  jpa:
+     hibernate:
+        ddl-auto: update
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${vcap.services.eureka-service.credentials.uri:127.0.0.1:8761}/eureka/
+  instance:
+    hostname: ${vcap.application.uris[0]:localhost} 
+    nonSecurePort: ${server.port}
+    metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
 
 ---
 spring:
   profiles: local
-  jpa:
-     hibernate:
-        ddl-auto: update
+
 server:
   port: 8082
 ---
 spring:
   profiles: cloud
-  jpa:
-     hibernate:
-        ddl-auto: update
+server:
+  port: ${vcap.application.port:80}
 ---        
 logging:
   level:
      io:
         pivotal: DEBUG
+     com:
+        netflix: WARN

@@ -8,4 +8,4 @@ env:
 applications:
 - name: accounts
   path: springboottrades-accounts/build/libs/accounts-1.0.jar
-  services: [ traderdb ]
+  services: [ traderdb, eureka-service ]

@@ -8,4 +8,4 @@ env:
 applications:
 - name: webtrader
   path: springboottrades-web/build/libs/web-1.0.jar
-  services: [ quoteService, accountService, portfolioService ]
+  services: [  eureka-service  ]

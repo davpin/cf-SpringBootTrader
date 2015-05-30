@@ -26,4 +26,5 @@ logging:
   level:
      io:
         pivotal: DEBUG
-     com.netflix: 'WARN'
+     com:
+        netflix: WARN
