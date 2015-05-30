@@ -1,0 +1,11 @@
+---
+timeout: 180
+instances: 1
+memory: 256M
+#buildpack: toms-java-buildpack
+env:
+    SPRING_PROFILES_DEFAULT: cloud
+applications:
+- name: eureka-server
+  path: registryServer/build/libs/registry-1.0.jar
+  services: [ eureka-service ]

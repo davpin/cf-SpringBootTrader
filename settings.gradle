@@ -1,1 +1,1 @@
-include "springboottrades-common", "springboottrades-accounts", "springboottrades-quotes", "springboottrades-web", "springboottrades-portfolio"
+include "springboottrades-common", "springboottrades-accounts", "springboottrades-quotes", "springboottrades-web", "springboottrades-portfolio", "registryServer"
