@@ -31,7 +31,7 @@ eureka:
     hostname: ${vcap.application.uris[0]}  
   client:
     serviceUrl:
-      defaultZone: ${vcap.services.eureka-service.credentials.uri:http://127.0.0.1:8761}/eureka/
+      defaultZone: http://${vcap.services.eureka-service.credentials.uri:127.0.0.1:8761}/eureka/
 server:
-  port: ${vcap.application.port:8761}
+  port: ${vcap.application.port:80}
 --- 
