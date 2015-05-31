@@ -60,4 +60,4 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 [lab2]: docs/lab_pushquote.md
 [lab3]: docs/lab_pushall.md
 [lab4]: docs/lab_scale.md
-[lab5]: docs/lab5.md
+[lab5]: docs/lab_bluegreen.md
