@@ -12,6 +12,8 @@ The quote service has no dependencies - apart from the external service which is
 ### 2. Accounts service
 The accounts service has a dependency on a RDBMS database.
 
+**Cloud Foundry** provides a marketplace where administrators can enable certain services to be available to developers/operators. These services are called [*Managed services*](http://docs.pivotal.io/pivotalcf/devguide/services/#managed-services), in contrast to [*User-provided services*](http://docs.pivotal.io/pivotalcf/devguide/services/#user-provided-services) as we shall see later.
+
 There are a couple of ways to create a service in **Cloud Foundry**. For this service we will explore using the UI to create the service.
 
 Log in to the Apps Manager through your browser. The URL will be something like: https://console.&lt;your_cloud_foundry_url&gt;/;
@@ -68,4 +70,4 @@ Congratulations! You have now deployed a set of microservices to the cloud that 
 Feel free to familiarise yourself with the UI of the application.
 
 Now you can go to [Lab 4][lab4]
-[lab4]: docs/lab4.md
+[lab4]: docs/lab_scale.md

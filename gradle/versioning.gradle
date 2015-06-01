@@ -2,7 +2,11 @@
 // Major is hardcoded.
 // Minor is harcoded.
 // build is taken from environment variable "SOURCE_BUILD_NUMBER"
+<<<<<<< HEAD
 version = new ProjectVersion(0,2,System.env.SOURCE_BUILD_NUMBER)
+=======
+version = new ProjectVersion(0,1,System.env.SOURCE_BUILD_NUMBER)
+>>>>>>> e8bde5043c2cef2764c749daa4deb2916076621f
 
 class ProjectVersion {
 	Integer major

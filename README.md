@@ -56,8 +56,8 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 4. [Lab 4: Scaling the services] [lab4]
 5. [Lab 5: Blue/Green deployments] [lab5]
 
-[lab1]: docs/lab1.md
-[lab2]: docs/lab2.md
-[lab3]: docs/lab3.md
-[lab4]: docs/lab4.md
-[lab5]: docs/lab5.md
+[lab1]: docs/lab_setup.md
+[lab2]: docs/lab_pushquote.md
+[lab3]: docs/lab_pushall.md
+[lab4]: docs/lab_scale.md
+[lab5]: docs/lab_bluegreen.md

@@ -63,4 +63,4 @@ Space:          development
 ```
 
 Now you can go to [Lab 2][lab2]
-[lab2]: docs/lab2.md
+[lab2]: docs/lab_pushquote.md
