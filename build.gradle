@@ -5,7 +5,7 @@ buildscript {
 		springCFCloudVersion = '1.1.1.RELEASE'
 		springSecurityVersion = '4.0.1.RELEASE'
 		springVersion = '4.1.6.RELEASE'
-		//springEurekaVersion = '1.0.3.RELEASE'
+		//springEurekaVersion = '1.0.2.RELEASE'
     springEurekaVersion = '1.0.3.BUILD-SNAPSHOT'
 		junitVersion = '4.12'
 		jacksonVersion = '2.5.3'

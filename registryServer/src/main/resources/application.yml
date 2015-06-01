@@ -10,8 +10,8 @@ eureka:
     waitTimeInMsWhenSyncEmpty: 0
 logging:
   level:
-    com.netflix: 'WARN'
-    org.springframework.cloud: 'WARN'
+    com.netflix: WARN
+    org.springframework.cloud: WARN
 ---
 spring:
   profiles: local
