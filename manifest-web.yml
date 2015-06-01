@@ -1,11 +1,11 @@
 ---
 timeout: 180
 instances: 1
-memory: 256M
+memory: 330M
 #buildpack: toms-java-buildpack
 env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: webtrader
-  path: springboottrades-web/build/libs/web-1.0.jar
-  services: [ quoteService, accountService, portfolioService ]
+  path: springboottrades-web/build/libs/web-0.2.jar
+  services: [  eureka-service  ]

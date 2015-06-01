@@ -1,35 +1,42 @@
 spring:
   profiles.active: local
-
+  application:
+     name: webUI
+eureka:
+  client:
+    registerWithEureka: false
+    serviceUrl:
+      defaultZone: http://${vcap.services.eureka-service.credentials.uri:127.0.0.1:8761}/eureka/
+  instance:
+    hostname: ${vcap.application.uris[0]:localhost} 
+    metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
 ---
 spring:
   profiles: local
-  quote:
-    url: localhost
-    port: 8083
-  account:
-    url: localhost
-    port: 8082
-  portfolio:
-    url: localhost
-    port: 8081
   jpa:
      hibernate:
         ddl-auto: update
 server:
   port: 8080
+eureka:
+  instance:
+    nonSecurePort: ${server.port}
 ---
 spring:
   profiles: cloud
   jpa:
      hibernate:
         ddl-auto: update
+eureka:
+  instance:
+    nonSecurePort: 80
 ---        
 logging:
   level:
      io:
         pivotal: DEBUG
-//     org:
-//        springframework:
-//           web: DEBUG
-//           cloud: DEBUG
+     org:
+        springframework:
+           web: WARN
+           cloud: WARN

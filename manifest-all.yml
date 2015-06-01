@@ -1,19 +1,23 @@
 ---
 timeout: 180
 instances: 1
-memory: 256M
+memory: 330M
 #buildpack: toms-java-buildpack
 env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
+- name: eureka-server
+  path: registryServer/build/libs/registry-0.2.jar
+  services: [ eureka-service ]
 - name: quotes
-  path: springboottrades-quotes/build/libs/quotes-1.0.jar
+  path: springboottrades-quotes/build/libs/quotes-0.2.jar
+  services: [ eureka-service ]
 - name: accounts
-  path: springboottrades-accounts/build/libs/accounts-1.0.jar
-  services: [ traderdb ]
+  path: springboottrades-accounts/build/libs/accounts-0.2.jar
+  services: [ eureka-service, traderdb ]
 - name: portfolio
-  path: springboottrades-portfolio/build/libs/portfolio-1.0.jar
-  services: [ quoteService, accountService, traderdb ]
+  path: springboottrades-portfolio/build/libs/portfolio-0.2.jar
+  services: [ eureka-service, traderdb ]
 - name: webtrader
   path: springboottrades-web/build/libs/web-1.0.jar
-  services: [ quoteService, accountService, portfolioService ]
+  services: [ eureka-service ]

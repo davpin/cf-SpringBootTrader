@@ -1,15 +1,12 @@
 package io.pivotal.portfolio.service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cloud.util.UriInfo;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,10 +34,8 @@ public class PortfolioService {
 	@Autowired
 	OrderRepository repository;
 	
-	@Autowired @Qualifier("quoteService") UriInfo quoteService;
-	@Autowired @Qualifier("accountService") UriInfo accountService;
-	
 	@Autowired
+	@LoadBalanced
 	private RestTemplate restTemplate;
 	/**
 	 * Retrieves the portfolio for the given accountId. 
@@ -85,7 +80,7 @@ public class PortfolioService {
 	
 	private Quote getQuote(String symbol) {
 		logger.debug("Fetching quote: " + symbol);
-		Quote quote = restTemplate.getForObject(quoteService.getUri().toString()+"/quote/{symbol}", Quote.class, symbol);
+		Quote quote = restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
 	
@@ -97,7 +92,7 @@ public class PortfolioService {
 		}
 		if (order.getOrderType() == OrderType.BUY) {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity(accountService.getUri().toString()+"/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			ResponseEntity<Double>  result= restTemplate.getForEntity("http://accounts/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
 				return repository.save(order);
 			} else {
@@ -106,7 +101,7 @@ public class PortfolioService {
 			}
 		} else {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity(accountService.getUri().toString()+"/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			ResponseEntity<Double>  result= restTemplate.getForEntity("http://accounts/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
 				return repository.save(order);
 			} else {

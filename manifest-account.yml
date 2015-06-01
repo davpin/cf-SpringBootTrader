@@ -1,11 +1,11 @@
 ---
 timeout: 180
 instances: 1
-memory: 256M
+memory: 330M
 #buildpack: toms-java-buildpack
 env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: accounts
-  path: springboottrades-accounts/build/libs/accounts-1.0.jar
-  services: [ traderdb ]
+  path: springboottrades-accounts/build/libs/accounts-0.2.jar
+  services: [ traderdb, eureka-service ]

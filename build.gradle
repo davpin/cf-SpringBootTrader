@@ -5,7 +5,8 @@ buildscript {
 		springCFCloudVersion = '1.1.1.RELEASE'
 		springSecurityVersion = '4.0.1.RELEASE'
 		springVersion = '4.1.6.RELEASE'
-		springEurekaVersion = '1.0.2.RELEASE'
+		//springEurekaVersion = '1.0.2.RELEASE'
+    springEurekaVersion = '1.0.3.BUILD-SNAPSHOT'
 		junitVersion = '4.12'
 		jacksonVersion = '2.5.3'
 		mysqlVersion = '5.1.35'
@@ -18,7 +19,8 @@ buildscript {
 
     buildscript {
         dependencies {
-            classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+            classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+            classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
         }
     }
 }
@@ -50,6 +52,10 @@ subprojects {
     targetCompatibility = 1.8
 
     repositories {
+    //for snapshots
+    maven {
+       url 'http://repo.spring.io/snapshot'
+    }
         mavenCentral()
     }
 	dependencies {
@@ -58,16 +64,6 @@ subprojects {
 
 		testCompile "junit:junit:$junitVersion"
 
-	}
-}
-
-project(':springboottrades-common') {
-	jar {
-		baseName = 'common'
-	}
-	dependencies {
-    compile "org.springframework.cloud:spring-cloud-localconfig-connector:${springCFCloudVersion}"
-		compile "org.springframework.cloud:spring-cloud-cloudfoundry-connector:${springCFCloudVersion}"
 	}
 }
 
@@ -84,6 +80,7 @@ project(':springboottrades-accounts') {
 		//compile "org.springframework.security:spring-security-web:$springSecurityVersion"
 		compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
 		//compile "org.springframework.security:spring-security-config:$springSecurityVersion"
+    compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
 
 		// test packages
 		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
@@ -105,6 +102,7 @@ project(':springboottrades-quotes') {
 		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 		compile "org.springframework:spring-web:${springVersion}"
 		compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
 
 		//runtime
 
@@ -122,11 +120,12 @@ project(':springboottrades-portfolio') {
     }
 	description = "Micro-service to manage portfolios"
     dependencies {
-		compile project(":springboottrades-common")
+		//compile project(":springboottrades-common")
 		compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
 		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 		compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
-		compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
+		//compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
+    compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
 
 		//runtime
 		//runtime "mysql:mysql-connector-java:${mysqlVersion}"
@@ -146,16 +145,39 @@ project(':springboottrades-web') {
     }
 	description = "Web interface to the springboot set of services"
     dependencies {
-		compile project(":springboottrades-common")
-		compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
+		//compile project(":springboottrades-common")
+		//compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
 		compile "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
 		compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
 		compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE"
 
 		runtime "org.webjars:bootstrap:${bootstrapVersion}"
 
 		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     }
+}
+
+project (':registryServer') {
+     apply plugin: 'spring-boot'
+     jar {
+        baseName = 'registry'
+     }
+     description = "Registry server for micro services"
+     springBoot {
+        requiresUnpack = ['com.netflix.eureka:eureka-core','com.netflix.eureka:eureka-client']
+     }
+
+   apply plugin: "io.spring.dependency-management"
+
+   dependencyManagement {
+     imports {
+        mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springEurekaVersion}"
+     }
+   }
+     dependencies {
+         compile "org.springframework.cloud:spring-cloud-netflix-eureka-server:${springEurekaVersion}"
+     }
 }
 
 task wrapper(type: Wrapper) {

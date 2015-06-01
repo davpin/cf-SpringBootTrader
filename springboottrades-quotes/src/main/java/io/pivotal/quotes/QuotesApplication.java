@@ -2,6 +2,7 @@ package io.pivotal.quotes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 /**
  * Microservice to fetch current quotes.
  * 
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
+@EnableDiscoveryClient
 public class QuotesApplication {
 	
 	public static void main(String[] args) {

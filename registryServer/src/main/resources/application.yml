@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: eureka-server
+  profiles.active: local
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework.cloud: WARN
+---
+spring:
+  profiles: local
+eureka:
+  instance:
+     hostname: localhost
+  client:
+     serviceUrl:
+       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+server:
+  port: ${PORT:8761}   
+---
+spring:
+  profiles: cloud
+eureka:
+  instance:
+    hostname: ${vcap.application.uris[0]}  
+  client:
+    serviceUrl:
+      defaultZone: http://${vcap.services.eureka-service.credentials.uri:127.0.0.1:8761}/eureka/
+server:
+  port: ${vcap.application.port:80}
+--- 
