@@ -7,10 +7,5 @@ env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: webtrader
-<<<<<<< HEAD
   path: springboottrades-web/build/libs/web-0.2.jar
   services: [  eureka-service  ]
-=======
-  path: springboottrades-web/build/libs/web-0.1.jar
-  services: [ quoteService, accountService, portfolioService ]
->>>>>>> e8bde5043c2cef2764c749daa4deb2916076621f

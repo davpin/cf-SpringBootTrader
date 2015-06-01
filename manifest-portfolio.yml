@@ -7,10 +7,5 @@ env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: portfolio
-<<<<<<< HEAD
   path: springboottrades-portfolio/build/libs/portfolio-0.2.jar
   services: [ traderdb,  eureka-service  ]
-=======
-  path: springboottrades-portfolio/build/libs/portfolio-0.1.jar
-  services: [ quoteService, accountService, traderdb ]
->>>>>>> e8bde5043c2cef2764c749daa4deb2916076621f

@@ -10,7 +10,6 @@ applications:
   path: registryServer/build/libs/registry-0.2.jar
   services: [ eureka-service ]
 - name: quotes
-<<<<<<< HEAD
   path: springboottrades-quotes/build/libs/quotes-0.2.jar
   services: [ eureka-service ]
 - name: accounts
@@ -22,15 +21,3 @@ applications:
 - name: webtrader
   path: springboottrades-web/build/libs/web-1.0.jar
   services: [ eureka-service ]
-=======
-  path: springboottrades-quotes/build/libs/quotes-0.1.jar
-- name: accounts
-  path: springboottrades-accounts/build/libs/accounts-0.1.jar
-  services: [ traderdb ]
-- name: portfolio
-  path: springboottrades-portfolio/build/libs/portfolio-0.1.jar
-  services: [ quoteService, accountService, traderdb ]
-- name: webtrader
-  path: springboottrades-web/build/libs/web-0.1.jar
-  services: [ quoteService, accountService, portfolioService ]
->>>>>>> e8bde5043c2cef2764c749daa4deb2916076621f
