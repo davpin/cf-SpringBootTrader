@@ -68,5 +68,5 @@ Org:            dpinto-org
 Space:          development
 ```
 
-Now you can go to [next lab][lab2]
-[lab2]: docs/lab_registry.md
+Now you can go to [next lab][next]
+[next]: docs/lab_registryserver.md

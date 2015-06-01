@@ -4,7 +4,7 @@ In the previous lab, you deployed a single microservice that has no dependencies
 
 In fact, even the quote service has a dependency on an external service to retrieve real-time data.
 
-In this exercise, we will be deploying all the applications in the project to the cloud and creating all required services.
+In this exercise, we will be deploying all the applications in the project to the cloud and create all required services.
 
 ### 1. Quote service
 The quote service has no dependencies - apart from the external service which is hardcoded in the application - *Don't do this at home!*
@@ -57,5 +57,4 @@ Congratulations! You have now deployed a set of microservices to the cloud that 
 
 Feel free to familiarise yourself with the UI of the application. You can access the application in a browser on the URL provided at the end of the push command.
 
-Now you can go to [next lab][lab4]
-[lab4]: docs/lab_scale.md
+Now you can go to [next lab](lab_scale.md)

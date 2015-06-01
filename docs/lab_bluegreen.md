@@ -1,5 +1,14 @@
 # Zero downtime deployments - Blue/Green deployments.
 
+Try changing the name of the quote service in the manifest file, and push it again.
+
+What happens in the registry server? Is this new service handling requests?
+
+Delete the old quote service. Did the application have any issues?
+
+
+
+# Pre-registry server way of doing blue/green deployments.
 In order to minimise downtime as new versions of the software is created and released, **Cloud Foundry** provides a technique to deploy these new versions/releases without incurring downtime. This technique is called [Blue/Green deployment](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/blue-green.html)
 
 In fact, the technique is very powerful, as it allows multiple versions of the application to be deployed and either serving requests or not serving requests (or even serving requests but not on the production route.)

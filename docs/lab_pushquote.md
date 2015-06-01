@@ -31,5 +31,4 @@ Ensure you have a working quote service application by sending HTTP requests to 
 
 You have now deployed your first application to *Cloud Foundry*. Can you describe the steps the platform went through between your `cf push` command and having the application accessible?
 
-Now you can go to [next lab][lab3]
-[lab3]: docs/lab_pushall.md
+Now you can go to [next lab](lab_pushall.md)
