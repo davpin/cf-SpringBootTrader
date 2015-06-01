@@ -43,6 +43,12 @@ The projects use [gradle](http://gradle.org) as the build tool with gradle wrapp
 ./gradlew build
 ```
 
+You can also build individual services by naming them, for example:
+```
+./gradlew :springboottrades-quotes:build
+```
+
+
 ## 6. Logging in to Cloud Foundry
 
 Login to your instance of **Cloud Foundry**. Instructions on how to do this can be found at http://docs.pivotal.io/pivotalcf/devguide/installcf/whats-new-v6.html#login
@@ -62,5 +68,5 @@ Org:            dpinto-org
 Space:          development
 ```
 
-Now you can go to [Lab 2][lab2]
-[lab2]: docs/lab_pushquote.md
+Now you can go to [next lab][lab2]
+[lab2]: docs/lab_registry.md

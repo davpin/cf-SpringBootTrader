@@ -19,3 +19,9 @@ or put the URL in your browser window.
 How do the logs show which instance of the application is actually servicing the request?
 
 How far can you scale the quote service? what is the limitation?
+
+# Summary
+
+What happens in the registry server when you scale up?
+
+Move on to the [next lab](lab_bluegreen.md)

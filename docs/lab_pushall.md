@@ -34,24 +34,12 @@ The portfolio service has a dependency on 3 services:
 
 For the RDBMS, we will be re-using the service created for the *Accounts service*. This is for simplicity of these exercises, and it is possible and probably favorable to create a new DB service specific to the portfolio service.
 
-For the portfolio service to retrieve updated pricing information, it requests the data from quote service. To achieve this, you will have to create a [*User-provided service*](http://docs.pivotal.io/pivotalcf/devguide/services/user-provided.html).
-
-To create this, we will be using the CLI.
-
-Name this service **quoteService** and specify the URL of your instance of the quote service. For example:
-
-`cf cups quoteService -p '{"tag":"quotes","uri":"http://quotes.<my-domain>"}'`
-
-The portfolio service also needs to interact with the Account service to instruct it to increase or decrease the balance of the funds in the account. Thus, create another User-provided service, naming it *accountService* and specifying the URL of the accounts service.
-
+For the portfolio service also connects to the quote and account service. Since we are using a registry service, we do not need to provide any more information for this to happen, apart from letting it know where the registry service is. This is done vi the *User-provided service* you created before.
 
 ## 4. Web service
 The Web service is the UI front-end and also acts as an API aggregator. As such, it uses all the other microservices in the project, i.e. The quote, account and portfolio services.
 
-We have already created *user-provided services* for the quote and account microservices, thus only the portfolio one is required.
-
-As above, create a *User-provided service* naming it *portfolioService* and specifying the URL of your portfolio service.
-
+Similarly to above, we will be using the registry service to retrieve information about these microservices.
 
 
 ## 5. Push all the applications.
@@ -67,7 +55,7 @@ Once completed, go to the URL of the Web service in your browser.
 # Summary
 Congratulations! You have now deployed a set of microservices to the cloud that interact with each other.
 
-Feel free to familiarise yourself with the UI of the application.
+Feel free to familiarise yourself with the UI of the application. You can access the application in a browser on the URL provided at the end of the push command.
 
-Now you can go to [Lab 4][lab4]
+Now you can go to [next lab][lab4]
 [lab4]: docs/lab_scale.md

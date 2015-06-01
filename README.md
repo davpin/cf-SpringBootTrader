@@ -50,14 +50,18 @@ The following guides describe how to setup the environment and deploy the micros
 
 At Pivotal we love education, not just educating ourselves, but also educating others. As such, these guides follow the *"teaching you how to fish"* principle - Rather than giving you line by line/command by command instructions, we provide guidelines and links to documentation where you can read and learn more.
 
-1. [Lab 1: Setting up the environment] [lab1]
-2. [Lab 2: Pushing the Quote service] [lab2]
-3. [Lab 3: Pushing all the services] [lab3]
-4. [Lab 4: Scaling the services] [lab4]
-5. [Lab 5: Blue/Green deployments] [lab5]
+1. [Setting up the environment] [setup]
+2. [Pushing the registry service] [registry]
+3. [Creating a user provided service] [userprovided]
+4. [Pushing the Quote service] [pushquote]
+5. [Pushing all the services] [pushall]
+6. [Scaling the services] [scale]
+7. [Blue/Green deployments] [bluegreen]
 
-[lab1]: docs/lab_setup.md
-[lab2]: docs/lab_pushquote.md
-[lab3]: docs/lab_pushall.md
-[lab4]: docs/lab_scale.md
-[lab5]: docs/lab_bluegreen.md
+[setup]: docs/lab_setup.md
+[registry]: docs/lab_registryserver.md
+[userprovided]: docs/lab_userprovided.md
+[pushquote]: docs/lab_pushquote.md
+[pushall]: docs/lab_pushall.md
+[scale]: docs/lab_scale.md
+[bluegreen]: docs/lab_bluegreen.md
