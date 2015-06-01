@@ -7,5 +7,5 @@ env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: accounts
-  path: springboottrades-accounts/build/libs/accounts-1.0.jar
+  path: springboottrades-accounts/build/libs/accounts-0.2.jar
   services: [ traderdb, eureka-service ]
