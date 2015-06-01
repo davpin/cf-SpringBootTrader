@@ -7,4 +7,4 @@ env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: quotes
-  path: springboottrades-quotes/build/libs/quotes-1.0.jar
+  path: springboottrades-quotes/build/libs/quotes-0.1.jar

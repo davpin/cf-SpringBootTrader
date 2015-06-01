@@ -7,5 +7,5 @@ env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: portfolio
-  path: springboottrades-portfolio/build/libs/portfolio-1.0.jar
+  path: springboottrades-portfolio/build/libs/portfolio-0.1.jar
   services: [ quoteService, accountService, traderdb ]

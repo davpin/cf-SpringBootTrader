@@ -7,5 +7,5 @@ env:
     SPRING_PROFILES_DEFAULT: cloud
 applications:
 - name: webtrader
-  path: springboottrades-web/build/libs/web-1.0.jar
+  path: springboottrades-web/build/libs/web-0.1.jar
   services: [ quoteService, accountService, portfolioService ]
