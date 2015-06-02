@@ -3,6 +3,7 @@ spring:
     name: eureka-server
   profiles.active: local
 eureka:
+  enableSelfPreservation: false
   client:
     registerWithEureka: false
     fetchRegistry: false
