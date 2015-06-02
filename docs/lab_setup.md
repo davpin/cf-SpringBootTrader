@@ -1,4 +1,4 @@
-#Lab 1 - Setting up the environment.
+#Setting up the environment.
 In this exercise, we will be setting up the environment and all the tools required.
 
 It assumes you are running Linux or MacOS, although it is possible to configure on Windows too.
@@ -34,6 +34,8 @@ You can learn more about orgs and spaces within **Cloud Foundry** at http://docs
 Clone the GIT repository to your local machine. On the command line issue the following command:
 
 ```git clone https://github.com/dpinto-pivotal/cf-SpringBootTrader.git```
+
+This command will copy the code in the repository to your local machine, creating a directory named `cf-SpringBootTrader`. All actions will now be done inside this directory.
 
 Once you have cloned the repository, it is important to build it to create the application artifacts.
 

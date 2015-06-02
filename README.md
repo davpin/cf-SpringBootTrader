@@ -10,7 +10,7 @@ It was created to support workshops and demonstrations of building and using `mi
 The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises below.
 
 #Architecture
-The system is composed of 4 microservices. The relationship between the microservices is illustrated below.
+The system is composed of 4 microservices plus a Registry Server (can also be considered a microservice). The relationship between the microservices is illustrated below.
 
 ![architecture](/docs/microservices_relationship.png)
 
@@ -43,6 +43,10 @@ The web interface is built using bootstrap and Thymeleaf and uses a Spring contr
 * Quote service
 * Portfolio service
 
+##5. Registry service
+This service provides a registry for our microservices to register with and dynamically find out where they live to make requests to them.
+
+This is currently implemented using the [Spring Cloud Netflix - Eureka](http://cloud.spring.io/spring-cloud-netflix/).
 
 # Workshops:
 

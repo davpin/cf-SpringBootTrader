@@ -6,11 +6,12 @@ Within **Cloud Foundry** the concept of scalability can mean different things:
 
 One of the benefits of a micro service architecture is that each service can be scaled independently. This means that if the quote service is under stress (CPU,memory), it can be scaled up independently from the other services. The platform will automatically load balance the requests across the available instances.
 
-Scale the Quote service to two instances using either the UI or the CLI.
+### Exercise
+1. Scale the Quote service to two instances using either the UI or the CLI.
 
-Monitor the logs of the quote service application, either via the [CLI](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/streaming-logs.html#view) or the UI.
+2. Monitor the logs of the quote service application, either via the [CLI](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/streaming-logs.html#view) or the UI.
 
-Use the REST api of the quote service to retrieve quotes, for example:
+3. Use the REST api of the quote service to retrieve quotes, for example:
 
 `curl http://<ROUTE_TO_QUOTE_SERVICE>/quote/EMC`
 
@@ -22,6 +23,6 @@ How far can you scale the quote service? what is the limitation?
 
 # Summary
 
-What happens in the registry server when you scale up?
+What happened in the registry server when you scale up?
 
 Move on to the [next lab](lab_bluegreen.md)
