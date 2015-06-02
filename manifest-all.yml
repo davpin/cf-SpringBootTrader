@@ -8,7 +8,6 @@ env:
 applications:
 - name: eureka-server
   path: registryServer/build/libs/registry-0.2.jar
-  services: [ eureka-service ]
 - name: quotes
   path: springboottrades-quotes/build/libs/quotes-0.2.jar
   services: [ eureka-service ]
