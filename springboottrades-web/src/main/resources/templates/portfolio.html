@@ -21,10 +21,10 @@
 				<div th:if="${portfolioRetrievalError != null}" th:include="fragments/portfolio_fragment :: portfolio-error" th:remove="tag"></div>
 			</div>
 			<div class="row">
-				<div th:include="fragments/portfolio_fragment :: portfolio-listing" th:remove="tag"></div>
+				<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: portfolio-listing" th:remove="tag"></div>
 			</div>
 			<div class="row">
-				<div th:include="fragments/portfolio_fragment :: order-listing" th:remove="tag"></div>
+				<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: order-listing" th:remove="tag"></div>
 			</div>
 		</div>
 
