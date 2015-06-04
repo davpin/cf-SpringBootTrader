@@ -37,8 +37,8 @@ public class Order {
 	private BigDecimal orderFee;
 
 	@Column(name = "completiondate")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "LL")
 	private Date completionDate;
 
 	@Column(name = "ordertype")
