@@ -13,7 +13,8 @@
 			<div th:include="fragments/trade_fragment :: saved_order" th:remove="tag"></div>
 			<div th:include="fragments/trade_fragment :: company_input" th:remove="tag"></div>
 			<div th:include="fragments/trade_fragment :: quote_list" th:remove="tag"></div>
-			<div th:include="fragments/portfolio_fragment :: portfolio-listing" th:remove="tag"></div>
+			<div th:if="${portfolio!= null}" th:include="fragments/portfolio_fragment :: portfolio-listing" th:remove="tag"></div>
+			<div th:if="${portfolioRetrievalError != null}" th:include="fragments/portfolio_fragment :: portfolio-error" th:remove="tag"></div>
 		</div>
 	</div>
 </body>

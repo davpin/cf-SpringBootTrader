@@ -16,7 +16,8 @@
 		<div th:include="fragments/marketsummary_fragment :: summary"></div>
 
 		<div sec:authorize="hasRole('USER')" class="row">
-			<div th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
+			<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
+			<div th:if="${portfolioRetrievalError != null}" th:include="fragments/portfolio_fragment :: portfolio-error" th:remove="tag"></div>
 			<div th:include="fragments/account_fragment :: user-stats" th:remove="tag"></div>
 		</div>
 

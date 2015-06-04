@@ -5,6 +5,7 @@ spring:
 eureka:
   client:
     registerWithEureka: false
+    registryFetchIntervalSeconds: 10
     serviceUrl:
       defaultZone: http://${vcap.services.eureka-service.credentials.uri:127.0.0.1:8761}/eureka/
   instance:
@@ -40,3 +41,6 @@ logging:
         springframework:
            web: WARN
            cloud: WARN
+     com:
+       netflix:
+         hystrix: DEBUG

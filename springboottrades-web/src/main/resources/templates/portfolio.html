@@ -17,7 +17,8 @@
 
 		<div sec:authorize="hasRole('USER')" th:remove="tag">
 			<div class="row">
-				<div th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
+				<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
+				<div th:if="${portfolioRetrievalError != null}" th:include="fragments/portfolio_fragment :: portfolio-error" th:remove="tag"></div>
 			</div>
 			<div class="row">
 				<div th:include="fragments/portfolio_fragment :: portfolio-listing" th:remove="tag"></div>

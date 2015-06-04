@@ -169,5 +169,23 @@
 		</div>
 	</div>
 </div>
+<th:block th:if="portfolioRetrievalError != null}" th:fragment="portfolio-error">
+	<div class="span6">
+		<div class="well show-well">
+			<div class="title">
+				<h3>Portfolio Retrieval error</h3>
+			</div>
+			<div class="table-outer">
+				<table class="table">
+					<tbody>
+						<tr class="error">
+							<td th:text="${portfolioRetrievalError}">ERROR</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
+</th:block>
 </html>
