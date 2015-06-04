@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import io.pivotal.web.domain.Order;
 import io.pivotal.web.domain.Quote;
 import io.pivotal.web.domain.Search;
@@ -17,9 +19,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class TradeController {
@@ -96,5 +100,14 @@ public class TradeController {
 				}
 		return "trade";
 	}
-	
+	@ExceptionHandler({ Exception.class })
+	public ModelAndView error(HttpServletRequest req, Exception exception) {
+		logger.debug("Handling error: " + exception);
+		ModelAndView model = new ModelAndView();
+		model.addObject("errorCode", exception.getMessage());
+		model.addObject("errorMessage", exception);
+		model.setViewName("error");
+		exception.printStackTrace();
+		return model;
+	}
 }

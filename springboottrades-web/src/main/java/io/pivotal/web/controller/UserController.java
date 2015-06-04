@@ -3,6 +3,8 @@ package io.pivotal.web.controller;
 import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import io.pivotal.web.domain.Account;
 import io.pivotal.web.domain.AuthenticationRequest;
 import io.pivotal.web.service.UserService;
@@ -17,9 +19,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UserController {
@@ -101,5 +105,14 @@ public class UserController {
 		accountService.createAccount(account);
 		return "index";
 	}
-	
+	@ExceptionHandler({ Exception.class })
+	public ModelAndView error(HttpServletRequest req, Exception exception) {
+		logger.debug("Handling error: " + exception);
+		ModelAndView model = new ModelAndView();
+		model.addObject("errorCode", exception.getMessage());
+		model.addObject("errorMessage", exception);
+		model.setViewName("error");
+		exception.printStackTrace();
+		return model;
+	}
 }

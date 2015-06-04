@@ -83,12 +83,13 @@ public class MarketService {
 		if (result.getStatusCode() == HttpStatus.BAD_REQUEST) {
 			throw new OrderNotSavedException("Could not save the order");
 		}
-		
+		logger.debug("Order saved:: " + result.getBody());
 		return result.getBody();
 	}
 	
 	public Portfolio getPortfolio(String accountId) {
 		Portfolio folio = restTemplate.getForObject("http://portfolio/portfolio/{accountid}", Portfolio.class, accountId);
+		logger.debug("Portfolio received: " + folio);
 		return folio;
 	}
 	
