@@ -52,8 +52,8 @@ public class Account implements Serializable {
     private String authtoken;
     
 	@Column(name = "creationdate")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "LL")
     private Date creationdate;
     
 	@Column(name = "openbalance", precision = 14, scale = 2)
@@ -67,8 +67,8 @@ public class Account implements Serializable {
     private BigDecimal balance;
     
 	@Column(name = "lastlogin")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "LL")
     private Date lastlogin;
     
 	@Column(name = "logincount")

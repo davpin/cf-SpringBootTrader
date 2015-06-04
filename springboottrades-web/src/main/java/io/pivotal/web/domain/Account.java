@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -36,6 +37,7 @@ public class Account {
     private String authtoken;
 
 	@JsonProperty("creationdate")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date creationdate;
 	
 	@JsonProperty("openbalance")
@@ -48,6 +50,7 @@ public class Account {
     private BigDecimal balance;
     
 	@JsonProperty("lastlogin")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date lastlogin;
 	
 	@JsonProperty("logincount")
