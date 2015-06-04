@@ -25,6 +25,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 @Service
 @EnableScheduling
 public class MarketService {
@@ -50,29 +52,33 @@ public class MarketService {
 		return summary;
 	}
 	
-	private Quote getQuote(String symbol) {
+	@HystrixCommand(fallbackMethod = "getQuoteFallback")
+	public Quote getQuote(String symbol) {
 		logger.debug("Fetching quote: " + symbol);
 		Quote quote = restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
 	
-	private List<CompanyInfo> getCompanies(String name) {
+	private Quote getQuoteFallback(String symbol) {
+		logger.debug("Fetching fallback quote for: " + symbol);
+		//Quote quote = restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, symbol);
+		Quote quote = new Quote();
+		quote.setSymbol(symbol);
+		quote.setStatus("FAILED");
+		return quote;
+	}
+	@HystrixCommand(fallbackMethod = "getCompaniesFallback")
+	public List<CompanyInfo> getCompanies(String name) {
 		logger.debug("Fetching companies with name or symbol matching: " + name);
 		CompanyInfo[] infos = restTemplate.getForObject("http://quotes/company/{name}", CompanyInfo[].class, name);
 		return Arrays.asList(infos);
 	}
-	
-	public List<Quote> getQuotes(String companyName) {
-		logger.debug("Fetching quotes for companies that have: " + companyName + " in name or symbol");
-		List<CompanyInfo> companies = getCompanies(companyName);
-		
-		//get district companyinfos and get their respective quotes in parallel.
-		List<Quote> quotes = companies.stream().collect(Collectors.toCollection(
-			      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
-				)).parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
-		
-		return quotes;
+	private List<CompanyInfo> getCompaniesFallback(String name) {
+		List infos = new ArrayList<>();
+		return infos;
 	}
+	
+	
 	
 	public Order sendOrder(Order order ) throws OrderNotSavedException{
 		logger.debug("send order: " + order);
@@ -95,7 +101,7 @@ public class MarketService {
 	
 	//TODO: prime location for a redis/gemfire caching service!
 	@Scheduled(fixedRate = REFRESH_PERIOD)
-	private void retrieveMarketSummary() {
+	protected void retrieveMarketSummary() {
 		logger.debug("Scheduled retrieval of Market Summary");
 		List<Quote> quotesIT = pickRandomThree(symbolsIT).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
 		List<Quote> quotesFS = pickRandomThree(symbolsFS).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());

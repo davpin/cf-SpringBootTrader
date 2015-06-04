@@ -3,9 +3,12 @@ package io.pivotal.web.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import io.pivotal.web.domain.CompanyInfo;
 import io.pivotal.web.domain.Order;
 import io.pivotal.web.domain.Quote;
 import io.pivotal.web.domain.Search;
@@ -62,7 +65,7 @@ public class TradeController {
 		if (search.getName() == null || search.getName().equals("") ) {
 			model.addAttribute("quotes", new ArrayList<Quote>());
 		} else {
-			List<Quote> newQuotes = marketService.getQuotes(search.getName());
+			List<Quote> newQuotes = getQuotes(search.getName());
 			model.addAttribute("quotes", newQuotes);
 		}
 		//check if user is logged in!
@@ -100,6 +103,25 @@ public class TradeController {
 				}
 		return "trade";
 	}
+	
+	
+	private List<Quote> getQuotes(String companyName) {
+		logger.debug("Fetching quotes for companies that have: " + companyName + " in name or symbol");
+		List<CompanyInfo> companies = marketService.getCompanies(companyName);
+		
+		//get district companyinfos and get their respective quotes in parallel.
+		List<Quote> result = companies.stream().collect(Collectors.toCollection(
+			      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
+				)).parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
+		
+		List<Quote> quotes = result.parallelStream().filter(n -> n.getStatus().startsWith("SUCCESS")).collect(Collectors.toList());
+		return quotes;
+	}
+	
+	private Quote getQuote(String symbol) {
+		return marketService.getQuote(symbol);
+	}
+	
 	@ExceptionHandler({ Exception.class })
 	public ModelAndView error(HttpServletRequest req, Exception exception) {
 		logger.debug("Handling error: " + exception);
