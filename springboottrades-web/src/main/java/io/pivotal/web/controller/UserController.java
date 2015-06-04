@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -49,7 +50,11 @@ public class UserController {
 		    String currentUserName = authentication.getName();
 		    logger.debug("User logged in: " + currentUserName);
 		    
-		    model.addAttribute("portfolio",marketService.getPortfolio(currentUserName));
+		    try {
+		    	model.addAttribute("portfolio",marketService.getPortfolio(currentUserName));
+		    } catch (HttpServerErrorException e) {
+		    	model.addAttribute("portfolioRetrievalError",e.getMessage());
+		    }
 		    model.addAttribute("account",accountService.getAccount(currentUserName));
 		}
 		

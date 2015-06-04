@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -50,7 +51,11 @@ public class TradeController {
 		    logger.debug("User logged in: " + currentUserName);
 		    model.addAttribute("order", new Order());
 		    //TODO: add account summary?
-		    model.addAttribute("portfolio", marketService.getPortfolio(currentUserName));
+		    try {
+		    	model.addAttribute("portfolio",marketService.getPortfolio(currentUserName));
+		    } catch (HttpServerErrorException e) {
+		    	model.addAttribute("portfolioRetrievalError",e.getMessage());
+		    }
 		}
 		
 		return "trade";
@@ -75,7 +80,11 @@ public class TradeController {
 		    logger.debug("User logged in: " + currentUserName);
 		    model.addAttribute("order", new Order());
 		    //TODO: add portfolio and account summary.
-		    model.addAttribute("portfolio", marketService.getPortfolio(currentUserName));
+		    try {
+		    	model.addAttribute("portfolio",marketService.getPortfolio(currentUserName));
+		    } catch (HttpServerErrorException e) {
+		    	model.addAttribute("portfolioRetrievalError",e.getMessage());
+		    }
 		}
 		
 		return "trade";
@@ -97,7 +106,11 @@ public class TradeController {
 				    Order result = marketService.sendOrder(order);
 				    model.addAttribute("savedOrder", result);
 				    model.addAttribute("order", new Order());
-				    model.addAttribute("portfolio", marketService.getPortfolio(currentUserName));
+				    try {
+				    	model.addAttribute("portfolio",marketService.getPortfolio(currentUserName));
+				    } catch (HttpServerErrorException e) {
+				    	model.addAttribute("portfolioRetrievalError",e.getMessage());
+				    }
 				} else {
 					//should never get here!!!
 				}
