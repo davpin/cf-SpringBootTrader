@@ -42,6 +42,7 @@ public class PortfolioController {
 		    try {
 		    	model.addAttribute("portfolio",marketService.getPortfolio(currentUserName));
 		    } catch (HttpServerErrorException e) {
+		    	logger.debug("error retrieving portfolfio: " + e.getMessage());
 		    	model.addAttribute("portfolioRetrievalError",e.getMessage());
 		    }
 		    model.addAttribute("order", new Order());

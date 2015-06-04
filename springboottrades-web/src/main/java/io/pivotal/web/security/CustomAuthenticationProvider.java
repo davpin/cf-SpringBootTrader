@@ -16,33 +16,40 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpServerErrorException;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-	
+
 	@Autowired
 	private UserService service;
- 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String name = authentication.getName();
-        String password = authentication.getCredentials().toString();
-        AuthenticationRequest request = new AuthenticationRequest();
-        request.setUsername(name);
-        request.setPassword(password);
-        Map<String,Object> params = service.login(request);
-        if (params != null) {
-            List<GrantedAuthority> grantedAuths = new ArrayList<>();
-            grantedAuths.add(new SimpleGrantedAuthority("USER"));
-            Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantedAuths);
-            return auth;
-        } else {
-            throw new BadCredentialsException("Username not found");
-        }
-    }
- 
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
-    }
+
+	@Override
+	public Authentication authenticate(Authentication authentication)
+			throws AuthenticationException {
+		String name = authentication.getName();
+		String password = authentication.getCredentials().toString();
+		AuthenticationRequest request = new AuthenticationRequest();
+		request.setUsername(name);
+		request.setPassword(password);
+		try {
+			Map<String, Object> params = service.login(request);
+			if (params != null) {
+				List<GrantedAuthority> grantedAuths = new ArrayList<>();
+				grantedAuths.add(new SimpleGrantedAuthority("USER"));
+				Authentication auth = new UsernamePasswordAuthenticationToken(
+						name, password, grantedAuths);
+				return auth;
+			} else {
+				throw new BadCredentialsException("Username not found");
+			}
+		} catch (HttpServerErrorException e) {
+			throw new BadCredentialsException("Login failed!");
+		}
+	}
+
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return authentication.equals(UsernamePasswordAuthenticationToken.class);
+	}
 }
