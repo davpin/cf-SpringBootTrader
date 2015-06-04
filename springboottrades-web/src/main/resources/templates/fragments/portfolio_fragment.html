@@ -32,7 +32,7 @@
 							th:class="${portfolio.currentTotalValue + portfolio.sellValue - portfolio.purchaseValue} &lt; 0? 'summary alert alert-block alert-error' : 'summary alert alert-block alert-success'">
 							<td>Total Gain/Loss</td>
 							<td class="average"
-								th:text="${#numbers.formatDecimal(portfolio.currentTotalValue + portfolio.sellValue, 0, 'COMMA', 2, 'POINT')}">0</td>
+								th:text="${#numbers.formatDecimal(portfolio.currentTotalValue + portfolio.sellValue - portfolio.purchaseValue, 0, 'COMMA', 2, 'POINT')}">0</td>
 						</tr>
 						<tr th:if="${account != null}" class="alert alert-info">
 							<td>Total Cash</td>
