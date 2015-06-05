@@ -3,10 +3,14 @@ spring:
     name: eureka-server
   profiles.active: local
 eureka:
+  instance:
+    hostname: ${vcap.application.uris[0]:localhost}
+    metadataMap:
+      instanceId: ${spring.application.name}:${vcap.application.instance_index:${server.port}}
   enableSelfPreservation: false
-  client:
-    registerWithEureka: false
-    fetchRegistry: false
+#  client:
+#    registerWithEureka: false
+#    fetchRegistry: false
   server:
     waitTimeInMsWhenSyncEmpty: 0
 logging:
@@ -17,8 +21,6 @@ logging:
 spring:
   profiles: local
 eureka:
-  instance:
-     hostname: localhost
   client:
      serviceUrl:
        defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
@@ -29,10 +31,7 @@ spring:
   profiles: cloud
 eureka:
   instance:
-    hostname: ${vcap.application.uris[0]}  
-  client:
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname:127.0.0.1:8761}/eureka/
-server:
-  port: ${vcap.application.port:80}
+    nonSecurePort: 80  
+#server:
+#  port: ${vcap.application.port:80}
 --- 

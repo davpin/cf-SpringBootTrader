@@ -6,11 +6,11 @@ memory: 512M
 env:
     SPRING_PROFILES_DEFAULT: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
-#comment out for single standalone node or modify to point to Eureka peer
-    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server2.emea.fe.gopivotal.com/eureka/
+# Comment the line before for standalone eureka server or modify to point to Eureka peer.
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server1.emea.fe.gopivotal.com/eureka/
 applications:
-- name: eureka-server1
+- name: eureka-server2
   path: registryServer/build/libs/registry-0.2.jar
   hosts:
-    - eureka-server1
+    - eureka-server2
     - eureka
