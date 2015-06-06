@@ -1,14 +1,8 @@
 # Pushing all the services.
 
-In the previous lab, you deployed a single microservice that has no dependencies. However, it is very rare that a microservice has no dependencies - *no microservice is an island!*
-
-In fact, even the quote service has a dependency on an external service to retrieve real-time data.
-
 In this exercise, we will be deploying all the applications in the project to the cloud and create all required services.
 
 ### 1. Quote service
-The quote service has no dependencies - apart from the external service which is hardcoded in the application - *Don't do this at home!*
-
 We have already deployed the quote service in the [previous lab](lab_pushquote.md), so nothing to do here.
 
 ### 2. Accounts service
@@ -20,7 +14,7 @@ There are a couple of ways to create a service in **Cloud Foundry**. For this se
 
 ### Exercise
 
-1. Log in to the Apps Manager through your browser. The URL will be something like: https://console.<your_cloud_foundry_url>/;
+1. Log in to the Apps Manager through your browser. The URL will be: `https://console.<your_cloud_foundry_url>/`
 
 Go the *Marketplace* and choose a MySQL service. In Pivotal Web Services this will be the "ClearDB MySQL Database". Depending on your cloud provider, you may have multiple plans to choose from. For this exercise, the smallest *free* plan will suffice.
 
@@ -38,7 +32,7 @@ The portfolio service has a dependency on 3 services:
 
 For the RDBMS, we will be re-using the service created for the *Accounts service*. This is for simplicity of these exercises, and it is possible and probably favorable to create a new DB service specific to the portfolio service.
 
-For the portfolio service also connects to the quote and account service. We are using a registry service to automatically and dynamically discover the other services. As such we only need the *User-provided service* you created [before](lab_userprovided.md).
+The portfolio service also connects to the quote and account service. We are using a registry service to automatically and dynamically discover the other services. As such we only need the *User-provided service* you created [before](lab_userprovided.md).
 
 ## 4. Web service
 The Web service is the UI front-end and also acts as an API aggregator. As such, it uses all the other microservices in the project, i.e. The quote, account and portfolio services.
@@ -51,9 +45,9 @@ Similarly to above, we will be using the registry service to retrieve informatio
 Now that we have all the required services created, let's push all the applications in one go. The **Cloud Foundry** manifest file allows us to [define multiple applications in a single file](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/manifest.html#multi-apps)
 
 ### Exercise
-1. Ensure you have modified the *manifest-all.yml* file to have unique routes, and those routes will match the URLs specified in the user-provided services you created.
+1. Create a manifest file that will push the accounts, portfolio and web microservices in one go.
 
-2. Use the CLI to push all applications using the *manifest-all.yml* manifest file.
+2. Use the CLI to push all applications using the manifest file created.
 
 Once completed, go to the URL of the Web service in your browser.
 

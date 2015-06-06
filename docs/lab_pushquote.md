@@ -19,11 +19,14 @@ Since each application requires a route to be bounded to the application, and po
 This requires editing the manifest-\*.yml files in the base directory of the project.
 
 ### Exercise
-1. If you haven't done so, modify the manifest files so each service has a unique route. As a clue, read [this](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/manifest.html#host).
+1. If you haven't done so already, modify the manifest files so each service has a unique route. As a clue, read [this](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/manifest.html#host).
 
-> It may be a good idea to prefix or suffix the host variable with your initials to ensure uniqueness of routes.
+> It may be a good idea to prefix or suffix the host variable with your initials to ensure uniqueness of routes. You can also use the [`random-route`](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/manifest.html#random-route) option in the manifest.
+
+  > Note how we bind the quote service to the registry service using the user-provided service created in the previous lab.
 
 2. Once you have modified the manifest files, *push* the **quote service** to the cloud by [specifying the specific manifest file](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/manifest.html#find-manifest) to the `cf push` command.
+  > HINT: user the -f option to the push command.
 
 
 # Summary
