@@ -4,18 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents company information.
+ *  
+ * {
+ *	"Symbol":"NFLX",
+ *	"Name":"Netflix Inc",
+ *	"Exchange":"NASDAQ"
+ * }
  * 
- * @author dpinto
+ * @author David Ferreira Pinto
  *
  */
 public class CompanyInfo {
-/*
- * {
-	"Symbol":"NFLX",
-	"Name":"Netflix Inc",
-	"Exchange":"NASDAQ"
-    }
- */
+
 	@JsonProperty("Symbol")
 	private String symbol;
 	@JsonProperty("Name")

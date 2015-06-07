@@ -6,7 +6,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 /**
  * Microservice to fetch current quotes.
  * 
- * Spring Boot application to provide a service to retrieve current Quote information.
+ * Spring Boot application to provide a service to retrieve current Quote information. 
+ * The application registers with a registry service - Eureka.
  * 
  * @author David Ferreira Pinto
  *

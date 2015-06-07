@@ -6,7 +6,12 @@ import java.util.Date;
 
 import io.pivotal.quotes.domain.CompanyInfo;
 import io.pivotal.quotes.domain.Quote;
-
+/**
+ * Defaults to use for the tests.
+ * 
+ * @author David Ferreira Pinto
+ *
+ */
 public class TestConfiguration {
 	
 	public static final String QUOTE_SYMBOL = "EMC";

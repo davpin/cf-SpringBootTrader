@@ -27,7 +27,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
+/**
+ * Tests for the QuoteController.
+ * @author David Ferreira Pinto
+ *
+ */
 public class QuoteControllerTest {
 	MockMvc mockMvc;
 
@@ -44,6 +48,10 @@ public class QuoteControllerTest {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 	}
 	
+	/*
+	 * Tests the <code>/quote</code> REST endpoint.
+	 * test fetching a quote succesfully.
+	 */
 	@Test
 	public void getQuote() throws Exception {
 		when(service.getQuote(TestConfiguration.QUOTE_SYMBOL)).thenReturn(
@@ -77,6 +85,10 @@ public class QuoteControllerTest {
 								TestConfiguration.QUOTE_MSDATE));
 	}
 	
+	/*
+	 * Tests the <code>/quote</code> REST endpoint.
+	 * test fetching a quote that has a null symbol and throws exception.
+	 */
 	@Test
 	public void getNullQuote() throws Exception {
 		when(service.getQuote(TestConfiguration.NULL_QUOTE_SYMBOL)).thenThrow(
@@ -88,7 +100,10 @@ public class QuoteControllerTest {
 						.andDo(print());
 
 	}
-	
+	/*
+	 * Tests the <code>/company</code> REST endpoint.
+	 * test fetching a company information.
+	 */
 	@Test
 	public void getCompanies() throws Exception {
 		List<CompanyInfo> comps = new ArrayList<>();

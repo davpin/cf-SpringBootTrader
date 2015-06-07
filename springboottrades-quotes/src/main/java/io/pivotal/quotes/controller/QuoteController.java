@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Provides two calls (both HTTP GET methods):
  * - /quote/{symbol} - Retrieves the current quote for a given symbol.
  * - /company/{name} - Retrieves a list of company information for companies that match the {name}.
- * @author dpinto
+ * @author David Ferreira Pinto
  *
  */
 @RestController
@@ -50,7 +50,9 @@ public class QuoteController {
 	 */
 	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
 	public ResponseEntity<Quote> getQuote(@PathVariable("symbol") final String symbol) throws SymbolNotFoundException {
+		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
 		Quote quote = service.getQuote(symbol);
+		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, quote));
 		return new ResponseEntity<Quote>(quote,
 				getNoCacheHeaders(), HttpStatus.OK);
 	}
@@ -63,7 +65,9 @@ public class QuoteController {
 	 */
 	@RequestMapping(value = "/company/{name}", method = RequestMethod.GET)
 	public ResponseEntity<List<CompanyInfo>> getCompanies(@PathVariable("name") final String name) {
+		logger.debug("QuoteController.getCompanies: retrieving companies for: " + name);
 		List<CompanyInfo> companies = service.getCompanyInfo(name);
+		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
 		return new ResponseEntity<List<CompanyInfo>>(companies, HttpStatus.OK);
 	}
 	
@@ -86,7 +90,7 @@ public class QuoteController {
 	 */
 	@ExceptionHandler({Exception.class})
 	public void handleException(Exception e, HttpServletResponse response) throws IOException {
-		logger.debug("Handle Error: " + e.getMessage());
+		logger.warn("Handle Error: " + e.getMessage());
 		e.printStackTrace();
 		response.sendError(HttpStatus.BAD_REQUEST.value(), "ERROR: " + e.getMessage());
 	    //return "ERROR: " + e.getMessage();
