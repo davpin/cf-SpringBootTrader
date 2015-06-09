@@ -15,7 +15,14 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
+/**
+ * Represents the account.
+ * 
+ * Entity object that represents a user account.
+ * 
+ * @author David Ferreira Pinto
+ *
+ */
 @Entity
 @Table(name = "ACCOUNT")
 public class Account implements Serializable {
@@ -191,7 +198,7 @@ public class Account implements Serializable {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Account [id=").append(id).append(", address=")
-				.append(address).append(", passwd=").append(passwd)
+				.append(address).append(", passwd=").append("PASSWD OMMITED")
 				.append(", userid=").append(userid).append(", email=")
 				.append(email).append(", creditcard=").append(creditcard)
 				.append(", fullname=").append(fullname).append(", authtoken=")
@@ -202,6 +209,117 @@ public class Account implements Serializable {
 				.append(", lastlogin=").append(lastlogin)
 				.append(", logincount=").append(logincount).append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result
+				+ ((authtoken == null) ? 0 : authtoken.hashCode());
+		result = prime * result + ((balance == null) ? 0 : balance.hashCode());
+		result = prime * result
+				+ ((creationdate == null) ? 0 : creationdate.hashCode());
+		result = prime * result
+				+ ((creditcard == null) ? 0 : creditcard.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((fullname == null) ? 0 : fullname.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((lastlogin == null) ? 0 : lastlogin.hashCode());
+		result = prime * result
+				+ ((logincount == null) ? 0 : logincount.hashCode());
+		result = prime * result
+				+ ((logoutcount == null) ? 0 : logoutcount.hashCode());
+		result = prime * result
+				+ ((openbalance == null) ? 0 : openbalance.hashCode());
+		result = prime * result + ((passwd == null) ? 0 : passwd.hashCode());
+		result = prime * result + ((userid == null) ? 0 : userid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (authtoken == null) {
+			if (other.authtoken != null)
+				return false;
+		} else if (!authtoken.equals(other.authtoken))
+			return false;
+		if (balance == null) {
+			if (other.balance != null)
+				return false;
+		} else if (!balance.equals(other.balance))
+			return false;
+		if (creationdate == null) {
+			if (other.creationdate != null)
+				return false;
+		} else if (!creationdate.equals(other.creationdate))
+			return false;
+		if (creditcard == null) {
+			if (other.creditcard != null)
+				return false;
+		} else if (!creditcard.equals(other.creditcard))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (fullname == null) {
+			if (other.fullname != null)
+				return false;
+		} else if (!fullname.equals(other.fullname))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lastlogin == null) {
+			if (other.lastlogin != null)
+				return false;
+		} else if (!lastlogin.equals(other.lastlogin))
+			return false;
+		if (logincount == null) {
+			if (other.logincount != null)
+				return false;
+		} else if (!logincount.equals(other.logincount))
+			return false;
+		if (logoutcount == null) {
+			if (other.logoutcount != null)
+				return false;
+		} else if (!logoutcount.equals(other.logoutcount))
+			return false;
+		if (openbalance == null) {
+			if (other.openbalance != null)
+				return false;
+		} else if (!openbalance.equals(other.openbalance))
+			return false;
+		if (passwd == null) {
+			if (other.passwd != null)
+				return false;
+		} else if (!passwd.equals(other.passwd))
+			return false;
+		if (userid == null) {
+			if (other.userid != null)
+				return false;
+		} else if (!userid.equals(other.userid))
+			return false;
+		return true;
 	}
 	
 }

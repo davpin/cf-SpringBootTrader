@@ -34,13 +34,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
  * Controllers.
  * 
  * 
- * @author Brian Dussault
+ * @author David Ferreira Pinto
  */
 
 @Configuration
 @ComponentScan(basePackages = { "io.pivotal.accounts" })
 public class WebConfig extends WebMvcConfigurationSupport {
 
+	/**
+	 * configure the message converters with the date formatter.
+	 */
 	@Override
 	public void configureMessageConverters(
 			List<HttpMessageConverter<?>> converters) {

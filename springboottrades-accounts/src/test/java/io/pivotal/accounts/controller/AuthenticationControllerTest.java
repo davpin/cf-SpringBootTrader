@@ -85,16 +85,21 @@ public class AuthenticationControllerTest {
 	}
 	
 	@Test
-	public void doLogoutPost()  throws Exception {
+	public void doLogoutPostNoUser()  throws Exception {
 		mockMvc.perform(post("/logout"))
 		.andExpect(status().isNotFound())
+		.andDo(print());
+	}
+	@Test
+	public void doLogoutGet()  throws Exception {
+		mockMvc.perform(get("/logout/"+ServiceTestConfiguration.USER_ID))
+		.andExpect(status().isOk())
 		.andDo(print());
 	}
 	
 	
 	@Test
-	@Ignore
-	public void doLogoutGet()  throws Exception {
+	public void doLogoutGetNoUser()  throws Exception {
 		/*Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 		grantedAuthorities.add(new SimpleGrantedAuthority(API_ROLE));
 		UserDetails user = new CustomUser(ServiceTestConfiguration.USER_ID,
@@ -107,7 +112,7 @@ public class AuthenticationControllerTest {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		*/
 		mockMvc.perform(get("/logout"))
-		.andExpect(status().isOk())
+		.andExpect(status().isNotFound())
 		.andDo(print());
 		
 		//assertNull(SecurityContextHolder.getContext().getAuthentication().getPrincipal());

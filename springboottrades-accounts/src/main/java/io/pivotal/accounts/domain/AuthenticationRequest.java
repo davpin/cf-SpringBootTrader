@@ -16,8 +16,11 @@
 package io.pivotal.accounts.domain;
 
 /**
- *  AuthenticationRequest
- *  @author Brian Dussault 
+ *  Represents an authentication request object.
+ *  
+ *  Used to make login requests.
+ *  
+ *  @author David Ferreira Pinto
  */
 public class AuthenticationRequest {
 	private String username;

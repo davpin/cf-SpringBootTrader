@@ -29,7 +29,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+/**
+ * Tests for the AccountsController.
+ * @author David Ferreira Pinto
+ *
+ */
 public class AccountsControllerTest {
 	private static String API_ROLE = "API_USER";
 	MockMvc mockMvc;
@@ -67,6 +71,11 @@ public class AccountsControllerTest {
 		//SecurityContextHolder.clearContext();
 	}
 
+	/**
+	 * Test the POST to <code>/account</code>.
+	 * test creation of accounts.
+	 * @throws Exception
+	 */
 	@Test
 	public void doPostAccount() throws Exception {
 		when(service.saveAccount(ServiceTestConfiguration.account()))
@@ -80,6 +89,11 @@ public class AccountsControllerTest {
 				.andExpect(status().isCreated()).andDo(print());
 	}
 
+	/**
+	 * Test the GET to <code>/account</code>.
+	 * test retrieval of accounts.
+	 * @throws Exception
+	 */
 	@Test
 	public void doGetAccount() throws Exception {
 		when(service.findAccount(ServiceTestConfiguration.PROFILE_ID))
@@ -120,7 +134,11 @@ public class AccountsControllerTest {
 								ServiceTestConfiguration.LOGIN_COUNT))
 				.andDo(print());
 	}
-	
+	/**
+	 * Test the GET to <code>/account/userid/increaseBalance/</code>.
+	 * test increase of balance.
+	 * @throws Exception
+	 */
 	@Test
 	public void doIncreaseBalance() throws Exception {
 		when(service.findAccount(ServiceTestConfiguration.USER_ID))
@@ -138,7 +156,33 @@ public class AccountsControllerTest {
 		String resultStr = result.getResponse().getContentAsString();
 		
 	}
+	/**
+	 * Test the GET to <code>/account/userid/increaseBalance/</code>.
+	 * test increase of balance with negative amount.
+	 * @throws Exception
+	 */
+	@Test
+	public void doIncreaseBalanceNegative() throws Exception {
+		when(service.findAccount(ServiceTestConfiguration.USER_ID))
+				.thenReturn(ServiceTestConfiguration.account());
 
+		MvcResult result = mockMvc.perform(
+				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/increaseBalance/" + -1000)
+						.contentType(MediaType.APPLICATION_JSON).content(
+								convertObjectToJson(ServiceTestConfiguration
+										.account())))
+				.andExpect(status().isExpectationFailed())
+				.andDo(print())
+				.andExpect(content().string(String.valueOf(ServiceTestConfiguration.ACCOUNT_BALANCE.doubleValue())))
+				.andReturn();
+		
+	}
+
+	/**
+	 * Test the GET to <code>/account/userid/decreaseBalance/</code>.
+	 * test decrease of balance.
+	 * @throws Exception
+	 */
 	@Test
 	public void doDecreaseBalance() throws Exception {
 		when(service.findAccount(ServiceTestConfiguration.USER_ID))
@@ -155,6 +199,26 @@ public class AccountsControllerTest {
 				.andDo(print());
 	}
 	
+	/**
+	 * Test the GET to <code>/account/userid/decreaseBalance/</code>.
+	 * test decrease of balance with not enough funds.
+	 * @throws Exception
+	 */
+	@Test
+	public void doDecreaseBalanceNoFunds() throws Exception {
+		when(service.findAccount(ServiceTestConfiguration.USER_ID))
+				.thenReturn(ServiceTestConfiguration.account());
+
+		mockMvc.perform(
+				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/decreaseBalance/" + ServiceTestConfiguration.ACCOUNT_BALANCE.add(BigDecimal.TEN))
+						.contentType(MediaType.APPLICATION_JSON).content(
+								convertObjectToJson(ServiceTestConfiguration
+										.account())))
+				.andExpect(status().isExpectationFailed())
+				.andDo(print())
+				.andExpect(content().string(String.valueOf(ServiceTestConfiguration.ACCOUNT_BALANCE.doubleValue())))
+				.andDo(print());
+	}
 	private byte[] convertObjectToJson(Object request) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(Include.NON_NULL);

@@ -45,8 +45,7 @@ import org.springframework.context.annotation.Profile;
 /**
  *  ServiceTestConfiguration provides test objects and mock service layer for unit tests.
  *  
- *  @author Brian Dussault 
- *  @author
+ *  @author David Ferreira Pinto
  */
 
 @Configuration
