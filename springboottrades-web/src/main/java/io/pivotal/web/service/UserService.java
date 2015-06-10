@@ -34,6 +34,7 @@ public class UserService {
 		return result;
 	}
 	
+	//TODO: change to /account/{user}
 	public Account getAccount(String user) {
 		logger.debug("Looking for account with userId: " + user);
 		

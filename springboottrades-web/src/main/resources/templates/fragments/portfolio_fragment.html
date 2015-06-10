@@ -146,7 +146,7 @@
 					</thead>
 					<tbody>
 						<tr th:each="holding : ${portfolio.holdings}" class="info">
-							<td colspan="8" th:text="'Holding for: ' + ${holding.value.symbol}">symbol</td>
+							<td colspan="8" th:text="'Holding for: ' + ${holding.value.symbol} + ' - Current Quantity:' + ${holding.value.quantity}">symbol - 0</td>
 						<tr th:each="txn : ${holding.value.orders}">
 							<td th:text="${txn.orderId}">0</td>
 							<td th:with="completed='completed'"><span

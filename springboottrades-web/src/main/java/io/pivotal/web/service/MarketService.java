@@ -74,7 +74,7 @@ public class MarketService {
 		return Arrays.asList(infos);
 	}
 	private List<CompanyInfo> getCompaniesFallback(String name) {
-		List infos = new ArrayList<>();
+		List<CompanyInfo> infos = new ArrayList<>();
 		return infos;
 	}
 	
@@ -86,7 +86,7 @@ public class MarketService {
 		//check result of http request to ensure its ok.
 		
 		ResponseEntity<Order>  result = restTemplate.postForEntity("http://portfolio/portfolio/{accountId}", order, Order.class, order.getAccountId());
-		if (result.getStatusCode() == HttpStatus.BAD_REQUEST) {
+		if (result.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
 			throw new OrderNotSavedException("Could not save the order");
 		}
 		logger.debug("Order saved:: " + result.getBody());
