@@ -1,6 +1,7 @@
 # cf-SpringBootTrader
 Microservice version of the Spring Trader app using spring boot
 
+![Spring Trader](/docs/springtrader2.png)
 
 #Introduction
 This repository holds a collection of micro services that work together to present a trading application surfaced though a web UI, but more interfaces can be created that re-utilise the microservices.
