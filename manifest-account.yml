@@ -1,7 +1,7 @@
 ---
 timeout: 180
 instances: 1
-memory: 330M
+memory: 512M
 #buildpack: toms-java-buildpack
 env:
     SPRING_PROFILES_DEFAULT: cloud
