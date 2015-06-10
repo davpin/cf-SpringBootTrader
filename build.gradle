@@ -133,6 +133,7 @@ project(':springboottrades-portfolio') {
 
 		//test packages
 		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testRuntime "com.jayway.jsonpath:json-path"
 		testRuntime "org.hsqldb:hsqldb"
     }
 }
