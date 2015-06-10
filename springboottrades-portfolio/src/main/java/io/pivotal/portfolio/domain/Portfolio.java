@@ -5,7 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Represents Portfolio object.
+ * 
+ * Portfolios are a collection of holdings.
+ * 
+ * @author David Ferreira Pinto
+ *
+ */
 public class Portfolio {
 
 	private String accountId;
@@ -48,6 +55,9 @@ public class Portfolio {
 		this.currentTotalValue = currentTotalValue;
 	}
 	
+	/**
+	 * Iterates through each of the holdings aggregating the values.
+	 */
 	public void refreshTotalValue() {
 		this.currentTotalValue = BigDecimal.ZERO;
 		this.purchaseValue = BigDecimal.ZERO;

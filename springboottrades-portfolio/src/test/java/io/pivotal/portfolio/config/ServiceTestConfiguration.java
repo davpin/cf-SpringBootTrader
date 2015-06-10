@@ -8,8 +8,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import io.pivotal.portfolio.domain.Holding;
 import io.pivotal.portfolio.domain.Order;
 import io.pivotal.portfolio.domain.OrderType;
+import io.pivotal.portfolio.domain.Portfolio;
 import io.pivotal.portfolio.domain.Quote;
 
 public class ServiceTestConfiguration {
@@ -49,6 +51,31 @@ public class ServiceTestConfiguration {
 		return order1;
 	}
 	
+	public static Order order2() {
+		Order order1 = new Order();
+		order1.setOrderId(1);
+		order1.setAccountId(ACCOUNT_ID);
+		order1.setCompletionDate(COMPLETION_DATE);
+		order1.setOrderFee(FEE);
+		order1.setOrderType(OrderType.BUY);
+		order1.setPrice(PRICE);
+		order1.setQuantity(QUANTITY);
+		order1.setSymbol(SYMBOL);
+		return order1;
+	}
+	public static Order sellOrder() {
+		Order order1 = new Order();
+		order1.setOrderId(1);
+		order1.setAccountId(ACCOUNT_ID);
+		order1.setCompletionDate(COMPLETION_DATE);
+		order1.setOrderFee(FEE);
+		order1.setOrderType(OrderType.SELL);
+		order1.setPrice(PRICE);
+		order1.setQuantity(QUANTITY);
+		order1.setSymbol(SYMBOL);
+		return order1;
+	}
+	
 	public static Quote quote() {
 		Quote quote = new Quote();
 		quote.setName("EMC Corp");
@@ -71,6 +98,21 @@ public class ServiceTestConfiguration {
 		quote.setLow(0.0);
 		quote.setOpen(26.52);
 		return quote;
+	}
+	
+	public static Portfolio portfolio() {
+		Holding holding = new Holding();
+		holding.setId(1);
+		holding.setQuantity(QUANTITY);
+		holding.setPurchaseValue(PRICE);
+		holding.setCurrentValue(new BigDecimal(QUOTE_LAST_PRICE));
+		holding.addOrder(order2());
+		holding.setSymbol(SYMBOL);
+		Portfolio folio = new Portfolio();
+		folio.setAccountId(ACCOUNT_ID);
+		folio.addHolding(holding);
+		folio.refreshTotalValue();
+		return folio;
 	}
 
 }

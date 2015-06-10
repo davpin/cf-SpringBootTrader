@@ -3,7 +3,14 @@ package io.pivotal.portfolio.domain;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * Represents a Holding.
+ * 
+ * Holding being a set of orders related to a particular stock.
+ * 
+ * @author David Ferreira Pinto
+ *
+ */
 public class Holding {
 
 	private Integer id;

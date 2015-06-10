@@ -35,6 +35,6 @@ eureka:
 logging:
   level:
      io:
-        pivotal: DEBUG
+        pivotal: INFO
      com:
         netflix: WARN

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Represents a point in time price and information for a company's stock.
  * 
- * @author dpinto
+ * Used to communicate with the Quote service.
+ * 
+ * @author David Ferreira Pinto.
  *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)

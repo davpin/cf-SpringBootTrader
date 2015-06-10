@@ -15,7 +15,12 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
+/**
+ * Entity object representing an Order.
+ * 
+ * @author David Ferreira Pinto
+ *
+ */
 @Entity
 @Table(name = "ORDERS")
 public class Order {

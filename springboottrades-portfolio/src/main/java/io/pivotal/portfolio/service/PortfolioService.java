@@ -31,6 +31,9 @@ public class PortfolioService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(PortfolioService.class);
 
+	/**
+	 * The order repository to store Order objects.
+	 */
 	@Autowired
 	OrderRepository repository;
 	
@@ -54,6 +57,13 @@ public class PortfolioService {
 		return createPortfolio(new Portfolio(), orders);
 	}
 
+	/**
+	 * Builds a portfolio object with the list of orders.
+	 * 
+	 * @param portfolio the portfolio object to build.
+	 * @param orders the list of orders.
+	 * @return the portfolio object
+	 */
 	private Portfolio createPortfolio(Portfolio portfolio, List<Order> orders) {
 		//TODO: change to forEach() and maybe in parallel?
 		for (Order order: orders) {
@@ -73,39 +83,61 @@ public class PortfolioService {
 		return portfolio;
 	}
 	
+	/**
+	 * Calculates the current value of th holding.
+	 * 
+	 * @param holding the holding to refresh.
+	 */
 	private void refreshHolding(Holding holding) {
 		Quote quote = getQuote(holding.getSymbol());
 		holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
 	}
 	
+	/**
+	 * Retrieve up to date quotes.
+	 * 
+	 * @param symbol the symbol of the quote to fetch.
+	 * @return
+	 */
 	private Quote getQuote(String symbol) {
 		logger.debug("Fetching quote: " + symbol);
 		Quote quote = restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
 	
+	/**
+	 * Add an order to the repository and modify account balance.
+	 * 
+	 * @param order the order to add.
+	 * @return the saved order.
+	 */
 	@Transactional
 	public Order addOrder(Order order) {
-		
+		logger.debug("Adding order: " + order);
 		if (order.getOrderFee() == null) {
 			order.setOrderFee(new BigDecimal(10.50));
+			logger.debug("Adding Fee to order: " + order);
 		}
 		if (order.getOrderType() == OrderType.BUY) {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
 			ResponseEntity<Double>  result= restTemplate.getForEntity("http://accounts/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
+				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
 				return repository.save(order);
 			} else {
 				//TODO: throw exception - not enough funds!
+				logger.warn("PortfolioService:addOrder - decresing balance HTTP not ok: ");
 				return null;
 			}
 		} else {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
 			ResponseEntity<Double>  result= restTemplate.getForEntity("http://accounts/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
+				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
 				return repository.save(order);
 			} else {
 				//TODO: throw exception - negative value???
+				logger.warn("PortfolioService:addOrder - increasing balance HTTP not ok: ");
 				return null;
 			}
 		}

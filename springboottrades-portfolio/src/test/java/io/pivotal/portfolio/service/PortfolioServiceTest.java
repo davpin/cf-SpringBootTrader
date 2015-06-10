@@ -2,7 +2,11 @@ package io.pivotal.portfolio.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.isA;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
 
+import java.math.BigDecimal;
 
 import io.pivotal.portfolio.config.ServiceTestConfiguration;
 import io.pivotal.portfolio.domain.Order;
@@ -60,6 +64,37 @@ public class PortfolioServiceTest {
 		when(restTemplate.getForEntity("http://accounts/accounts/{userid}/decreaseBalance/{amount}", Double.class, ServiceTestConfiguration.order().getAccountId(), amount )).thenReturn(response);
 		when(repo.save(ServiceTestConfiguration.order())).thenReturn(returnOrder);
 		Order order = service.addOrder(ServiceTestConfiguration.order());
+		assertEquals(order, returnOrder);
+	}
+	
+	@Test
+	public void doSaveOrderNullOrderFee() {
+		Order returnOrder = ServiceTestConfiguration.order();
+		returnOrder.setOrderId(1);
+		double amount = returnOrder.getQuantity()*returnOrder.getPrice().doubleValue()+returnOrder.getOrderFee().doubleValue();
+		ResponseEntity<Double> response = new ResponseEntity<Double>(100d, HttpStatus.OK);
+		
+		
+		//when(accountService.getUri()).thenReturn(uri);
+		when(restTemplate.getForEntity(any(), eq(Double.class), any(), any())).thenReturn(response);
+		when(repo.save(isA(Order.class))).thenReturn(returnOrder);
+		Order requestOrder = ServiceTestConfiguration.order();
+		requestOrder.setOrderFee(null);
+		Order order = service.addOrder(requestOrder);
+		assertEquals(order.getOrderFee(), ServiceTestConfiguration.order().getOrderFee());
+	}
+	@Test
+	public void doSaveOrderSellOrder() {
+		Order returnOrder = ServiceTestConfiguration.sellOrder();
+		returnOrder.setOrderId(1);
+		double amount = ServiceTestConfiguration.sellOrder().getQuantity()*ServiceTestConfiguration.sellOrder().getPrice().doubleValue()-ServiceTestConfiguration.sellOrder().getOrderFee().doubleValue();
+		ResponseEntity<Double> response = new ResponseEntity<Double>(100d, HttpStatus.OK);
+		
+		
+		//when(accountService.getUri()).thenReturn(uri);
+		when(restTemplate.getForEntity("http://accounts/accounts/{userid}/increaseBalance/{amount}", Double.class, ServiceTestConfiguration.sellOrder().getAccountId(), amount )).thenReturn(response);
+		when(repo.save(ServiceTestConfiguration.sellOrder())).thenReturn(returnOrder);
+		Order order = service.addOrder(ServiceTestConfiguration.sellOrder());
 		assertEquals(order, returnOrder);
 	}
 
