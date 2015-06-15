@@ -3,6 +3,7 @@ package io.pivotal.quotes.configuration;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import io.pivotal.quotes.domain.CompanyInfo;
 import io.pivotal.quotes.domain.Quote;
@@ -16,7 +17,7 @@ public class TestConfiguration {
 	
 	public static final String QUOTE_SYMBOL = "EMC";
 	public static final String QUOTE_NAME = "EMC Corp";
-	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss zzzXXX yyyy");
+	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss zzzXXX yyyy", Locale.ENGLISH);
 	public static final String QUOTE_DATE_STRING = "Wed May 6 00:00:00 UTC-04:00 2015";
 	public static final double QUOTE_LAST_PRICE = 26.135;
 	public static final double QUOTE_CHANGE = 0.00500000000000256d;

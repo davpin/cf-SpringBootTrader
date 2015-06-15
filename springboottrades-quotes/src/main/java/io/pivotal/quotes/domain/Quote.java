@@ -45,7 +45,7 @@ public class Quote {
 	@JsonProperty("ChangePercent")
 	private Double changePercent;
 	@JsonProperty("Timestamp")
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy", locale="ENGLISH")
 	private Date timestamp;
 	@JsonProperty("MSDate")
 	private Double mSDate;
