@@ -15,7 +15,7 @@ In order for our microservices to be able to connect to the Registry service, we
   The URI of your eureka service is the URI where your registry server is deployed. This was displayed at the end of `cf push` command in the [previous lab](lab_registryserver.md).
   > The URI will be similar to `eureka-dpinto.cfapps.io`.
 
-  > Do not specify the protocol, ie. "http://"
+  > Do **not** specify the protocol!!! ie. "http://"
 
 2. Multiple spaces.
 

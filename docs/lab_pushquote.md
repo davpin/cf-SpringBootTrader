@@ -26,6 +26,7 @@ This requires editing the manifest-\*.yml files in the base directory of the pro
   > Note how we bind the quote service to the registry service using the user-provided service created in the previous lab.
 
 2. Once you have modified the manifest files, *push* the **quote service** to the cloud by [specifying the specific manifest file](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/manifest.html#find-manifest) to the `cf push` command.
+
   > HINT: user the -f option to the push command.
 
 
@@ -36,6 +37,8 @@ Ensure you have a working quote service application by sending HTTP requests to 
 `curl http://<ROUTE_TO_QUOTE_SERVICE>/quote/EMC`
 
 > You can also put the above URL in your browser.
+
+Ensure the service registers itself with the registry server.
 
 Congratulations! you have now deployed an application to the cloud that registers itself with the registry service and handles HTTP requests.
 
