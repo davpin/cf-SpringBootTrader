@@ -13,12 +13,8 @@
 						<td th:text="${account.fullname}">user</td>
 					</tr>
 					<tr>
-						<td>User ID</td>
-						<td th:text="${account.userid}">user</td>
-					</tr>
-					<tr>
-						<td>Email</td>
-						<td th:text="${account.email}">user</td>
+						<td>User ID / Email</td>
+						<td th:text="${account.userid + ' / ' + account.email}">user</td>
 					</tr>
 					<tr>
 						<td>Creation Date</td>
@@ -31,6 +27,10 @@
 					<tr>
 						<td>Session Creation Date</td>
 						<td th:text="${account.lastlogin}">today</td>
+					</tr>
+					<tr>
+						<td>Open Balance</td>
+						<td th:text="${#numbers.formatDecimal(account.openbalance, 0, 'COMMA', 2, 'POINT')}">user</td>
 					</tr>
 				</table>
 			</div>
