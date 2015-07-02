@@ -47,6 +47,8 @@ Now that we have all the required services created, let's push all the applicati
 ### Exercise
 1. Create a manifest file that will push the accounts, portfolio and web microservices in one go.
 
+> Make sure to use unique routes for all the apps. i.e. ``<app-name>-<initials>``
+
 2. Use the CLI to push all applications using the manifest file created.
 
 Once completed, go to the URL of the Web service in your browser.
