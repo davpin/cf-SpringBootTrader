@@ -18,5 +18,5 @@ applications:
   path: springboottrades-portfolio/build/libs/portfolio-0.2.jar
   services: [ eureka-service, traderdb ]
 - name: webtrader-${random-word}
-  path: springboottrades-web/build/libs/web-2.0.jar
+  path: springboottrades-web/build/libs/web-0.2.jar
   services: [ eureka-service ]
