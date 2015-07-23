@@ -8,10 +8,12 @@ This repository holds a collection of micro services that work together to prese
 
 It was created to support workshops and demonstrations of building and using `microservices` architectures and running these in **Cloud Foundry** (although it is possible to run these on other runtimes).
 
+The branch **SpringCloudServicesPCF** is a version of this project ready to be deployed in a PCF instance with SpringCloudServices tile installed.
+
 The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises below.
 
 #Architecture
-The system is composed of 4 microservices plus a Registry Server (can also be considered a microservice). The relationship between the microservices is illustrated below.
+The system is composed of 4 microservice. The relationship between the microservices is illustrated below.
 
 ![architecture](/docs/microservices_relationship.png)
 
@@ -44,11 +46,6 @@ The web interface is built using bootstrap and Thymeleaf and uses a Spring contr
 * Quote service
 * Portfolio service
 
-##5. Registry service
-This service provides a registry for our microservices to register with and dynamically find out where they live to make requests to them.
-
-This is currently implemented using the [Spring Cloud Netflix - Eureka](http://cloud.spring.io/spring-cloud-netflix/).
-
 # Workshops:
 
 The following guides describe how to setup the environment and deploy the microservices to **Cloud Foundry**.
@@ -56,7 +53,7 @@ The following guides describe how to setup the environment and deploy the micros
 At Pivotal we love education, not just educating ourselves, but also educating others. As such, these guides follow the *"teaching you how to fish"* principle - Rather than giving you line by line/command by command instructions, we provide guidelines and links to documentation where you can read and learn more.
 
 1. [Setting up the environment] [setup]
-2. [Pushing the registry service] [registry]
+2. [creating the registry service] [registry]
 3. [Creating a user provided service] [userprovided]
 4. [Pushing the Quote service] [pushquote]
 5. [Pushing all the services] [pushall]

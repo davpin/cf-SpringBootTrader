@@ -52,9 +52,11 @@ subprojects {
 
     repositories {
         mavenCentral()
+        maven { url "http://repo.spring.io/milestone" }
     }
 	dependencies {
-
+       compile "io.pivotal.spring.cloud:spring-cloud-pivotal-cloudfoundry-connector:1.0.0.M1"
+       compile "io.pivotal.spring.cloud:spring-cloud-pivotal-spring-connector:1.0.0.M1"
 		//test packages
 
 		testCompile "junit:junit:$junitVersion"

@@ -7,6 +7,6 @@ env:
     SPRING_PROFILES_DEFAULT: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 applications:
-- name: quotes
+- name: quotes-test
   path: springboottrades-quotes/build/libs/quotes-0.2.jar
-  services: [ eureka-service ]
+  services: [ eureka ]
