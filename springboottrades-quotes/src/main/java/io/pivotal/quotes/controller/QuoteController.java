@@ -10,9 +10,6 @@ import io.pivotal.quotes.domain.Quote;
 import io.pivotal.quotes.exception.SymbolNotFoundException;
 import io.pivotal.quotes.service.QuoteService;
 
-import org.slf4j.MDC;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,6 @@ public class QuoteController {
 	 */
 	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
 	public ResponseEntity<Quote> getQuote(@PathVariable("symbol") final String symbol) throws SymbolNotFoundException {
-		setCorrelationIds();
 		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
 		Quote quote = service.getQuote(symbol);
 		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, quote));
@@ -69,7 +65,6 @@ public class QuoteController {
 	 */
 	@RequestMapping(value = "/company/{name}", method = RequestMethod.GET)
 	public ResponseEntity<List<CompanyInfo>> getCompanies(@PathVariable("name") final String name) {
-		setCorrelationIds();
 		logger.debug("QuoteController.getCompanies: retrieving companies for: " + name);
 		List<CompanyInfo> companies = service.getCompanyInfo(name);
 		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
@@ -87,13 +82,6 @@ public class QuoteController {
 	}
 	
 	/**
-	 * Mock what spring-cloud-sleuth does 
-	 */
-	private void setCorrelationIds() {
-                MDC.put("X-Span-Id", UUID.randomUUID().toString());
-                MDC.put("X-Trace-Id", UUID.randomUUID().toString());
-	}	
-	/**
 	 * Handles the response to the client if there is any exception during the processing of HTTP requests.
 	 * 
 	 * @param e The exception thrown during the processing of the request.
@@ -104,7 +92,6 @@ public class QuoteController {
 	public void handleException(Exception e, HttpServletResponse response) throws IOException {
 		logger.warn("Handle Error: ", e);
 		response.sendError(HttpStatus.BAD_REQUEST.value(), "ERROR: " + e.getMessage());
-	    //return "ERROR: " + e.getMessage();
 	}
 
 }
