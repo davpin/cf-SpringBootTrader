@@ -90,9 +90,8 @@ public class QuoteController {
 	 */
 	@ExceptionHandler({Exception.class})
 	public void handleException(Exception e, HttpServletResponse response) throws IOException {
-		logger.warn("Handle Error: " + e.getMessage());
-		e.printStackTrace();
+		logger.warn("Handle Error: ", e);
 		response.sendError(HttpStatus.BAD_REQUEST.value(), "ERROR: " + e.getMessage());
-	    //return "ERROR: " + e.getMessage();
 	}
+
 }
