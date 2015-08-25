@@ -137,12 +137,11 @@ public class TradeController {
 	
 	@ExceptionHandler({ Exception.class })
 	public ModelAndView error(HttpServletRequest req, Exception exception) {
-		logger.debug("Handling error: " + exception);
+		logger.warn("Handling error: ", exception);
 		ModelAndView model = new ModelAndView();
 		model.addObject("errorCode", exception.getMessage());
 		model.addObject("errorMessage", exception);
 		model.setViewName("error");
-		exception.printStackTrace();
 		return model;
 	}
 }
