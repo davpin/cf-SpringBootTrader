@@ -1,18 +1,9 @@
-apply plugin: 'com.github.ben-manes.versions'
-
 buildscript {
     ext {
-        //springBootVersion = '1.2.5.RELEASE'
         springBootVersion = '1.3.0.M4'
-		springCFCloudVersion = '1.1.1.RELEASE'
-		springSecurityVersion = '4.0.1.RELEASE'
-		springVersion = '4.1.6.RELEASE'
-    //springCloudStarterParentTrain = 'Angel.SR3'
-    springCloudStarterParentTrain = 'Brixton.BUILD-SNAPSHOT'
-		junitVersion = '4.12'
-		jacksonVersion = '2.6.1'
-		mysqlVersion = '5.1.35'
-		bootstrapVersion = '2.3.2'
+        springCloudStarterParentTrain = 'Brixton.BUILD-SNAPSHOT'
+		    junitVersion = '4.12'
+		    bootstrapVersion = '2.3.2'
     }
 
     repositories {
@@ -24,7 +15,6 @@ buildscript {
         dependencies {
             classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
             classpath "io.spring.gradle:dependency-management-plugin:0.5.3.RELEASE"
-            classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
     }
 }
 
@@ -35,8 +25,8 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'eclipse'
+  apply plugin: 'java'
+  apply plugin: 'eclipse'
 	apply plugin: 'jacoco'
   apply plugin: "io.spring.dependency-management"
   apply plugin: 'spring-boot'
@@ -143,7 +133,7 @@ project(':springboottrades-portfolio') {
 
 		//test packages
 		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-    testRuntime "com.jayway.jsonpath:json-path:2.0.0"
+    testRuntime "com.jayway.jsonpath:json-path"
 		testRuntime "org.hsqldb:hsqldb"
     }
 }
