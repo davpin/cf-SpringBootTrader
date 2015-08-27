@@ -14,8 +14,10 @@
 
 	<div class="container page">
 		<div th:include="fragments/marketsummary_fragment :: summary"></div>
-
-		<div sec:authorize="hasRole('USER')" th:remove="tag">
+		<!-- hasRole('USER') not working with 1.3.0.M4 so falling back to  -->
+		<!-- isAuthenticated() as workaround -->
+		<!-- <div sec:authorize="hasRole('USER')" th:remove="tag"> -->
+		<div sec:authorize="isAuthenticated()" th:remove="tag">
 			<div class="row">
 				<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
 				<div th:if="${portfolioRetrievalError != null}" th:include="fragments/portfolio_fragment :: portfolio-error" th:remove="tag"></div>
