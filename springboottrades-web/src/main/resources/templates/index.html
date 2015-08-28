@@ -14,10 +14,8 @@
 		
 	<div class="container page">
 		<div th:include="fragments/marketsummary_fragment :: summary"></div>
-		<!-- hasRole('USER') not working with 1.3.0.M4 so falling back to  -->
-		<!-- isAuthenticated() as workaround -->
-		<!-- <div sec:authorize="hasRole('USER')" class="row"> -->
-		<div sec:authorize="isAuthenticated()" class="row">
+		
+		<div sec:authorize="hasAnyAuthority('USER')" class="row">
 			<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
 			<div th:if="${portfolioRetrievalError != null}" th:include="fragments/portfolio_fragment :: portfolio-error" th:remove="tag"></div>
 			<div th:include="fragments/account_fragment :: user-stats" th:remove="tag"></div>
@@ -26,8 +24,6 @@
 		<div sec:authorize="isAnonymous()">
 			<div th:include="fragments/login_fragment :: login"></div>
 		</div>
-		
-		<div sec:authorize="hasAnyRole('ROLE_USER','USER','user','User')" >hasAnyRole is working</div>
 	</div>
 
 
