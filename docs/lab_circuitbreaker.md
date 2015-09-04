@@ -17,9 +17,9 @@ The code to create a circuit breaker involved providing a fallback method. For e
 		return infos;
 	}
 ```
-It is useful to know when the circuits are open and it may suggest a problem with the dependent services. [Spring Cloud Services for Pivotal Cloud Foundry](https://network.pivotal.io/products/p-spring-cloud-services) provides a centralised dashboard to collect all the statistics from circuit breakers and visualize them in one place.
+It is useful to know when the circuits are open as it may suggest a problem with the dependent services. [Spring Cloud Services for Pivotal Cloud Foundry](https://network.pivotal.io/products/p-spring-cloud-services) provides a centralised dashboard to collect all the statistics from circuit breakers and visualize them in one place.
 
-Underneath the covers, this discovery service is implemented using the [Spring Cloud Netflix - Hystrix](http://cloud.spring.io/spring-cloud-netflix/).
+Underneath the covers, this circuit breaker pattern is implemented using the [Spring Cloud Netflix - Hystrix](http://cloud.spring.io/spring-cloud-netflix/).
 
 In order to make use of the dashboard, we need to create an instance of the service to bind it to our applications.
 ### Exercise
