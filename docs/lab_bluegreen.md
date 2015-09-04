@@ -16,7 +16,7 @@ In this lab, you will be mimicking upgrading the quote service.
 
 # Blue/green deployments.
 
-In the [Pushing the registry server](lab_registryserver.md) lab we discussed an alternative approach for microservices to bind to each other. In this approach, we cannot rely on the registry service to give us the zero downtime deployments. Even in the registry service approach, we may want to upgrade the registry server itself in which case we can employ the Blue/Green deployment technique.
+In the [Creating the discovery service](lab_registryserver.md) lab we discussed an alternative approach for microservices to bind to each other. In this approach, we cannot rely on the registry service to give us the zero downtime deployments. Even in the registry service approach, we may want to upgrade the registry server itself in which case we can employ the Blue/Green deployment technique.
 
 In order to minimise downtime as new versions of the software is created and released, **Cloud Foundry** provides a technique to deploy these new versions/releases without incurring downtime. This technique is called [Blue/Green deployment](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/blue-green.html)
 
