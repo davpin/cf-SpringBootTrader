@@ -8,5 +8,6 @@ env:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 applications:
 - name: webtrader
+  random-route: true
   path: springboottrades-web/build/libs/web-0.2.jar
-  services: [  eureka-service  ]
+  services: [ discovery-service, circuit-breaker-dashboard ]

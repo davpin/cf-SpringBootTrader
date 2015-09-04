@@ -3,11 +3,8 @@ spring:
   application:
      name: quotes
 eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://${vcap.services.eureka-service.credentials.uri:127.0.0.1:8761}/eureka/
   instance:
-    hostname: ${vcap.application.uris[0]:localhost} 
+    hostname: ${vcap.application.uris[0]:localhost}
     metadataMap:
       instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
 ---
@@ -16,15 +13,18 @@ spring:
 server:
   port: 8083
 eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
   instance:
     nonSecurePort: ${server.port}
 ---
 spring:
   profiles: cloud
 eureka:
-  instance: 
+  instance:
     nonSecurePort: 80
----        
+---
 logging:
   level:
      io:

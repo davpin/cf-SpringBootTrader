@@ -8,5 +8,6 @@ env:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 applications:
 - name: quotes
+  random-route: true
   path: springboottrades-quotes/build/libs/quotes-0.2.jar
-  services: [ eureka-service ]
+  services: [ discovery-service, circuit-breaker-dashboard ]

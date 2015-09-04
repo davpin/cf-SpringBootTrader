@@ -28,12 +28,15 @@ buildscript {
 // Apply versioning to all projects from versioning script.
 allprojects {
 	apply from: "$rootDir/gradle/versioning.gradle"
+
 }
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
 	apply plugin: 'jacoco'
+  apply plugin: "io.spring.dependency-management"
+  apply plugin: 'spring-boot'
 
 
 	jacoco {
@@ -52,9 +55,16 @@ subprojects {
 
     repositories {
         mavenCentral()
+        maven { url "http://repo.spring.io/milestone" }
+    }
+    dependencyManagement {
+      imports {
+        mavenBom "io.pivotal.spring.cloud:spring-cloud-services-starter-parent:1.0.0.M1"
+      }
     }
 	dependencies {
-
+       compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry"
+       compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker"
 		//test packages
 
 		testCompile "junit:junit:$junitVersion"
@@ -63,7 +73,6 @@ subprojects {
 }
 
 project(':springboottrades-accounts') {
-	apply plugin: 'spring-boot'
     jar {
         baseName = 'accounts'
     }
@@ -87,7 +96,6 @@ project(':springboottrades-accounts') {
 }
 
 project(':springboottrades-quotes') {
-	apply plugin: 'spring-boot'
     jar {
         baseName = 'quotes'
     }
@@ -96,7 +104,7 @@ project(':springboottrades-quotes') {
 		compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
 		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 		compile "org.springframework:spring-web:${springVersion}"
-		compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+		//compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
 
 		//runtime
@@ -109,7 +117,6 @@ project(':springboottrades-quotes') {
 }
 
 project(':springboottrades-portfolio') {
-	apply plugin: 'spring-boot'
     jar {
         baseName = 'portfolio'
     }
@@ -134,8 +141,6 @@ project(':springboottrades-portfolio') {
 }
 
 project(':springboottrades-web') {
-	apply plugin: 'spring-boot'
-
     jar {
         baseName = 'web'
     }
@@ -155,28 +160,6 @@ project(':springboottrades-web') {
 
 		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     }
-}
-
-project (':registryServer') {
-     apply plugin: 'spring-boot'
-     jar {
-        baseName = 'registry'
-     }
-     description = "Registry server for micro services"
-     springBoot {
-        requiresUnpack = ['com.netflix.eureka:eureka-core','com.netflix.eureka:eureka-client']
-     }
-
-   apply plugin: "io.spring.dependency-management"
-
-   dependencyManagement {
-     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springCloudStarterParentTrain}"
-     }
-   }
-     dependencies {
-         compile "org.springframework.cloud:spring-cloud-netflix-eureka-server:${springEurekaVersion}"
-     }
 }
 
 task wrapper(type: Wrapper) {
