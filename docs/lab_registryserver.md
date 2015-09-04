@@ -28,4 +28,4 @@ It is also possible to deploy your own Eureka server to the platform.
 
 The registry server has a UI that can be accessed on the link provided in the console UI. Find the discovery service you created and click on **Manage**.
 
-You can now move on to [pushing the quote service](lab_pushquote.md)
+You can now move on to [Creating the Circuit Breaker Dashboard](lab_circuitbreaker.md)

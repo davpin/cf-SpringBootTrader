@@ -51,7 +51,8 @@ The following guides describe how to setup the environment and deploy the micros
 At Pivotal we love education, not just educating ourselves, but also educating others. As such, these guides follow the *"teaching you how to fish"* principle - Rather than giving you line by line/command by command instructions, we provide guidelines and links to documentation where you can read and learn more.
 
 1. [Setting up the environment] [setup]
-2. [creating the discovery service] [registry]
+2. [Creating a discovery service] [registry]
+2. [Creating a circuit breaker dashboard] [circuitbreaker]
 3. [Pushing the Quote service] [pushquote]
 4. [Pushing all the services] [pushall]
 5. [Scaling the services] [scale]
@@ -59,6 +60,7 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 
 [setup]: docs/lab_setup.md
 [registry]: docs/lab_registryserver.md
+[circuitbreaker]: docs/lab_circuitbreaker.md
 [pushquote]: docs/lab_pushquote.md
 [pushall]: docs/lab_pushall.md
 [scale]: docs/lab_scale.md

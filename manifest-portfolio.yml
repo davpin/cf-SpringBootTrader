@@ -10,4 +10,4 @@ applications:
 - name: portfolio
   random-route: true
   path: springboottrades-portfolio/build/libs/portfolio-0.2.jar
-  services: [ traderdb, discovery-service  ]
+  services: [ traderdb, discovery-service, circuit-breaker-dashboard ]
