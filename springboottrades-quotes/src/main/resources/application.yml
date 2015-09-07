@@ -24,10 +24,6 @@ eureka:
 ---
 spring:
   profiles: cloud
-  sleuth:
-    log:
-      json:
-        enabled: true
 eureka:
   instance: 
     nonSecurePort: 80
