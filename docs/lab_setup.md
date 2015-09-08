@@ -17,13 +17,12 @@ Follow the instructions [here](https://help.github.com/articles/set-up-git/#plat
 
 ## 3. Cloud Foundry account creation
 
-You'll need an account on a **Cloud Foundry** instance. Pivotal provides a public instance of **Cloud Foundry** with a 60 day free trial period.
+You'll need an account on a **Cloud Foundry** instance. If you are in a Pivotal workshop, you can skip this step, if not, Pivotal provides a public instance of **Cloud Foundry** with a 60 day free trial period [here](http://run.pivotal.io).
 
-Create an account on Pivotal Web Services [here](http://run.pivotal.io).
 
 ## 4. Orgs and spaces
 
-In order to deploy applications to **Cloud Foundry**, you'll need to setup an organisation and a space. Whilst creating the account on Pivotal Web Services, these should have been setup automatically. If you are using another instance of **CF**, then create at least one organisation and one space - this is the minimum required for the labs.
+In order to deploy applications to **Cloud Foundry**, you'll need to setup an organisation and a space. If you created the account on Pivotal Web Services, these should have been setup automatically. If you are using another instance of **CF**, then check you have at least one organisation and one space - this is the minimum required for the labs.
 
 You can learn more about orgs and spaces within **Cloud Foundry** at http://docs.pivotal.io/pivotalcf/concepts/roles.html
 
