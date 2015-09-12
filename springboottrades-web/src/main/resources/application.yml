@@ -44,3 +44,5 @@ logging:
         springframework:
            web: WARN
            cloud: WARN
+     com:
+        netflix: FATAL

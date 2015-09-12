@@ -33,4 +33,4 @@ logging:
      io:
         pivotal: INFO
      com:
-        netflix: WARN
+        netflix: FATAL
