@@ -103,8 +103,11 @@ public class MarketService {
 	@Scheduled(fixedRate = REFRESH_PERIOD)
 	protected void retrieveMarketSummary() {
 		logger.debug("Scheduled retrieval of Market Summary");
-		List<Quote> quotesIT = pickRandomThree(symbolsIT).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
-		List<Quote> quotesFS = pickRandomThree(symbolsFS).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
+		//List<Quote> quotesIT = pickRandomThree(symbolsIT).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
+		//List<Quote> quotesFS = pickRandomThree(symbolsFS).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
+		//FIXME: changed to non-parallel for sleuth Trace IDs.
+		List<Quote> quotesIT = pickRandomThree(symbolsIT).stream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
+		List<Quote> quotesFS = pickRandomThree(symbolsFS).stream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
 		summary.setTopGainers(quotesIT);
 		summary.setTopLosers(quotesFS);
 	}

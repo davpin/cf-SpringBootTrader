@@ -77,7 +77,9 @@ public class PortfolioService {
 		}
 		
 		// getLatestQuotes in parallel
-		portfolio.getHoldings().values().parallelStream().forEach(holding -> refreshHolding(holding));
+		//portfolio.getHoldings().values().parallelStream().forEach(holding -> refreshHolding(holding));
+		//FIXME: changed to non-parallel for sleuth trace IDs.
+		portfolio.getHoldings().values().stream().forEach(holding -> refreshHolding(holding));
 		portfolio.refreshTotalValue();
 		logger.debug("Portfolio: " + portfolio);
 		return portfolio;

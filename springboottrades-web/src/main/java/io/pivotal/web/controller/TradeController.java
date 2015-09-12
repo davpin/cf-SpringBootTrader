@@ -123,11 +123,17 @@ public class TradeController {
 		List<CompanyInfo> companies = marketService.getCompanies(companyName);
 		
 		//get district companyinfos and get their respective quotes in parallel.
-		List<Quote> result = companies.stream().collect(Collectors.toCollection(
+		/*List<Quote> result = companies.stream().collect(Collectors.toCollection(
 			      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
 				)).parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
-		
-		List<Quote> quotes = result.parallelStream().filter(n -> n.getStatus().startsWith("SUCCESS")).collect(Collectors.toList());
+		*/
+		//FIXME: changed to non-parallel for sleuth trace IDs.
+		List<Quote> result = companies.stream().collect(Collectors.toCollection(
+			      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
+				)).stream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
+		//List<Quote> quotes = result.parallelStream().filter(n -> n.getStatus().startsWith("SUCCESS")).collect(Collectors.toList());
+		//FIXME: changed to non-parallel for sleuth trace IDs.
+		List<Quote> quotes = result.stream().filter(n -> n.getStatus().startsWith("SUCCESS")).collect(Collectors.toList());
 		return quotes;
 	}
 	
