@@ -1,15 +1,12 @@
 buildscript {
     ext {
-        springBootVersion = '1.2.4.RELEASE'
-		springCFCloudVersion = '1.1.1.RELEASE'
-		springSecurityVersion = '4.0.1.RELEASE'
-		springVersion = '4.1.6.RELEASE'
-		springEurekaVersion = '1.0.3.RELEASE'
-    springCloudStarterParentTrain = 'Angel.SR3'
-		junitVersion = '4.12'
-		jacksonVersion = '2.5.3'
-		mysqlVersion = '5.1.35'
-		bootstrapVersion = '2.3.2'
+      springBootVersion = '1.2.4.RELEASE'
+      springCloudStarterParentTrain = 'Angel.SR3'
+      scsVersion = '1.0.0.M1'
+		  junitVersion = '4.12'
+		  bootstrapVersion = '2.3.2'
+      thymeleafExtras = '2.1.2.RELEASE'
+      dependencyPlugin = '0.5.1.RELEASE'
     }
 
     repositories {
@@ -19,7 +16,7 @@ buildscript {
     buildscript {
         dependencies {
             classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-            classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
+            classpath "io.spring.gradle:dependency-management-plugin:${dependencyPlugin}"
         }
     }
 }
@@ -32,8 +29,8 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'eclipse'
+  apply plugin: 'java'
+  apply plugin: 'eclipse'
 	apply plugin: 'jacoco'
   apply plugin: "io.spring.dependency-management"
   apply plugin: 'spring-boot'
@@ -59,14 +56,17 @@ subprojects {
     }
     dependencyManagement {
       imports {
-        mavenBom "io.pivotal.spring.cloud:spring-cloud-services-starter-parent:1.0.0.M1"
+        mavenBom "io.pivotal.spring.cloud:spring-cloud-services-starter-parent:${scsVersion}"
       }
     }
 	dependencies {
-       compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry"
-       compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker"
-		//test packages
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.cloud:spring-cloud-starter-eureka"
+    compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry"
+    compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker"
 
+    //test packages
+    testCompile "org.springframework.boot:spring-boot-starter-test"
 		testCompile "junit:junit:$junitVersion"
 
 	}
@@ -79,19 +79,14 @@ project(':springboottrades-accounts') {
 	description = "Micro-service to deal with accounts and user logins"
 
     dependencies {
-		compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-		//compile "org.springframework.security:spring-security-web:$springSecurityVersion"
-		compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
-		//compile "org.springframework.security:spring-security-config:$springSecurityVersion"
-    compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
+		  compile "org.springframework.boot:spring-boot-starter-data-jpa"
 
-		// test packages
-		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-		testRuntime "com.jayway.jsonpath:json-path"
+		  // test packages
+		  testRuntime "com.jayway.jsonpath:json-path"
 
-                // Runtime
-		runtime "org.hsqldb:hsqldb"
+      // Runtime
+		  runtime "org.hsqldb:hsqldb"
+
     }
 }
 
@@ -101,18 +96,11 @@ project(':springboottrades-quotes') {
     }
 	description = "Micro-service to retrieve up to date quotes"
     dependencies {
-		compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-		compile "org.springframework:spring-web:${springVersion}"
-		//compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-    compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
 
-		//runtime
+		  //runtime
 
-
-		//test packages
-		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-		testRuntime "com.jayway.jsonpath:json-path"
+		  //test packages
+		  testRuntime "com.jayway.jsonpath:json-path"
     }
 }
 
@@ -122,21 +110,14 @@ project(':springboottrades-portfolio') {
     }
 	description = "Micro-service to manage portfolios"
     dependencies {
-		//compile project(":springboottrades-common")
-		compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-		compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-		compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
-		//compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
-    compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
+		  compile "org.springframework.boot:spring-boot-starter-data-jpa"
 
-		//runtime
-		//runtime "mysql:mysql-connector-java:${mysqlVersion}"
-		runtime "org.hsqldb:hsqldb"
+		  //runtime
+		  runtime "org.hsqldb:hsqldb"
 
-		//test packages
-		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-    testRuntime "com.jayway.jsonpath:json-path:2.0.0"
-		testRuntime "org.hsqldb:hsqldb"
+		  //test packages
+      testRuntime "com.jayway.jsonpath:json-path:2.0.0"
+		  testRuntime "org.hsqldb:hsqldb"
     }
 }
 
@@ -146,19 +127,16 @@ project(':springboottrades-web') {
     }
 	description = "Web interface to the springboot set of services"
     dependencies {
-		//compile project(":springboottrades-common")
-		//compile "org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}"
-		compile "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
-		compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-    compile "org.springframework.cloud:spring-cloud-starter-eureka:${springEurekaVersion}"
-    compile "org.springframework.cloud:spring-cloud-starter-hystrix:${springEurekaVersion}"
-    compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
-    compile "org.springframework.cloud:spring-cloud-netflix-hystrix-dashboard:${springEurekaVersion}"
-		compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE"
+		  compile "org.springframework.boot:spring-boot-starter-thymeleaf"
+		  compile "org.springframework.boot:spring-boot-starter-security"
+      compile "org.springframework.cloud:spring-cloud-starter-hystrix"
+      compile "org.springframework.boot:spring-boot-starter-actuator"
+		  compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleafExtras}"
 
-		runtime "org.webjars:bootstrap:${bootstrapVersion}"
+      //runtime
+		  runtime "org.webjars:bootstrap:${bootstrapVersion}"
 
-		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+      //test packages
     }
 }
 
