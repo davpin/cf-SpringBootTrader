@@ -8,7 +8,17 @@ This repository holds a collection of micro services that work together to prese
 
 It was created to support workshops and demonstrations of building and using `microservices` architectures and running these in **Cloud Foundry** (although it is possible to run these on other runtimes).
 
-The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises below.
+The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises [below](#Workshps).
+
+##Table of Contents
+
+1. [Architecture](#Architecture)
+2. [Deploying the application](#Deployment)
+3. [Workshops](#Workshops)
+4. [Demos](#Demos)
+5. [Roadmap](#Roadmap)
+6. [Contributing to the project](#Contributing)
+
 
 #Architecture
 The system is composed of 4 microservices. The relationship between the microservices is illustrated below.
@@ -44,7 +54,17 @@ The web interface is built using bootstrap and Thymeleaf and uses a Spring contr
 * Quote service
 * Portfolio service
 
-# Workshops:
+#Deployment
+
+To deploy the microservices please follow the guides of the [workshop below](#Workshops).
+
+Each guide includes instructions on how to deploy and run to:
+  - Pivotal Cloud Foundry with [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services) installed.
+  - Cloud Foundry without Spring Cloud Services.
+  - [Pivotal Web Services](http://run.pivotal.io)
+  - local machine.
+
+#Workshops:
 
 The following guides describe how to setup the environment and deploy the microservices to **Cloud Foundry**.
 
@@ -56,7 +76,9 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 3. [Pushing the Quote service] [pushquote]
 4. [Pushing all the services] [pushall]
 5. [Scaling the services] [scale]
-6. [Blue/Green deployments] [bluegreen]
+6. Auto Scaling - TODO: use autoscaler service!
+7. [Blue/Green deployments] [bluegreen]
+
 
 [setup]: docs/lab_setup.md
 [registry]: docs/lab_registryserver.md
@@ -65,3 +87,59 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 [pushall]: docs/lab_pushall.md
 [scale]: docs/lab_scale.md
 [bluegreen]: docs/lab_bluegreen.md
+
+#Demos
+
+###1. Deploying ** Pivotal Cloud Foundry**.
+TODO: document a walk through of this demo.
+- Deploying microservices to Cloud Foundry.
+- Creating and binding services to applications.
+
+###2. Service discovery.
+TODO: document a walk through of this demo.
+###3. Scalability
+TODO: document a walk through of this demo.
+- provide a load generator to mimic users.
+- scale instances.
+
+###3. Configuration Management.
+TODO: document a walk through of this demo.
+###4. Traceability across all services.
+TODO: document a walk through of this demo.
+###5. Continuous Integration/Continuous Delivery.
+TODO: document a walk through of this demo.
+
+#Roadmap
+
+The roadmap for this project is constantly evolving. Please feel free to reach out with ideas.
+
+- **Config Server:**
+  Currently, the microservices obtain their configuration from the application.yml file packaged with each of them or the configuration is in the code. In the future, they'll obtain their configuration from a [Config Server]() backed by github repos.
+- **Better APIs:** Better APIs with documentation that conform to some standard and logic.
+- **Stock analysis system:** a microservice, or set of microservices, to analyse stock and provide recommendations. Also, to show polyglot persistence as well as more sophisticated data workloads.
+- **Mobile UI:** Mobile interface to expose the services on an iOS device and/or Android device natively, making use of the [Pivotal Cloud Foundry Mobile Services](http://docs.pivotal.io/mobile/index.html).
+
+#Contributing
+Everyone is encouraged to help improved this project.
+
+Here are some ways you can contribute:
+
+- by using alpha, beta, and prerelease versions
+- by reporting bugs
+- by suggesting new features
+- by writing or editing documentation
+- by writing code (no patch is too small: fix typos, add comments, clean up inconsistent whitespace)
+- by refactoring code
+- by closing [issues](https://github.com/dpinto-pivotal/cf-SpringBootTrader/issues)
+
+##Submitting an Issue
+
+We use the [GitHub issue tracker](https://github.com/dpinto-pivotal/cf-SpringBootTrader/issues) to track bugs and features. Before submitting a bug report or feature request, check to make sure it hasn't already been submitted. When submitting a bug report, please include any relevant information. Ideally, a bug report should include a pull request with failing specs, and maybe even a fix!
+
+##Submitting a Pull Request
+
+1. Fork the project.
+2. Create a topic branch.
+3. Implement your feature or bug fix.
+4. Commit and push your changes.
+5. Submit a pull request.

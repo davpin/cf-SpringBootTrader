@@ -22,6 +22,31 @@ Luckily, Pivotal Cloud Foundry allows us to assign a [`random-route`](http://doc
 
   > HINT: user the -f option to the push command.
 
+##Deploying without Spring Cloud Services
+
+  If Spring Cloud Services are not available, you should have pushed an instance of the [discovery service](https://github.com/dpinto-pivotal/cf-SpringBootTrader-extras) to the cloud. Now, you'll have to create a [*User-provided service*](http://docs.pivotal.io/pivotalcf/devguide/services/user-provided.html) and bind it to the quote service.
+
+  ### Exercise
+  1. Create a *user provided service* using the CLI.
+
+    Name this service **circuit-breaker-dashboard** and specify the URI of your instance of the registry service. For example:
+
+    `cf cups discovery-service -p '{"tag":"eureka","uri":"<my-eureka-URI>"}'`
+
+    The URI of your discovery service is the URI where your dashboard service is deployed. This was displayed at the end of `cf push` command when deploying the discovery service.
+    > The URI will be similar to `eureka-dpinto.cfapps.io`.
+
+    > Do **not** specify the protocol!!! ie. "http://"
+
+    2. push the application
+
+##Running it locally
+  To run the quote service locally, you can use the gradle wrapper script as such:
+
+  ```
+  gradlew :springboottrades-quotes:bootRun
+  ```
+  The service should start up and bind to the discovery service running locally.
 
 # Summary
 
