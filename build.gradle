@@ -1,6 +1,6 @@
 buildscript {
     ext {
-      springBootVersion = '1.2.4.RELEASE'
+      springBootVersion = '1.2.6.RELEASE'
       springCloudStarterParentTrain = 'Angel.SR3'
       scsVersion = '1.0.0.M1'
 		  junitVersion = '4.12'
