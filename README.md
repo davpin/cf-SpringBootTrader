@@ -8,16 +8,16 @@ This repository holds a collection of micro services that work together to prese
 
 It was created to support workshops and demonstrations of building and using `microservices` architectures and running these in **Cloud Foundry** (although it is possible to run these on other runtimes).
 
-The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises [below](#Workshps).
+The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises [below](#workshps).
 
 ##Table of Contents
 
-1. [Architecture](#Architecture)
-2. [Deploying the application](#Deployment)
-3. [Workshops](#Workshops)
-4. [Demos](#Demos)
-5. [Roadmap](#Roadmap)
-6. [Contributing to the project](#Contributing)
+1. [Architecture](#architecture)
+2. [Deploying the application](#deployment)
+3. [Workshops](#workshops)
+4. [Demos](#demos)
+5. [Roadmap](#roadmap)
+6. [Contributing to the project](#contributing)
 
 
 #Architecture
@@ -56,7 +56,7 @@ The web interface is built using bootstrap and Thymeleaf and uses a Spring contr
 
 #Deployment
 
-To deploy the microservices please follow the guides of the [workshop below](#Workshops).
+To deploy the microservices please follow the guides of the [workshop below](#workshops).
 
 Each guide includes instructions on how to deploy and run to:
   - Pivotal Cloud Foundry with [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services) installed.
@@ -90,8 +90,8 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 
 #Demos
 
-###1. Deploying ** Pivotal Cloud Foundry**.
-TODO: document a walk through of this demo.
+###1. Deploying to **Pivotal Cloud Foundry**.
+TODO: document a walk through of this demo. This is a walkthough of the workshop above.
 - Deploying microservices to Cloud Foundry.
 - Creating and binding services to applications.
 
@@ -112,9 +112,10 @@ TODO: document a walk through of this demo.
 #Roadmap
 
 The roadmap for this project is constantly evolving. Please feel free to reach out with ideas.
-
+- **Correlation/Traceability**
+  Provide a way to trace calls/requests through the microservices. This will be done with [Spring-cloud-sleuth](http://cloud.spring.io/spring-cloud-sleuth/).
 - **Config Server:**
-  Currently, the microservices obtain their configuration from the application.yml file packaged with each of them or the configuration is in the code. In the future, they'll obtain their configuration from a [Config Server]() backed by github repos.
+  Currently, the microservices obtain their configuration from the application.yml file packaged with each of them or the configuration is in the code. In the future, they'll obtain their configuration from a [Config Server](http://cloud.spring.io/spring-cloud-config/) backed by github repos.
 - **Better APIs:** Better APIs with documentation that conform to some standard and logic.
 - **Stock analysis system:** a microservice, or set of microservices, to analyse stock and provide recommendations. Also, to show polyglot persistence as well as more sophisticated data workloads.
 - **Mobile UI:** Mobile interface to expose the services on an iOS device and/or Android device natively, making use of the [Pivotal Cloud Foundry Mobile Services](http://docs.pivotal.io/mobile/index.html).
