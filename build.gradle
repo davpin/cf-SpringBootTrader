@@ -6,26 +6,25 @@ buildscript {
 		  junitVersion = '4.12'
 		  bootstrapVersion = '2.3.2'
       thymeleafExtras = '2.1.2.RELEASE'
-      dependencyPlugin = '0.5.1.RELEASE'
+      dependencyPlugin = '0.5.3.RELEASE'
     }
 
     repositories {
         mavenCentral()
     }
 
-    buildscript {
-        dependencies {
-            classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-            classpath "io.spring.gradle:dependency-management-plugin:${dependencyPlugin}"
-        }
+
+    dependencies {
+      classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+      classpath "io.spring.gradle:dependency-management-plugin:${dependencyPlugin}"
     }
+
 }
 
 
 // Apply versioning to all projects from versioning script.
 allprojects {
 	apply from: "$rootDir/gradle/versioning.gradle"
-
 }
 
 subprojects {
@@ -54,9 +53,11 @@ subprojects {
         mavenCentral()
         maven { url "http://repo.spring.io/milestone" }
     }
+
     dependencyManagement {
       imports {
         mavenBom "io.pivotal.spring.cloud:spring-cloud-services-starter-parent:${scsVersion}"
+        mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
       }
     }
 	dependencies {
@@ -141,5 +142,5 @@ project(':springboottrades-web') {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '2.7'
 }
