@@ -1,6 +1,6 @@
 spring:
   application:
-     name: quotes
+     name: quotes-service
 eureka:
   instance:
     hostname: ${vcap.application.uris[0]:localhost}
