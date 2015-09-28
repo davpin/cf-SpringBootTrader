@@ -18,3 +18,5 @@ logging:
 pivotal:
   quotesService:
     name: quotes-service
+  accountsService:
+    name: accounts-service
