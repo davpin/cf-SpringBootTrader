@@ -1,0 +1,22 @@
+spring:
+  application:
+     name: webUI
+eureka:
+  client:
+    registerWithEureka: false
+    registryFetchIntervalSeconds: 10
+  instance:
+    hostname: ${vcap.application.uris[0]:localhost}
+    metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+logging:
+  level:
+     io:
+        pivotal: DEBUG
+     org:
+        springframework:
+           web: WARN
+           cloud: WARN
+     com:
+       netflix:
+         hystrix: DEBUG

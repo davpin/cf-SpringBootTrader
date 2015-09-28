@@ -1,0 +1,3 @@
+eureka:
+  instance:
+    nonSecurePort: 80
