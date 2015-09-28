@@ -20,3 +20,11 @@ logging:
      com:
        netflix:
          hystrix: DEBUG
+pivotal:
+  accountsService:
+    name: accounts-service
+  summary:
+    quotes: 3
+    symbols:
+      it: EMC,ORCL,IBM,INTC,AMD,HPQ,CSCO,AAPL
+      fs: JPM,C,MS,BAC,GS,WFC,BK

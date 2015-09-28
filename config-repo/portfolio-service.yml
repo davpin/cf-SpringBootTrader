@@ -15,3 +15,6 @@ logging:
         pivotal: INFO
      com:
         netflix: WARN
+pivotal:
+  quotesService:
+    name: quotes-service
