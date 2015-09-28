@@ -23,6 +23,10 @@ logging:
 pivotal:
   accountsService:
     name: accounts-service
+  quotesService:
+    name: quotes-service
+  portfolioService:
+    name: portfolio-service
   summary:
     quotes: 3
     symbols:
