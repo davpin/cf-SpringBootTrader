@@ -12,3 +12,7 @@ logging:
         pivotal: INFO
      com:
         netflix: WARN
+pivotal:
+  quotes:
+    quotes_url: http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}
+    companies_url: http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}
