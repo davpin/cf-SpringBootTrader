@@ -11,6 +11,8 @@ import io.pivotal.quotes.exception.SymbolNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,18 +23,21 @@ import org.springframework.web.client.RestTemplate;
  *
  */
 @Service
+@RefreshScope
 public class QuoteService {
 
-	//TODO: change to get URL from Cloud service?
 	//TODO: add hystrix!
-	
-	private static final String QUOTE_URL = "http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}";
-	private static final String COMPANY_URL = "http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}"; 
+
+	@Value("${pivotal.quotes.quotes_url}")
+	protected String quote_url;
+	@Value("${pivotal.quotes.companies_url}")
+	protected String company_url; 
 	
 	private static final Logger logger = LoggerFactory
 			.getLogger(QuoteService.class);
 	
 	private RestTemplate restTemplate = new RestTemplate();
+	
 	/**
 	 * Retrieves an up to date quote for the given symbol.
 	 * 
@@ -45,7 +50,7 @@ public class QuoteService {
 		Map<String, String> params = new HashMap<String, String>();
 	    params.put("symbol", symbol);
 
-	    Quote quote = restTemplate.getForObject(QUOTE_URL, Quote.class, params);
+	    Quote quote = restTemplate.getForObject(quote_url, Quote.class, params);
         logger.debug("QuoteService.getQuote: retrieved quote: " + quote);
         
         if (quote.getSymbol() ==  null) {
@@ -65,7 +70,7 @@ public class QuoteService {
 		logger.debug("QuoteService.getCompanyInfo: retrieving info for: " + name);
 		Map<String, String> params = new HashMap<String, String>();
 	    params.put("name", name);
-	    CompanyInfo[] companies = restTemplate.getForObject(COMPANY_URL, CompanyInfo[].class, params);
+	    CompanyInfo[] companies = restTemplate.getForObject(company_url, CompanyInfo[].class, params);
 	    logger.debug("QuoteService.getCompanyInfo: retrieved info: " + companies);
 		return Arrays.asList(companies);
 	}

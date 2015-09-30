@@ -2,7 +2,6 @@ package io.pivotal.quotes.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -12,16 +11,49 @@ import io.pivotal.quotes.domain.CompanyInfo;
 import io.pivotal.quotes.domain.Quote;
 import io.pivotal.quotes.exception.SymbolNotFoundException;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.SpringApplicationContextLoader;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 /**
  * Tests the QuoteService.
  * @author David Ferreira Pinto
  *
  */
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@TestPropertySource(properties = { "pivotal.quotes.quotes_url:http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}","pivotal.quotes.companies_url:http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}" })
+//@PropertySource("classpath:application.yml")
+//@ContextConfiguration(loader = SpringApplicationContextLoader.class)
+//@SpringApplicationConfiguration(classes = TestContextConfiguration.class)
+//@WebAppConfiguration
 public class QuoteServiceTest {
+	MockMvc mockMvc;
+	
+	@InjectMocks
+	QuoteService service;
+	
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
 
-	QuoteService service = new QuoteService();
+	    this.mockMvc = MockMvcBuilders.standaloneSetup(service).build();
+		
+	    //TODO: fix this hack! properties should be obtained from external config.
+	    
+		service.quote_url = "http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}";
+		service.company_url = "http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}";
+	    
+	}
 	/**
 	 * Tests retrieving a quote from the external service.
 	 * @throws Exception
@@ -65,6 +97,6 @@ public class QuoteServiceTest {
 	public void getNullCompanyInfo() throws Exception {
 		List<CompanyInfo> comps = service.getCompanyInfo(TestConfiguration.NULL_QUOTE_SYMBOL);
 		assertTrue(comps.isEmpty());
-	}
-	
+	}	
 }
+

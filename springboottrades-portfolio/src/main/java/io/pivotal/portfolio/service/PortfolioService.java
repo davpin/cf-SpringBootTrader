@@ -6,7 +6,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ import io.pivotal.portfolio.repository.OrderRepository;
  *
  */
 @Service
+@RefreshScope
 public class PortfolioService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(PortfolioService.class);
@@ -40,6 +43,13 @@ public class PortfolioService {
 	@Autowired
 	@LoadBalanced
 	private RestTemplate restTemplate;
+	
+	@Value("${pivotal.quotesService.name}")
+	protected String quotesService;
+	
+	@Value("${pivotal.accountsService.name}")
+	protected String accountsService;
+	
 	/**
 	 * Retrieves the portfolio for the given accountId. 
 	 * 
@@ -77,7 +87,13 @@ public class PortfolioService {
 		}
 		
 		// getLatestQuotes in parallel
-		portfolio.getHoldings().values().parallelStream().forEach(holding -> refreshHolding(holding));
+		//portfolio.getHoldings().values().parallelStream().forEach(holding -> refreshHolding(holding));
+		/*
+		 * Sleuth currently doesn't work with parallelStream.
+		 * TODO: re-implement parallel calls.
+		 */
+		portfolio.getHoldings().values().stream().forEach(holding -> refreshHolding(holding));
+		
 		portfolio.refreshTotalValue();
 		logger.debug("Portfolio: " + portfolio);
 		return portfolio;
@@ -101,7 +117,7 @@ public class PortfolioService {
 	 */
 	private Quote getQuote(String symbol) {
 		logger.debug("Fetching quote: " + symbol);
-		Quote quote = restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, symbol);
+		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
 	
@@ -120,7 +136,7 @@ public class PortfolioService {
 		}
 		if (order.getOrderType() == OrderType.BUY) {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity("http://accounts/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			ResponseEntity<Double>  result= restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
 				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
 				return repository.save(order);
@@ -131,7 +147,7 @@ public class PortfolioService {
 			}
 		} else {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity("http://accounts/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			ResponseEntity<Double>  result= restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
 				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
 				return repository.save(order);

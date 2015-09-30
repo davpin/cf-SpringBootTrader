@@ -4,10 +4,10 @@ instances: 1
 memory: 512M
 #buildpack: toms-java-buildpack
 env:
-    SPRING_PROFILES_DEFAULT: cloud
+    SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 applications:
 - name: accounts
   random-route: true
   path: springboottrades-accounts/build/libs/accounts-0.2.jar
-  services: [ traderdb, discovery-service, circuit-breaker-dashboard ]
+  services: [ traderdb, discovery-service, circuit-breaker-dashboard, config-server ]
