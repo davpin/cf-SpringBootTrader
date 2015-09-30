@@ -1,9 +1,9 @@
 spring:
   application:
-     name: webUI
+     name: web-service
 eureka:
   client:
-    registerWithEureka: false
+    registerWithEureka: true
     registryFetchIntervalSeconds: 10
 pivotal:
   summary:
