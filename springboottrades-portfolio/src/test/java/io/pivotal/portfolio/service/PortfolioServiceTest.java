@@ -49,7 +49,7 @@ public class PortfolioServiceTest {
  
 		when(repo.findByAccountId(ServiceTestConfiguration.ACCOUNT_ID)).thenReturn(ServiceTestConfiguration.orders());
 		//when(quoteService.getUri()).thenReturn(uri);
-		when(restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
+		when(restTemplate.getForObject("http://" + service.quotesService +"/quote/{symbol}", Quote.class, ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
 		Portfolio folio = service.getPortfolio(ServiceTestConfiguration.ACCOUNT_ID);
 	}
 	@Test
@@ -61,7 +61,7 @@ public class PortfolioServiceTest {
 		
 		
 		//when(accountService.getUri()).thenReturn(uri);
-		when(restTemplate.getForEntity("http://accounts/accounts/{userid}/decreaseBalance/{amount}", Double.class, ServiceTestConfiguration.order().getAccountId(), amount )).thenReturn(response);
+		when(restTemplate.getForEntity("http://" + service.accountsService +"/accounts/{userid}/decreaseBalance/{amount}", Double.class, ServiceTestConfiguration.order().getAccountId(), amount )).thenReturn(response);
 		when(repo.save(ServiceTestConfiguration.order())).thenReturn(returnOrder);
 		Order order = service.addOrder(ServiceTestConfiguration.order());
 		assertEquals(order, returnOrder);
@@ -92,7 +92,7 @@ public class PortfolioServiceTest {
 		
 		
 		//when(accountService.getUri()).thenReturn(uri);
-		when(restTemplate.getForEntity("http://accounts/accounts/{userid}/increaseBalance/{amount}", Double.class, ServiceTestConfiguration.sellOrder().getAccountId(), amount )).thenReturn(response);
+		when(restTemplate.getForEntity("http://" + service.accountsService +"/accounts/{userid}/increaseBalance/{amount}", Double.class, ServiceTestConfiguration.sellOrder().getAccountId(), amount )).thenReturn(response);
 		when(repo.save(ServiceTestConfiguration.sellOrder())).thenReturn(returnOrder);
 		Order order = service.addOrder(ServiceTestConfiguration.sellOrder());
 		assertEquals(order, returnOrder);

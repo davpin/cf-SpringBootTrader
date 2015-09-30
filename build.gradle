@@ -1,146 +1,131 @@
 buildscript {
-    ext {
-      springBootVersion = '1.2.6.RELEASE'
-      springCloudStarterParentTrain = 'Angel.SR3'
-      scsVersion = '1.0.0.M1'
-		  junitVersion = '4.12'
-		  bootstrapVersion = '2.3.2'
-      thymeleafExtras = '2.1.2.RELEASE'
-      dependencyPlugin = '0.5.3.RELEASE'
-    }
+	ext {
+		springBootVersion = '1.2.6.RELEASE'
+		springCloudStarterParentTrain = 'Angel.SR3'
+		scsVersion = '1.0.0.M1'
+		junitVersion = '4.12'
+		bootstrapVersion = '2.3.2'
+		thymeleafExtras = '2.1.2.RELEASE'
+		dependencyPlugin = '0.5.3.RELEASE'
+	}
 
-    repositories {
-        mavenCentral()
-    }
+	repositories { mavenCentral() }
 
 
-    dependencies {
-      classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-      classpath "io.spring.gradle:dependency-management-plugin:${dependencyPlugin}"
-    }
-
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+		classpath "io.spring.gradle:dependency-management-plugin:${dependencyPlugin}"
+	}
 }
 
 
 // Apply versioning to all projects from versioning script.
-allprojects {
-	apply from: "$rootDir/gradle/versioning.gradle"
-}
+allprojects { apply from: "$rootDir/gradle/versioning.gradle" }
 
 subprojects {
-  apply plugin: 'java'
-  apply plugin: 'eclipse'
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
 	apply plugin: 'jacoco'
-  apply plugin: "io.spring.dependency-management"
-  apply plugin: 'spring-boot'
+	apply plugin: "io.spring.dependency-management"
+	apply plugin: 'spring-boot'
 
 
-	jacoco {
-		toolVersion = "0.7.1.201405082137"
-	//	reportsDir = file("$buildDir/customJacocoReportDir")
+	jacoco { toolVersion = "0.7.1.201405082137" //	reportsDir = file("$buildDir/customJacocoReportDir")
 	}
-	jacocoTestReport { group = "Reporting"
+	jacocoTestReport {
+		group = "Reporting"
 		description = "Generate Jacoco coverage reports after running tests."
 		additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
-		}
+	}
 
 	test { finalizedBy jacocoTestReport }
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 
-    repositories {
-        mavenCentral()
-        maven { url "http://repo.spring.io/milestone" }
-    }
+	repositories {
+		mavenCentral()
+		maven { url "http://repo.spring.io/milestone" }
+	}
 
-    dependencyManagement {
-      imports {
-        mavenBom "io.pivotal.spring.cloud:spring-cloud-services-starter-parent:${scsVersion}"
-        mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
-      }
-    }
+	dependencyManagement {
+		imports {
+			mavenBom "io.pivotal.spring.cloud:spring-cloud-services-starter-parent:${scsVersion}"
+			mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+		}
+	}
 	dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.springframework.cloud:spring-cloud-starter-eureka"
-    compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry"
-    compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker"
+		compile "org.springframework.boot:spring-boot-starter-web"
+		compile "org.springframework.boot:spring-boot-starter-actuator"
+		compile "org.springframework.cloud:spring-cloud-starter-eureka"
+		compile "org.springframework.cloud:spring-cloud-starter-hystrix"
+		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-config-client"
+		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry"
+		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker"
 
-    //test packages
-    testCompile "org.springframework.boot:spring-boot-starter-test"
+		//test packages
+		testCompile "org.springframework.boot:spring-boot-starter-test"
 		testCompile "junit:junit:$junitVersion"
 
 	}
 }
 
 project(':springboottrades-accounts') {
-    jar {
-        baseName = 'accounts'
-    }
+	jar { baseName = 'accounts' }
 	description = "Micro-service to deal with accounts and user logins"
 
-    dependencies {
-		  compile "org.springframework.boot:spring-boot-starter-data-jpa"
+	dependencies {
+		compile "org.springframework.boot:spring-boot-starter-data-jpa"
 
-		  // test packages
-		  testRuntime "com.jayway.jsonpath:json-path"
+		// test packages
+		testRuntime "com.jayway.jsonpath:json-path"
 
-      // Runtime
-		  runtime "org.hsqldb:hsqldb"
+		// Runtime
+		runtime "org.hsqldb:hsqldb"
 
-    }
+	}
 }
 
 project(':springboottrades-quotes') {
-    jar {
-        baseName = 'quotes'
-    }
+	jar { baseName = 'quotes' }
 	description = "Micro-service to retrieve up to date quotes"
-    dependencies {
+	dependencies {
 
-		  //runtime
+		//runtime
 
-		  //test packages
-		  testRuntime "com.jayway.jsonpath:json-path"
-    }
+		//test packages
+		testRuntime "com.jayway.jsonpath:json-path"
+	}
 }
 
 project(':springboottrades-portfolio') {
-    jar {
-        baseName = 'portfolio'
-    }
+	jar { baseName = 'portfolio' }
 	description = "Micro-service to manage portfolios"
-    dependencies {
-		  compile "org.springframework.boot:spring-boot-starter-data-jpa"
+	dependencies {
+		compile "org.springframework.boot:spring-boot-starter-data-jpa"
 
-		  //runtime
-		  runtime "org.hsqldb:hsqldb"
+		//runtime
+		runtime "org.hsqldb:hsqldb"
 
-		  //test packages
-      testRuntime "com.jayway.jsonpath:json-path:2.0.0"
-		  testRuntime "org.hsqldb:hsqldb"
-    }
+		//test packages
+		testRuntime "com.jayway.jsonpath:json-path:2.0.0"
+		testRuntime "org.hsqldb:hsqldb"
+	}
 }
 
 project(':springboottrades-web') {
-    jar {
-        baseName = 'web'
-    }
+	jar { baseName = 'web' }
 	description = "Web interface to the springboot set of services"
-    dependencies {
-		  compile "org.springframework.boot:spring-boot-starter-thymeleaf"
-		  compile "org.springframework.boot:spring-boot-starter-security"
-      compile "org.springframework.cloud:spring-cloud-starter-hystrix"
-      compile "org.springframework.boot:spring-boot-starter-actuator"
-		  compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleafExtras}"
+	dependencies {
+		compile "org.springframework.boot:spring-boot-starter-thymeleaf"
+		compile "org.springframework.boot:spring-boot-starter-security"
+		compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleafExtras}"
 
-      //runtime
-		  runtime "org.webjars:bootstrap:${bootstrapVersion}"
+		//runtime
+		runtime "org.webjars:bootstrap:${bootstrapVersion}"
 
-      //test packages
-    }
+		//test packages
+	}
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.7'
-}
+task wrapper(type: Wrapper) { gradleVersion = '2.7' }
