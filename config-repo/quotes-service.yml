@@ -1,17 +1,6 @@
 spring:
   application:
      name: quotes-service
-eureka:
-  instance:
-    hostname: ${vcap.application.uris[0]:localhost}
-    metadataMap:
-      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
-logging:
-  level:
-     io:
-        pivotal: INFO
-     com:
-        netflix: WARN
 pivotal:
   quotes:
     quotes_url: http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}
