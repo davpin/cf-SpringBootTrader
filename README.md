@@ -72,17 +72,19 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 
 1. [Setting up the environment] [setup]
 2. [Creating a discovery service] [registry]
-2. [Creating a circuit breaker dashboard] [circuitbreaker]
-3. [Pushing the Quote service] [pushquote]
-4. [Pushing all the services] [pushall]
-5. [Scaling the services] [scale]
-6. Auto Scaling - TODO: use autoscaler service!
-7. [Blue/Green deployments] [bluegreen]
+3. [Creating a circuit breaker dashboard] [circuitbreaker]
+4. [creating the configuration service][configserver]
+5. [Pushing the Quote service] [pushquote]
+6. [Pushing all the services] [pushall]
+7. [Scaling the services] [scale]
+8. Auto Scaling - TODO: use autoscaler service!
+9. [Blue/Green deployments] [bluegreen]
 
 
 [setup]: docs/lab_setup.md
 [registry]: docs/lab_registryserver.md
 [circuitbreaker]: docs/lab_circuitbreaker.md
+[configserver]: docs/lab_configserver.md
 [pushquote]: docs/lab_pushquote.md
 [pushall]: docs/lab_pushall.md
 [scale]: docs/lab_scale.md

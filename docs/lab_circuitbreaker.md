@@ -62,4 +62,4 @@ Follow the guidelines to run the Discover service locally  [here](https://github
 
 The circuit breaker dashboard can be accessed on the link provided in the console UI. Find the circuit breaker service you created and click on **Manage**.
 
-You can now move on to [pushing the quote service](lab_pushquote.md)
+You can now move on to [creating the configuration service](lab_configserver.md)
