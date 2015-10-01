@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		springBootVersion = '1.3.0.M5'
-		springCloudStarterParentTrain = 'Brixton.M1'
+		springBootVersion = '1.2.6.RELEASE'
+		springCloudStarterParentTrain = 'Angel.SR3'
 		scsVersion = '1.0.0.M1'
 		junitVersion = '4.12'
 		bootstrapVersion = '2.3.2'
@@ -9,10 +9,7 @@ buildscript {
 		dependencyPlugin = '0.5.3.RELEASE'
 	}
 
-	repositories { 
-		maven { url "http://repo.spring.io/libs-milestone" }
-		mavenCentral() 
-		}
+	repositories { mavenCentral() }
 
 
 	dependencies {
