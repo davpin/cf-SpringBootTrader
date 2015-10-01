@@ -4,7 +4,6 @@ instances: 1
 memory: 512M
 #buildpack: toms-java-buildpack
 env:
-    SPRING_PROFILES_DEFAULT: cloud
     SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 applications:
