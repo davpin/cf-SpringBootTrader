@@ -9,5 +9,5 @@ env:
 applications:
 - name: portfolio
   random-route: true
-  path: springboottrades-portfolio/build/libs/portfolio-0.2.jar
+  path: springboottrades-portfolio/build/libs/portfolio-0.3.jar
   services: [ traderdb, discovery-service, circuit-breaker-dashboard, config-server ]
