@@ -111,16 +111,27 @@ TODO: document a walk through of this demo.
 ###5. Continuous Integration/Continuous Delivery.
 TODO: document a walk through of this demo.
 
+
+#Features
+
+- **Discovery service:**
+  All microservices register with the [Discovery Service](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html) and discover other microservices through it.
+- **Correlation/Traceability:**
+  Traceability of requests through all the microservices. This is done using [Spring-cloud-sleuth](http://cloud.spring.io/spring-cloud-sleuth/).
+- **Config Server:**
+  The microservices obtain the configuration from a [Configuration Service](http://cloud.spring.io/spring-cloud-config/) backed by a git repository. This means that configuration is now auditables and version controlled, as well as providing the ability to refresh configuration during runtime.
+
 #Roadmap
 
 The roadmap for this project is constantly evolving. Please feel free to reach out with ideas.
-- **Correlation/Traceability**
-  Provide a way to trace calls/requests through the microservices. This will be done with [Spring-cloud-sleuth](http://cloud.spring.io/spring-cloud-sleuth/).
-- **Config Server:**
-  Currently, the microservices obtain their configuration from the application.yml file packaged with each of them or the configuration is in the code. In the future, they'll obtain their configuration from a [Config Server](http://cloud.spring.io/spring-cloud-config/) backed by github repos.
-- **Better APIs:** Better APIs with documentation that conform to some standard and logic.
-- **Stock analysis system:** a microservice, or set of microservices, to analyse stock and provide recommendations. Also, to show polyglot persistence as well as more sophisticated data workloads.
-- **Mobile UI:** Mobile interface to expose the services on an iOS device and/or Android device natively, making use of the [Pivotal Cloud Foundry Mobile Services](http://docs.pivotal.io/mobile/index.html).
+- **Better APIs:**
+  Better APIs with documentation that conform to some standard and logic.
+- **Monitoring/Operations:**
+  Show how to monitor a distributed system comprising of multiple microservices.
+- **Stock analysis system:**
+   A microservice, or set of microservices, to analyse stock and provide recommendations. Also, to show polyglot persistence as well as more sophisticated data workloads.
+- **Mobile UI:** 
+  Mobile interface to expose the services on an iOS device and/or Android device natively, making use of the [Pivotal Cloud Foundry Mobile Services](http://docs.pivotal.io/mobile/index.html).
 
 #Contributing
 Everyone is encouraged to help improved this project.
