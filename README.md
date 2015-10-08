@@ -97,18 +97,24 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 TODO: document a walk through of this demo. This is a walkthough of the workshop above.
 - Deploying microservices to Cloud Foundry.
 - Creating and binding services to applications.
+
 ###2. Service discovery.
 TODO: document a walk through of this demo.
+
 ###3. Scalability
 TODO: document a walk through of this demo.
 - provide a load generator to mimic users.
 - scale instances.
+
 ###4. Configuration Management.
 TODO: document a walk through of this demo.
+
 ###5. Traceability across all services.
 TODO: document a walk through of this demo using Zipkin and Kibana.
+
 ###6. Continuous Integration/Continuous Delivery.
 TODO: document a walk through of this demo.
+
 ###7. Operations Demo
 TODO: document how to operate/monitor several microservices, using Spring Boot Admin and ELK tile
 
