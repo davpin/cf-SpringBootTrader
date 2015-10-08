@@ -79,6 +79,7 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 7. [Scaling the services] [scale]
 8. Auto Scaling - TODO: use autoscaler service!
 9. [Blue/Green deployments] [bluegreen]
+10. Monitor workshop - TODO: show how to monitor microservices using springbootadmin, ELK tile and Zipkin.
 
 
 [setup]: docs/lab_setup.md
@@ -96,20 +97,20 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 TODO: document a walk through of this demo. This is a walkthough of the workshop above.
 - Deploying microservices to Cloud Foundry.
 - Creating and binding services to applications.
-
 ###2. Service discovery.
 TODO: document a walk through of this demo.
 ###3. Scalability
 TODO: document a walk through of this demo.
 - provide a load generator to mimic users.
 - scale instances.
-
-###3. Configuration Management.
+###4. Configuration Management.
 TODO: document a walk through of this demo.
-###4. Traceability across all services.
+###5. Traceability across all services.
+TODO: document a walk through of this demo using Zipkin and Kibana.
+###6. Continuous Integration/Continuous Delivery.
 TODO: document a walk through of this demo.
-###5. Continuous Integration/Continuous Delivery.
-TODO: document a walk through of this demo.
+###7. Operations Demo
+TODO: document how to operate/monitor several microservices, using Spring Boot Admin and ELK tile
 
 
 #Features
@@ -128,6 +129,10 @@ The roadmap for this project is constantly evolving. Please feel free to reach o
   Better APIs with documentation that conform to some standard and logic.
 - **Monitoring/Operations:**
   Show how to monitor a distributed system comprising of multiple microservices.
+  This will comprise of:
+   - Spring Boot Admin
+   - ELK tile
+   - Zipkin
 - **Stock analysis system:**
    A microservice, or set of microservices, to analyse stock and provide recommendations. Also, to show polyglot persistence as well as more sophisticated data workloads.
 - **Mobile UI:** 
