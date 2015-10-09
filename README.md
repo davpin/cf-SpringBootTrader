@@ -8,7 +8,7 @@ This repository holds a collection of micro services that work together to prese
 
 It was created to support workshops and demonstrations of building and using `microservices` architectures and running these in **Cloud Foundry** (although it is possible to run these on other runtimes).
 
-The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises [below](#workshps).
+The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises [below](#workshops).
 
 ##Table of Contents
 
