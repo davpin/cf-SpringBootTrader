@@ -97,6 +97,7 @@ public class ServiceTestConfiguration {
 		quote.setHigh(0.0);
 		quote.setLow(0.0);
 		quote.setOpen(26.52);
+		quote.setStatus("SUCCESS");
 		return quote;
 	}
 	

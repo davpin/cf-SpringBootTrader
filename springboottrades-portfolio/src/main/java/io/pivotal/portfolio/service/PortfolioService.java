@@ -40,12 +40,18 @@ public class PortfolioService {
 	@Autowired
 	OrderRepository repository;
 	
+	/**
+	 * 
+	 */
+	@Autowired
+	QuoteRemoteCallService quoteService;
+	
 	@Autowired
 	@LoadBalanced
 	private RestTemplate restTemplate;
 	
-	@Value("${pivotal.quotesService.name}")
-	protected String quotesService;
+	//@Value("${pivotal.quotesService.name}")
+	//protected String quotesService;
 	
 	@Value("${pivotal.accountsService.name}")
 	protected String accountsService;
@@ -105,8 +111,10 @@ public class PortfolioService {
 	 * @param holding the holding to refresh.
 	 */
 	private void refreshHolding(Holding holding) {
-		Quote quote = getQuote(holding.getSymbol());
-		holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
+		Quote quote = quoteService.getQuote(holding.getSymbol());
+		if (quote.getStatus().equalsIgnoreCase("SUCCESS")) {
+			holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
+		}
 	}
 	
 	/**
@@ -115,11 +123,11 @@ public class PortfolioService {
 	 * @param symbol the symbol of the quote to fetch.
 	 * @return
 	 */
-	private Quote getQuote(String symbol) {
+	/*private Quote getQuote(String symbol) {
 		logger.debug("Fetching quote: " + symbol);
 		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
 		return quote;
-	}
+	}*/
 	
 	/**
 	 * Add an order to the repository and modify account balance.
