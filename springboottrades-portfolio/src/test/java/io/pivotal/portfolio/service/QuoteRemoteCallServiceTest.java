@@ -43,6 +43,9 @@ public class QuoteRemoteCallServiceTest {
 		MockitoAnnotations.initMocks(this);
 	}
 	
+	/*
+	 * resttemplate not being injected into service thus cannot test success of hystrix
+	 */
 	@Test
 	@Ignore
 	public void doGetQuote() {
