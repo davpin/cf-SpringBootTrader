@@ -116,7 +116,7 @@ project(':springboottrades-portfolio') {
 		runtime "org.hsqldb:hsqldb"
 
 		//test packages
-		testRuntime "com.jayway.jsonpath:json-path:2.0.0"
+		testRuntime "com.jayway.jsonpath:json-path"
 		testRuntime "org.hsqldb:hsqldb"
 	}
 }

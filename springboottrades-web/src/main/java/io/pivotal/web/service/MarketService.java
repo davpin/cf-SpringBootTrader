@@ -108,10 +108,17 @@ public class MarketService {
 		logger.debug("Order saved:: " + result.getBody());
 		return result.getBody();
 	}
-	
+	@HystrixCommand(fallbackMethod = "getPortfolioFallback")
 	public Portfolio getPortfolio(String accountId) {
 		Portfolio folio = restTemplate.getForObject("http://" + portfolioService + "/portfolio/{accountid}", Portfolio.class, accountId);
 		logger.debug("Portfolio received: " + folio);
+		return folio;
+	}
+	
+	private Portfolio getPortfolioFallback(String accountId) {
+		logger.debug("Portfolio fallback");
+		Portfolio folio = new Portfolio();
+		folio.setAccountId(accountId);
 		return folio;
 	}
 
