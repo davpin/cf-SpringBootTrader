@@ -16,6 +16,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 /**
  * A service to retrieve Company and Quote information.
  * 
@@ -45,6 +47,7 @@ public class QuoteService {
 	 * @return The quote object or null if not found.
 	 * @throws SymbolNotFoundException 
 	 */
+	@HystrixCommand(fallbackMethod = "getQuoteFallback")
 	public Quote getQuote(String symbol) throws SymbolNotFoundException {
 		logger.debug("QuoteService.getQuote: retrieving quote for: " + symbol);
 		Map<String, String> params = new HashMap<String, String>();
@@ -57,6 +60,11 @@ public class QuoteService {
         	throw new SymbolNotFoundException("Symbol not found: " + symbol);
         }
 		return quote;
+	}
+	
+	private Quote getQuoteFallback(String symbol) throws SymbolNotFoundException {
+		logger.debug("QuoteService.getQuoteFallback: circuit opened for symbol: " + symbol);
+		throw new RuntimeException("Quote service unavailable.");
 	}
 	
 	/**
