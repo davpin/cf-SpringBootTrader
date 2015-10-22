@@ -96,7 +96,7 @@ public class QuoteControllerTest {
 
 		mockMvc.perform(
 				get("/quote/" + TestConfiguration.NULL_QUOTE_SYMBOL).contentType(
-						MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest())
+						MediaType.APPLICATION_JSON)).andExpect(status().is5xxServerError())
 						.andDo(print());
 
 	}

@@ -92,7 +92,7 @@ public class QuoteController {
 	public void handleException(Exception e, HttpServletResponse response) throws IOException {
 		logger.warn("Handle Error: " + e.getMessage());
 		logger.warn("Exception:", e);
-		response.sendError(HttpStatus.BAD_REQUEST.value(), "ERROR: " + e.getMessage());
+		response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "ERROR: " + e.getMessage());
 	    //return "ERROR: " + e.getMessage();
 	}
 }
