@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.3.0.M5'
+		springBootVersion = '1.3.0.RC1'
 		springCloudStarterParentTrain = 'Brixton.BUILD-SNAPSHOT'
 		scsVersion = '1.0.0.M1'
 		junitVersion = '4.12'
@@ -13,25 +13,28 @@ buildscript {
 		mavenCentral()
 		maven { url "http://repo.spring.io/milestone" }
 		maven { url "http://repo.spring.io/snapshot" }
+		maven { url "https://plugins.gradle.org/m2/" }
 	}
 
 
 	dependencies {
 		classpath "io.spring.gradle:dependency-management-plugin:${dependencyPlugin}"
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+		classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.7"
 	}
 }
-
 
 // Apply versioning to all projects from versioning script.
 allprojects { apply from: "$rootDir/gradle/versioning.gradle" }
 
 subprojects {
+	
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	apply plugin: 'jacoco'
 	apply plugin: 'spring-boot'
 	apply plugin: "io.spring.dependency-management"
+	apply plugin: "com.gorylenko.gradle-git-properties"
 	
 
 
@@ -66,7 +69,7 @@ subprojects {
 		compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
 		//compile "org.springframework.cloud:spring-cloud-starter-eureka"
 		//compile "org.springframework.cloud:spring-cloud-starter-hystrix"
-		compile "org.springframework.cloud:spring-cloud-starter-sleuth:1.0.0.M1"
+		compile "org.springframework.cloud:spring-cloud-starter-sleuth"
 		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-config-client"
 		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry"
 		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker"
@@ -76,6 +79,11 @@ subprojects {
 		testCompile "junit:junit:$junitVersion"
 
 	}
+	// process substitutions in yml files.
+	processResources {
+		expand(project.properties)
+	}
+	
 }
 
 project(':springboottrades-accounts') {
