@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 import io.pivotal.portfolio.domain.Holding;
 import io.pivotal.portfolio.domain.Order;
 import io.pivotal.portfolio.domain.OrderType;
@@ -106,15 +108,21 @@ public class PortfolioService {
 	}
 	
 	/**
-	 * Calculates the current value of th holding.
+	 * Calculates the current value of the holding.
 	 * 
 	 * @param holding the holding to refresh.
 	 */
+	@HystrixCommand(fallbackMethod = "setDefaultHolding")
 	private void refreshHolding(Holding holding) {
 		Quote quote = quoteService.getQuote(holding.getSymbol());
 		if (quote.getStatus().equalsIgnoreCase("SUCCESS")) {
 			holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
 		}
+	}
+	
+	@SuppressWarnings("unused")
+	private void setDefaultHolding(Holding holding){
+		holding.setCurrentValue(new BigDecimal(0));
 	}
 	
 	/**
