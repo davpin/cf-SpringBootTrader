@@ -144,7 +144,7 @@ public class PortfolioService {
 		}
 		if (order.getOrderType() == OrderType.BUY) {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			ResponseEntity<Double>  result= restTemplate.getForEntity("https://" + accountsService + "/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
 				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
 				return repository.save(order);
@@ -155,7 +155,7 @@ public class PortfolioService {
 			}
 		} else {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			ResponseEntity<Double>  result= restTemplate.getForEntity("https://" + accountsService + "/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
 				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
 				return repository.save(order);

@@ -43,7 +43,7 @@ public class QuoteRemoteCallService {
 	@HystrixCommand(fallbackMethod = "getQuoteFallback")
 	public Quote getQuote(String symbol) {
 		logger.debug("Fetching quote: " + symbol);
-		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
+		Quote quote = restTemplate.getForObject("https://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
 	/**

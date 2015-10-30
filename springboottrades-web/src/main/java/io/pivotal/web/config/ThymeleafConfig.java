@@ -19,11 +19,14 @@ public class ThymeleafConfig {
 	/*
 	 * Spring Boot Autoconfig adding the SpringSecurityDialect bean automatically from
 	 * 1.3.0.M4???? 
-	 * @Bean
+	 */
+	/*
+	@Bean
 	public SpringSecurityDialect springSecurityDialect() {
 		return new SpringSecurityDialect();
 	}
 	*/
+	
 	/*
 	@Bean 
 	public ServletContextTemplateResolver templateResolver() {
