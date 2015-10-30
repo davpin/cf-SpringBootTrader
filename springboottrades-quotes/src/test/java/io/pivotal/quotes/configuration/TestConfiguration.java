@@ -1,5 +1,6 @@
 package io.pivotal.quotes.configuration;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,10 +20,10 @@ public class TestConfiguration {
 	public static final String QUOTE_NAME = "EMC Corp";
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss zzzXXX yyyy", Locale.ENGLISH);
 	public static final String QUOTE_DATE_STRING = "Wed May 6 00:00:00 UTC-04:00 2015";
-	public static final double QUOTE_LAST_PRICE = 26.135;
-	public static final double QUOTE_CHANGE = 0.00500000000000256d;
-	public static final double QUOTE_CHANGE_PERCENT = 0.0191350937619692;
-	public static final double QUOTE_MSDATE = 42130d;
+	public static final BigDecimal QUOTE_LAST_PRICE = new BigDecimal(26.135);
+	public static final BigDecimal QUOTE_CHANGE = new BigDecimal(0.00500000000000256d);
+	public static final float QUOTE_CHANGE_PERCENT = 0.0191350937619692f;
+	public static final float QUOTE_MSDATE = 42130f;
 	
 	public static final String COMPANY_EXCHANGE = "NASDAQ";
 	public static final String NULL_QUOTE_SYMBOL = "LALALALA";
@@ -47,13 +48,13 @@ public class TestConfiguration {
 			e.printStackTrace();
 		}
 		quote.setmSDate(QUOTE_MSDATE);
-		quote.setMarketCap(50755764235.00);
+		quote.setMarketCap(50755764235.00f);
 		quote.setVolume(15159291);
-		quote.setChangeYTD(29.74);
-		quote.setChangePercentYTD(-12.1217215870881);
-		quote.setHigh(0.0);
-		quote.setLow(0.0);
-		quote.setOpen(26.52);
+		quote.setChangeYTD(29.74f);
+		quote.setChangePercentYTD(-12.1217215870881f);
+		quote.setHigh(new BigDecimal(0.0));
+		quote.setLow(new BigDecimal(0.0));
+		quote.setOpen(new BigDecimal(26.52));
 		return quote;
 		
 	}
