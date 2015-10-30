@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author David Ferreira Pinto
  *
  */
-public class CompanyInfo {
+public class CompanyInfo implements Comparable<CompanyInfo> {
 
 	@JsonProperty("Symbol")
 	private String symbol;
@@ -48,5 +48,12 @@ public class CompanyInfo {
 				.append(name).append(", exchange=").append(exchange)
 				.append("]");
 		return builder.toString();
+	}
+	@Override
+	public int compareTo(CompanyInfo o) {
+		if(o == null){
+			return -1;
+		}
+		return this.getSymbol().compareTo(o.getSymbol());
 	}
 }
