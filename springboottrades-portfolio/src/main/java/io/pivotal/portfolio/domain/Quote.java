@@ -16,24 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
-/*
- * {
-    "Name":"Apple Inc",
-    "Symbol":"AAPL",
-    "LastPrice":524.49,
-    "Change":15.6,
-    "ChangePercent":3.06549549018453,
-    "Timestamp":"Wed Oct 23 13:39:19 UTC-06:00 2013",
-    "MSDate": 41570.568969907,
-    "MarketCap":476497591530,
-    "Volume":397562,
-    "ChangeYTD":532.1729,
-    "ChangePercentYTD":-1.44368493773359,
-    "High":52499,
-    "Low":519.175,
-    "Open":519.175
-}
- */
+	public static final String STATUS_SUCCESS = "SUCCESS";
+	/*
+	 * { "Name":"Apple Inc", "Symbol":"AAPL", "LastPrice":524.49, "Change":15.6,
+	 * "ChangePercent":3.06549549018453,
+	 * "Timestamp":"Wed Oct 23 13:39:19 UTC-06:00 2013", "MSDate":
+	 * 41570.568969907, "MarketCap":476497591530, "Volume":397562,
+	 * "ChangeYTD":532.1729, "ChangePercentYTD":-1.44368493773359, "High":52499,
+	 * "Low":519.175, "Open":519.175 }
+	 */
 	@JsonProperty("Status")
 	private String status;
 	@JsonProperty("Name")
@@ -47,7 +38,7 @@ public class Quote {
 	@JsonProperty("ChangePercent")
 	private Double changePercent;
 	@JsonProperty("Timestamp")
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE MMM dd HH:mm:ss zzzXXX yyyy")
 	private Date timestamp;
 	@JsonProperty("MSDate")
 	private Double mSDate;
@@ -65,94 +56,107 @@ public class Quote {
 	private Double low;
 	@JsonProperty("Open")
 	private Double open;
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getSymbol() {
 		return symbol;
 	}
-	
+
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
+
 	public Double getLastPrice() {
 		return lastPrice;
 	}
-	
+
 	public void setLastPrice(Double lastPrice) {
 		this.lastPrice = lastPrice;
 	}
+
 	public Double getChangePercent() {
 		return changePercent;
 	}
-	
+
 	public void setChangePercent(Double changePercent) {
 		this.changePercent = changePercent;
 	}
+
 	public Date getTimestamp() {
 		return timestamp;
 	}
-	
+
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
+
 	public Double getmSDate() {
 		return mSDate;
 	}
-	
+
 	public void setmSDate(Double mSDate) {
 		this.mSDate = mSDate;
 	}
+
 	public Double getMarketCap() {
 		return marketCap;
 	}
-	
+
 	public void setMarketCap(Double marketCap) {
 		this.marketCap = marketCap;
 	}
+
 	public Integer getVolume() {
 		return volume;
 	}
-	
+
 	public void setVolume(Integer volume) {
 		this.volume = volume;
 	}
+
 	public Double getChangeYTD() {
 		return changeYTD;
 	}
-	
+
 	public void setChangeYTD(Double changeYTD) {
 		this.changeYTD = changeYTD;
 	}
+
 	public Double getChangePercentYTD() {
 		return changePercentYTD;
 	}
-	
+
 	public void setChangePercentYTD(Double changePercentYTD) {
 		this.changePercentYTD = changePercentYTD;
 	}
+
 	public Double getHigh() {
 		return high;
 	}
-	
+
 	public void setHigh(Double high) {
 		this.high = high;
 	}
+
 	public Double getLow() {
 		return low;
 	}
-	
+
 	public void setLow(Double low) {
 		this.low = low;
 	}
+
 	public Double getOpen() {
 		return open;
 	}
-	
+
 	public void setOpen(Double open) {
 		this.open = open;
 	}
@@ -160,7 +164,7 @@ public class Quote {
 	public Double getChange() {
 		return change;
 	}
-	
+
 	public void setChange(Double change) {
 		this.change = change;
 	}
@@ -168,24 +172,18 @@ public class Quote {
 	public String getStatus() {
 		return status;
 	}
-	
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Quote [status=").append(status).append(", name=")
-				.append(name).append(", symbol=").append(symbol)
-				.append(", lastPrice=").append(lastPrice).append(", change=")
-				.append(change).append(", changePercent=")
-				.append(changePercent).append(", timestamp=").append(timestamp)
-				.append(", mSDate=").append(mSDate).append(", marketCap=")
-				.append(marketCap).append(", volume=").append(volume)
-				.append(", changeYTD=").append(changeYTD)
-				.append(", changePercentYTD=").append(changePercentYTD)
-				.append(", high=").append(high).append(", low=").append(low)
-				.append(", open=").append(open).append("]");
+		builder.append("Quote [status=").append(status).append(", name=").append(name).append(", symbol=").append(symbol).append(", lastPrice=").append(lastPrice).append(", change=").append(change)
+				.append(", changePercent=").append(changePercent).append(", timestamp=").append(timestamp).append(", mSDate=").append(mSDate).append(", marketCap=").append(marketCap)
+				.append(", volume=").append(volume).append(", changeYTD=").append(changeYTD).append(", changePercentYTD=").append(changePercentYTD).append(", high=").append(high).append(", low=")
+				.append(low).append(", open=").append(open).append("]");
 		return builder.toString();
 	}
 
@@ -194,26 +192,19 @@ public class Quote {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((change == null) ? 0 : change.hashCode());
-		result = prime * result
-				+ ((changePercent == null) ? 0 : changePercent.hashCode());
-		result = prime
-				* result
-				+ ((changePercentYTD == null) ? 0 : changePercentYTD.hashCode());
-		result = prime * result
-				+ ((changeYTD == null) ? 0 : changeYTD.hashCode());
+		result = prime * result + ((changePercent == null) ? 0 : changePercent.hashCode());
+		result = prime * result + ((changePercentYTD == null) ? 0 : changePercentYTD.hashCode());
+		result = prime * result + ((changeYTD == null) ? 0 : changeYTD.hashCode());
 		result = prime * result + ((high == null) ? 0 : high.hashCode());
-		result = prime * result
-				+ ((lastPrice == null) ? 0 : lastPrice.hashCode());
+		result = prime * result + ((lastPrice == null) ? 0 : lastPrice.hashCode());
 		result = prime * result + ((low == null) ? 0 : low.hashCode());
 		result = prime * result + ((mSDate == null) ? 0 : mSDate.hashCode());
-		result = prime * result
-				+ ((marketCap == null) ? 0 : marketCap.hashCode());
+		result = prime * result + ((marketCap == null) ? 0 : marketCap.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((open == null) ? 0 : open.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((symbol == null) ? 0 : symbol.hashCode());
-		result = prime * result
-				+ ((timestamp == null) ? 0 : timestamp.hashCode());
+		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
 		result = prime * result + ((volume == null) ? 0 : volume.hashCode());
 		return result;
 	}
@@ -304,5 +295,5 @@ public class Quote {
 			return false;
 		return true;
 	}
-	
+
 }

@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * Entity object representing an Order.
  * 
@@ -24,16 +25,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "ORDERS")
 public class Order {
+	public static BigDecimal DEFAULT_ORDER_FEE = new BigDecimal(10.50);
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "orderid")
+	@GeneratedValue(strategy = GenerationType.TABLE)
+	@Column(name = "orderid")
 	private Integer orderId;
 
 	@Column(name = "accountid")
 	@NotNull
 	private String accountId;
-	
+
 	@Column(name = "symbol", length = 10)
 	@NotNull
 	private String symbol;
@@ -126,13 +128,8 @@ public class Order {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Order [orderId=").append(orderId)
-				.append(", accountId=").append(accountId).append(", symbol=")
-				.append(symbol).append(", orderFee=").append(orderFee)
-				.append(", completionDate=").append(completionDate)
-				.append(", orderType=").append(orderType).append(", price=")
-				.append(price).append(", quantity=").append(quantity)
-				.append("]");
+		builder.append("Order [orderId=").append(orderId).append(", accountId=").append(accountId).append(", symbol=").append(symbol).append(", orderFee=").append(orderFee)
+				.append(", completionDate=").append(completionDate).append(", orderType=").append(orderType).append(", price=").append(price).append(", quantity=").append(quantity).append("]");
 		return builder.toString();
 	}
 
@@ -140,18 +137,13 @@ public class Order {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((accountId == null) ? 0 : accountId.hashCode());
-		result = prime * result
-				+ ((completionDate == null) ? 0 : completionDate.hashCode());
-		result = prime * result
-				+ ((orderFee == null) ? 0 : orderFee.hashCode());
+		result = prime * result + ((accountId == null) ? 0 : accountId.hashCode());
+		result = prime * result + ((completionDate == null) ? 0 : completionDate.hashCode());
+		result = prime * result + ((orderFee == null) ? 0 : orderFee.hashCode());
 		result = prime * result + ((orderId == null) ? 0 : orderId.hashCode());
-		result = prime * result
-				+ ((orderType == null) ? 0 : orderType.hashCode());
+		result = prime * result + ((orderType == null) ? 0 : orderType.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
-		result = prime * result
-				+ ((quantity == null) ? 0 : quantity.hashCode());
+		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
 		result = prime * result + ((symbol == null) ? 0 : symbol.hashCode());
 		return result;
 	}

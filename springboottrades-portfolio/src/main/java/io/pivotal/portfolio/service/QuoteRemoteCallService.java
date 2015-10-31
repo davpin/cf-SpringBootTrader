@@ -1,6 +1,5 @@
 package io.pivotal.portfolio.service;
 
-
 import io.pivotal.portfolio.domain.Quote;
 
 import org.slf4j.Logger;
@@ -13,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 /**
- * Retrieves quotes from the quote service.
- * Uses hystrix to manage failure.
+ * Retrieves quotes from the quote service. Uses hystrix to manage failure.
  * 
  * @author David Ferreira Pinto
  *
@@ -23,21 +22,21 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @Service
 @RefreshScope
 public class QuoteRemoteCallService {
-	
-	private static final Logger logger = LoggerFactory
-			.getLogger(QuoteRemoteCallService.class);
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(QuoteRemoteCallService.class);
+
 	@Value("${pivotal.quotesService.name}")
 	private String quotesService;
-	
+
 	@Autowired
 	@LoadBalanced
 	private RestTemplate restTemplate;
-	
+
 	/**
 	 * Retrieve up to date quotes.
 	 * 
-	 * @param symbol the symbol of the quote to fetch.
+	 * @param symbol
+	 *            the symbol of the quote to fetch.
 	 * @return The quote
 	 */
 	@HystrixCommand(fallbackMethod = "getQuoteFallback")
@@ -46,15 +45,20 @@ public class QuoteRemoteCallService {
 		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
+
 	/**
 	 * Fallback for the quote service.
 	 * 
-	 * @param symbol the symbol of the quote to fetch.
+	 * @param symbol
+	 *            the symbol of the quote to fetch.
 	 * @return Empty quote in FAILED state.
 	 */
+	@SuppressWarnings("unused")
 	private Quote getQuoteFallback(String symbol) {
 		logger.debug("Fetching fallback quote for: " + symbol);
-		//Quote quote = restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, symbol);
+		// Quote quote =
+		// restTemplate.getForObject("http://quotes/quote/{symbol}",
+		// Quote.class, symbol);
 		Quote quote = new Quote();
 		quote.setSymbol(symbol);
 		quote.setStatus("FAILED");
