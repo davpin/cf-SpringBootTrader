@@ -15,10 +15,10 @@
 	</div>
 </th:block>
 <th:block th:fragment="quote_list">
-	<div th:if="${quotes != null and not(#lists.isEmpty(quotes))}" class="row span12">
+	<div th:if="${quotes != null }" class="row span12">
 		<div id="quote-result" class="well show-well">
 			<div class="title">
-				<h3>Quotes</h3>
+				<h3>Quotes - <span th:text="${#lists.size(quotes)}" th:remove="tag"></span> result(s)</h3>
 			</div>
 			<div class="table-outer">
 			<table id="list-of-quotes" class="table table-striped table-bordered table-condensed">
