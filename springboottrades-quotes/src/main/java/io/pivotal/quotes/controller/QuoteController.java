@@ -23,18 +23,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Rest Controller providing the REST API for the Quote Service.
- * Provides two calls (both HTTP GET methods):
- * - /quote/{symbol} - Retrieves the current quote for a given symbol.
- * - /company/{name} - Retrieves a list of company information for companies that match the {name}.
+ * Rest Controller providing the REST API for the Quote Service. Provides two
+ * calls (both HTTP GET methods): - /quote/{symbol} - Retrieves the current
+ * quote for a given symbol. - /company/{name} - Retrieves a list of company
+ * information for companies that match the {name}.
+ * 
  * @author David Ferreira Pinto
  *
  */
 @RestController
 public class QuoteController {
-	private static final Logger logger = LoggerFactory
-			.getLogger(QuoteController.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(QuoteController.class);
+
 	/**
 	 * The service to delegate calls to.
 	 */
@@ -44,23 +44,25 @@ public class QuoteController {
 	/**
 	 * Retrives the current quote for the given symbol.
 	 * 
-	 * @param symbol The symbol to retrieve the quote for.
+	 * @param symbol
+	 *            The symbol to retrieve the quote for.
 	 * @return The Quote
-	 * @throws SymbolNotFoundException if the symbol is not valid.
+	 * @throws SymbolNotFoundException
+	 *             if the symbol is not valid.
 	 */
 	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
 	public ResponseEntity<Quote> getQuote(@PathVariable("symbol") final String symbol) throws SymbolNotFoundException {
 		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
 		Quote quote = service.getQuote(symbol);
 		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, quote));
-		return new ResponseEntity<Quote>(quote,
-				getNoCacheHeaders(), HttpStatus.OK);
+		return new ResponseEntity<Quote>(quote, getNoCacheHeaders(), HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Searches for companies that have a name or symbol matching the parameter.
 	 * 
-	 * @param name The name or symbol to search for.
+	 * @param name
+	 *            The name or symbol to search for.
 	 * @return The list of companies that match the search parameter.
 	 */
 	@RequestMapping(value = "/company/{name}", method = RequestMethod.GET)
@@ -70,9 +72,10 @@ public class QuoteController {
 		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
 		return new ResponseEntity<List<CompanyInfo>>(companies, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Generates HttpHeaders that have the no-cache set.
+	 * 
 	 * @return HttpHeaders.
 	 */
 	private HttpHeaders getNoCacheHeaders() {
@@ -80,19 +83,22 @@ public class QuoteController {
 		responseHeaders.set("Cache-Control", "no-cache");
 		return responseHeaders;
 	}
-	
+
 	/**
-	 * Handles the response to the client if there is any exception during the processing of HTTP requests.
+	 * Handles the response to the client if there is any exception during the
+	 * processing of HTTP requests.
 	 * 
-	 * @param e The exception thrown during the processing of the request.
-	 * @param response The HttpResponse object.
+	 * @param e
+	 *            The exception thrown during the processing of the request.
+	 * @param response
+	 *            The HttpResponse object.
 	 * @throws IOException
 	 */
-	@ExceptionHandler({Exception.class})
+	@ExceptionHandler({ Exception.class })
 	public void handleException(Exception e, HttpServletResponse response) throws IOException {
 		logger.warn("Handle Error: " + e.getMessage());
 		logger.warn("Exception:", e);
 		response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "ERROR: " + e.getMessage());
-	    //return "ERROR: " + e.getMessage();
+		// return "ERROR: " + e.getMessage();
 	}
 }
