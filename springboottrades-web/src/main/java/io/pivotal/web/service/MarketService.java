@@ -71,7 +71,7 @@ public class MarketService {
 	@HystrixCommand(fallbackMethod = "getQuoteFallback")
 	public Quote getQuote(String symbol) {
 		logger.debug("Fetching quote: " + symbol);
-		Quote quote = restTemplate.getForObject("https://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
+		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
 		return quote;
 	}
 	
@@ -86,7 +86,7 @@ public class MarketService {
 	@HystrixCommand(fallbackMethod = "getCompaniesFallback")
 	public List<CompanyInfo> getCompanies(String name) {
 		logger.debug("Fetching companies with name or symbol matching: " + name);
-		CompanyInfo[] infos = restTemplate.getForObject("https://" + quotesService + "/company/{name}", CompanyInfo[].class, name);
+		CompanyInfo[] infos = restTemplate.getForObject("http://" + quotesService + "/company/{name}", CompanyInfo[].class, name);
 		return Arrays.asList(infos);
 	}
 	private List<CompanyInfo> getCompaniesFallback(String name) {
@@ -101,7 +101,7 @@ public class MarketService {
 		
 		//check result of http request to ensure its ok.
 		
-		ResponseEntity<Order>  result = restTemplate.postForEntity("https://" + portfolioService + "/portfolio/{accountId}", order, Order.class, order.getAccountId());
+		ResponseEntity<Order>  result = restTemplate.postForEntity("http://" + portfolioService + "/portfolio/{accountId}", order, Order.class, order.getAccountId());
 		if (result.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
 			throw new OrderNotSavedException("Could not save the order");
 		}
@@ -110,7 +110,7 @@ public class MarketService {
 	}
 	@HystrixCommand(fallbackMethod = "getPortfolioFallback")
 	public Portfolio getPortfolio(String accountId) {
-		Portfolio folio = restTemplate.getForObject("https://" + portfolioService + "/portfolio/{accountid}", Portfolio.class, accountId);
+		Portfolio folio = restTemplate.getForObject("http://" + portfolioService + "/portfolio/{accountid}", Portfolio.class, accountId);
 		logger.debug("Portfolio received: " + folio);
 		return folio;
 	}

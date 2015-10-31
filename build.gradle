@@ -1,8 +1,8 @@
 buildscript {
 	ext {
 		springBootVersion = '1.3.0.RC1'
-		springCloudStarterParentTrain = 'Brixton.BUILD-SNAPSHOT'
-		scsVersion = '1.0.0.BUILD-SNAPSHOT'
+		//springCloudStarterParentTrain = 'Brixton.BUILD-SNAPSHOT'
+		scsVersion = '1.0.0.RC3'
 		junitVersion = '4.12'
 		bootstrapVersion = '2.3.2'
 		thymeleafExtras = '2.1.2.RELEASE'

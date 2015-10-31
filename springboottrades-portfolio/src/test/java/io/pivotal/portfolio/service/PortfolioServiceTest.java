@@ -65,7 +65,7 @@ public class PortfolioServiceTest {
 		
 		
 		//when(accountService.getUri()).thenReturn(uri);
-		when(restTemplate.getForEntity("https://" + service.accountsService +"/accounts/{userid}/decreaseBalance/{amount}", Double.class, ServiceTestConfiguration.order().getAccountId(), amount )).thenReturn(response);
+		when(restTemplate.getForEntity("http://" + service.accountsService +"/accounts/{userid}/decreaseBalance/{amount}", Double.class, ServiceTestConfiguration.order().getAccountId(), amount )).thenReturn(response);
 		when(repo.save(ServiceTestConfiguration.order())).thenReturn(returnOrder);
 		Order order = service.addOrder(ServiceTestConfiguration.order());
 		assertEquals(order, returnOrder);
@@ -96,7 +96,7 @@ public class PortfolioServiceTest {
 		
 		
 		//when(accountService.getUri()).thenReturn(uri);
-		when(restTemplate.getForEntity("https://" + service.accountsService +"/accounts/{userid}/increaseBalance/{amount}", Double.class, ServiceTestConfiguration.sellOrder().getAccountId(), amount )).thenReturn(response);
+		when(restTemplate.getForEntity("http://" + service.accountsService +"/accounts/{userid}/increaseBalance/{amount}", Double.class, ServiceTestConfiguration.sellOrder().getAccountId(), amount )).thenReturn(response);
 		when(repo.save(ServiceTestConfiguration.sellOrder())).thenReturn(returnOrder);
 		Order order = service.addOrder(ServiceTestConfiguration.sellOrder());
 		assertEquals(order, returnOrder);

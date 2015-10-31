@@ -41,7 +41,7 @@ public class PortfolioService {
 	OrderRepository repository;
 	
 	/**
-	 * 
+	 * The service than handles the calls to get quotes.
 	 */
 	@Autowired
 	QuoteRemoteCallService quoteService;
@@ -70,7 +70,9 @@ public class PortfolioService {
 		 */
 		logger.debug("Getting portfolio for accountId: " + accountId);
 		List<Order> orders = repository.findByAccountId(accountId);
-		return createPortfolio(new Portfolio(), orders);
+		Portfolio folio = new Portfolio();
+		folio.setAccountId(accountId);
+		return createPortfolio(folio, orders);
 	}
 
 	/**
@@ -106,7 +108,7 @@ public class PortfolioService {
 	}
 	
 	/**
-	 * Calculates the current value of th holding.
+	 * Calculates the current value of the holding.
 	 * 
 	 * @param holding the holding to refresh.
 	 */
@@ -116,18 +118,6 @@ public class PortfolioService {
 			holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
 		}
 	}
-	
-	/**
-	 * Retrieve up to date quotes.
-	 * 
-	 * @param symbol the symbol of the quote to fetch.
-	 * @return
-	 */
-	/*private Quote getQuote(String symbol) {
-		logger.debug("Fetching quote: " + symbol);
-		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
-		return quote;
-	}*/
 	
 	/**
 	 * Add an order to the repository and modify account balance.
@@ -144,7 +134,7 @@ public class PortfolioService {
 		}
 		if (order.getOrderType() == OrderType.BUY) {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity("https://" + accountsService + "/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			ResponseEntity<Double>  result= restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
 				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
 				return repository.save(order);
@@ -155,7 +145,7 @@ public class PortfolioService {
 			}
 		} else {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity("https://" + accountsService + "/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			ResponseEntity<Double>  result= restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
 				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
 				return repository.save(order);

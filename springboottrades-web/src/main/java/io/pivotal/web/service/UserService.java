@@ -30,13 +30,13 @@ public class UserService {
 	
 	public void createAccount(Account account) {
 		logger.debug("Saving account with userId: " + account.getUserid());
-		String status = restTemplate.postForObject("https://" + accountsService + "/account/", account, String.class);
+		String status = restTemplate.postForObject("http://" + accountsService + "/account/", account, String.class);
 		logger.info("Status from registering account for "+ account.getUserid()+ " is " + status);
 	}
 	
 	public Map<String,Object> login(AuthenticationRequest request){
 		logger.debug("logging in with userId:" + request.getUsername());
-		Map<String,Object> result = (Map<String, Object>) restTemplate.postForObject("https://" + accountsService + "/login/".toString(), request, Map.class);
+		Map<String,Object> result = (Map<String, Object>) restTemplate.postForObject("http://" + accountsService + "/login/".toString(), request, Map.class);
 		return result;
 	}
 	
@@ -44,7 +44,7 @@ public class UserService {
 	public Account getAccount(String user) {
 		logger.debug("Looking for account with userId: " + user);
 		
-	    Account account = restTemplate.getForObject("https://" + accountsService + "/account/?name={user}", Account.class, user);
+	    Account account = restTemplate.getForObject("http://" + accountsService + "/account/?name={user}", Account.class, user);
 	    logger.debug("Got Account: " + account);
 	    return account;
 	}
@@ -52,7 +52,7 @@ public class UserService {
 	public void logout(String user) {
 		logger.debug("logging out account with userId: " + user);
 		
-	    ResponseEntity<?> response = restTemplate.getForEntity("https://" + accountsService + "/logout/{user}", String.class, user);
+	    ResponseEntity<?> response = restTemplate.getForEntity("http://" + accountsService + "/logout/{user}", String.class, user);
 	    logger.debug("Logout response: " + response.getStatusCode());
 	}
 	
