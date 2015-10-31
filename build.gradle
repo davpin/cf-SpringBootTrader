@@ -142,6 +142,7 @@ project(':springboottrades-web') {
 
 		//runtime
 		runtime "org.webjars:bootstrap:${bootstrapVersion}"
+		runtime "org.webjars:jquery:2.1.1"
 
 		//test packages
 	}
