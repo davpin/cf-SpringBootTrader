@@ -23,14 +23,14 @@ Luckily, Pivotal Cloud Foundry allows us to assign a [`random-route`](http://doc
   > HINT: user the -f option to the push command.
 
 2. When the script has finished, set the `CF_TARGET` environment variable in both applications to the API endpoint of your Elastic Runtime instance (as in `https://api.example.com`), then restage the applications so that the changes will take effect.
-  +
-  ....
+
+  ```
   $ cf set-env quotes CF_TARGET https://api.cloudfoundry.com
   Setting env variable 'CF_TARGET' to 'https://api.cloudfoundry.com' for app quotes in org myorg / space outer as user...
   OK
   TIP: Use 'cf restage' to ensure your env variable changes take effect
   $ cf restage quotes
-  ....
+  ```
   > You only need to do this once per application.
 
 ##Deploying without Spring Cloud Services
