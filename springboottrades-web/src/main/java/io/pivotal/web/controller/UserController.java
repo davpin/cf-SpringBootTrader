@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import io.pivotal.web.domain.Account;
 import io.pivotal.web.domain.AuthenticationRequest;
+import io.pivotal.web.service.MarketSummaryService;
 import io.pivotal.web.service.UserService;
 import io.pivotal.web.service.MarketService;
 
@@ -37,12 +38,15 @@ public class UserController {
 	@Autowired
 	private MarketService marketService;
 	
+	@Autowired
+	private MarketSummaryService summaryService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showHome(Model model) {
 		if (!model.containsAttribute("login")) {
 			model.addAttribute("login", new AuthenticationRequest());
 		}
-		model.addAttribute("marketSummary", marketService.getMarketSummary());
+		model.addAttribute("marketSummary", summaryService.getMarketSummary());
 		
 		//check if user is logged in!
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -106,7 +110,7 @@ public class UserController {
 		AuthenticationRequest login = new AuthenticationRequest();
 		login.setUsername(account.getUserid());
 		model.addAttribute("login", login);
-		model.addAttribute("marketSummary", marketService.getMarketSummary());
+		model.addAttribute("marketSummary", summaryService.getMarketSummary());
 		accountService.createAccount(account);
 		return "index";
 	}

@@ -42,7 +42,7 @@ public class PortfolioService {
 	OrderRepository repository;
 
 	/**
-	 * 
+	 * The service than handles the calls to get quotes.
 	 */
 	@Autowired
 	QuoteRemoteCallService quoteService;
@@ -71,7 +71,9 @@ public class PortfolioService {
 		 */
 		logger.debug("Getting portfolio for accountId: " + accountId);
 		List<Order> orders = repository.findByAccountId(accountId);
-		return createPortfolio(new Portfolio(), orders);
+		Portfolio folio = new Portfolio();
+		folio.setAccountId(accountId);
+		return createPortfolio(folio, orders);
 	}
 
 	/**
@@ -128,19 +130,6 @@ public class PortfolioService {
 	private void setDefaultHolding(Holding holding) {
 		holding.setCurrentValue(new BigDecimal(0));
 	}
-
-	/**
-	 * Retrieve up to date quotes.
-	 * 
-	 * @param symbol
-	 *            the symbol of the quote to fetch.
-	 * @return
-	 */
-	/*
-	 * private Quote getQuote(String symbol) { logger.debug("Fetching quote: " +
-	 * symbol); Quote quote = restTemplate.getForObject("http://" +
-	 * quotesService + "/quote/{symbol}", Quote.class, symbol); return quote; }
-	 */
 
 	/**
 	 * Add an order to the repository and modify account balance.
