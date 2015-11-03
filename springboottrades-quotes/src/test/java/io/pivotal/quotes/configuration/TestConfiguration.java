@@ -22,8 +22,8 @@ public class TestConfiguration {
 	public static final String QUOTE_DATE_STRING = "Wed May 6 00:00:00 UTC-04:00 2015";
 	public static final BigDecimal QUOTE_LAST_PRICE = new BigDecimal(26.135);
 	public static final BigDecimal QUOTE_CHANGE = new BigDecimal(0.00500000000000256d);
-	public static final float QUOTE_CHANGE_PERCENT = 0.0191350937619692f;
-	public static final float QUOTE_MSDATE = 42130f;
+	public static final Float QUOTE_CHANGE_PERCENT = 0.0191350937619692f;
+	public static final Float QUOTE_MSDATE = 42130f;
 	
 	public static final String COMPANY_EXCHANGE = "NASDAQ";
 	public static final String NULL_QUOTE_SYMBOL = "LALALALA";

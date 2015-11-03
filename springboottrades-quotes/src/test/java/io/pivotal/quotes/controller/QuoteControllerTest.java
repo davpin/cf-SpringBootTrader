@@ -73,16 +73,15 @@ public class QuoteControllerTest {
 				.andExpect(
 						jsonPath("$.LastPrice").value(
 								TestConfiguration.QUOTE_LAST_PRICE))
-				//.andExpect(
-				//		jsonPath("$.Change",Matchers.equalTo( (Number)TestConfiguration.QUOTE_CHANGE))))
 				.andExpect(
-						jsonPath("$.ChangePercent").value(
-								TestConfiguration.QUOTE_CHANGE_PERCENT))
+						jsonPath("$.Change",Matchers.closeTo(TestConfiguration.QUOTE_CHANGE, new BigDecimal(0.01))))
+				.andExpect(
+						jsonPath("$.ChangePercent", Matchers.closeTo(TestConfiguration.QUOTE_CHANGE_PERCENT, 0.01)))
 				.andExpect(
 						jsonPath("$.Timestamp",notNullValue()))
 				.andExpect(
-						jsonPath("$.MSDate").value(
-								TestConfiguration.QUOTE_MSDATE));
+						jsonPath("$.MSDate",Matchers.closeTo(
+								TestConfiguration.QUOTE_MSDATE,0.01)));
 	}
 	
 	/*
