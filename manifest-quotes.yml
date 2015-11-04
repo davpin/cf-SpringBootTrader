@@ -6,6 +6,7 @@ memory: 512M
 env:
     SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+    JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: { memory_sizes: { metaspace: 100m }}]'
 applications:
 - name: quotes
   random-route: true

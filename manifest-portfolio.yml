@@ -1,11 +1,12 @@
 ---
 timeout: 180
 instances: 1
-memory: 700M
+memory: 512M
 #buildpack: toms-java-buildpack
 env:
     SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+    JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: { memory_sizes: { metaspace: 100m }}]'
 applications:
 - name: portfolio
   random-route: true
