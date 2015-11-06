@@ -1,0 +1,7 @@
+pivotal:
+  quotes:
+    quotes_url: http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}
+    quotes_url2: http://globalquotes.xignite.com/v3/xGlobalQuotes.json/GetGlobalDelayedQuote?IdentifierType=Symbol&Identifier={symbol}&_token=5C00193922334CF2BE564F76D2E233CF
+    companies_url: http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}
+    yahoo_rest_query: https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.quotes where symbol in ('{symbol}')&format={fmt}&env={env}
+    yahoo_env: http://datatables.org/alltables.env
