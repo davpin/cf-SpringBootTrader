@@ -1,5 +1,10 @@
 package io.pivotal.portfolio.service;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import io.pivotal.portfolio.domain.Quote;
 
 import org.slf4j.Logger;
@@ -63,5 +68,36 @@ public class QuoteRemoteCallService {
 		quote.setSymbol(symbol);
 		quote.setStatus("FAILED");
 		return quote;
+	}
+	/**
+	 * Retrieve multiple quotes.
+	 * 
+	 * @param symbols comma separated list of symbols.
+	 * @return
+	 */
+	public List<Quote> getMultipleQuotes(String symbols) {
+		logger.debug("retrieving multiple quotes: " + symbols);
+		Quote[] quotesArr = restTemplate.getForObject("http://" + quotesService + "/v1/quotes?q={symbols}", Quote[].class, symbols);
+		List<Quote> quotes = Arrays.asList(quotesArr);
+		logger.debug("Received quotes: {}",quotes);
+		return quotes;
+		
+	}
+	/**
+	 * Retrieve multiple quotes.
+	 * 
+	 * @param symbols
+	 * @return
+	 */
+	public List<Quote> getMultipleQuotes(Collection<String> symbols) {
+		logger.debug("Fetching multiple quotes array: {} ",symbols);
+		StringBuilder builder = new StringBuilder();
+		for (Iterator<String> i = symbols.iterator(); i.hasNext();) {
+			builder.append(i.next());
+			if (i.hasNext()) {
+				builder.append(",");
+			}
+		}
+		return getMultipleQuotes(builder.toString());
 	}
 }

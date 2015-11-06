@@ -1,7 +1,9 @@
 package io.pivotal.portfolio.service;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +35,8 @@ import io.pivotal.portfolio.repository.OrderRepository;
 @Service
 @RefreshScope
 public class PortfolioService {
-	private static final Logger logger = LoggerFactory.getLogger(PortfolioService.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(PortfolioService.class);
 
 	/**
 	 * The order repository to store Order objects.
@@ -87,6 +90,7 @@ public class PortfolioService {
 	 */
 	private Portfolio createPortfolio(Portfolio portfolio, List<Order> orders) {
 		// TODO: change to forEach() and maybe in parallel?
+		Set<String> symbols = new HashSet<>();
 		Holding holding = null;
 		for (Order order : orders) {
 			holding = portfolio.getHolding(order.getSymbol());
@@ -94,19 +98,16 @@ public class PortfolioService {
 				holding = new Holding();
 				holding.setSymbol(order.getSymbol());
 				portfolio.addHolding(holding);
+				symbols.add(order.getSymbol());
 			}
 			holding.addOrder(order);
 		}
+		
+		List<Quote> quotes = quoteService.getMultipleQuotes(symbols);
 
-		// getLatestQuotes in parallel
-		// portfolio.getHoldings().values().parallelStream().forEach(holding ->
-		// refreshHolding(holding));
-		/*
-		 * Sleuth currently doesn't work with parallelStream. TODO: re-implement
-		 * parallel calls.
-		 */
-		portfolio.getHoldings().values().stream().forEach(holding2 -> refreshHolding(holding2));
-
+		for (Quote quote : quotes) {
+			portfolio.getHolding(quote.getSymbol()).setCurrentValue(quote.getLastPrice());
+		}
 		portfolio.refreshTotalValue();
 		logger.debug("Portfolio: " + portfolio);
 		return portfolio;
@@ -118,18 +119,15 @@ public class PortfolioService {
 	 * @param holding
 	 *            the holding to refresh.
 	 */
-	@HystrixCommand(fallbackMethod = "setDefaultHolding")
-	private void refreshHolding(Holding holding) {
-		//Quote quote = quoteService.getQuote(holding.getSymbol());
-		if (quoteService.getQuote(holding.getSymbol()).getStatus().equalsIgnoreCase(Quote.STATUS_SUCCESS)) {
-			holding.setCurrentValue(new BigDecimal(quoteService.getQuote(holding.getSymbol()).getLastPrice()));
-		}
-	}
 
-	@SuppressWarnings("unused")
-	private void setDefaultHolding(Holding holding) {
-		holding.setCurrentValue(new BigDecimal(0));
+	/*private void refreshHolding(Holding holding) {
+		Quote quote = quoteService.getQuote(holding.getSymbol());
+		if (quote.getStatus().equalsIgnoreCase(Quote.STATUS_SUCCESS)) {
+			holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
+		}
+
 	}
+	*/
 
 	/**
 	 * Add an order to the repository and modify account balance.
@@ -146,10 +144,17 @@ public class PortfolioService {
 			logger.debug("Adding Fee to order: " + order);
 		}
 		if (order.getOrderType() == OrderType.BUY) {
-			double amount = order.getQuantity() * order.getPrice().doubleValue() + order.getOrderFee().doubleValue();
-			ResponseEntity<Double> result = restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			double amount = order.getQuantity()
+					* order.getPrice().doubleValue()
+					+ order.getOrderFee().doubleValue();
+			ResponseEntity<Double> result = restTemplate.getForEntity("http://"
+					+ accountsService
+					+ "/accounts/{userid}/decreaseBalance/{amount}",
+					Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
-				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
+				logger.info(String
+						.format("Account funds updated successfully for account: %s and new funds are: %s",
+								order.getAccountId(), result.getBody()));
 				return repository.save(order);
 			} else {
 				// TODO: throw exception - not enough funds!
@@ -158,10 +163,17 @@ public class PortfolioService {
 				return null;
 			}
 		} else {
-			double amount = order.getQuantity() * order.getPrice().doubleValue() - order.getOrderFee().doubleValue();
-			ResponseEntity<Double> result = restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			double amount = order.getQuantity()
+					* order.getPrice().doubleValue()
+					- order.getOrderFee().doubleValue();
+			ResponseEntity<Double> result = restTemplate.getForEntity("http://"
+					+ accountsService
+					+ "/accounts/{userid}/increaseBalance/{amount}",
+					Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
-				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
+				logger.info(String
+						.format("Account funds updated successfully for account: %s and new funds are: %s",
+								order.getAccountId(), result.getBody()));
 				return repository.save(order);
 			} else {
 				// TODO: throw exception - negative value???
