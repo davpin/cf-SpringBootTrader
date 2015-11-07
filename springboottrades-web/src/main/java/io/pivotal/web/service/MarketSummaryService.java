@@ -20,7 +20,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-@EnableScheduling
 @RefreshScope
 public class MarketSummaryService {
 	private static final Logger logger = LoggerFactory
@@ -29,9 +28,8 @@ public class MarketSummaryService {
 	private Integer numberOfQuotes;
 	
 	//10 minutes in milliseconds
-	//@Value("${pivotal.summary.refresh:600000l}")
-	// has to be final to be used in scheduled annotation - TODO, how to change it dynamically?
-	private final static long REFRESH_PERIOD = 600000l;
+	@Value("${pivotal.summary.refresh:600000}")
+	private final static String refresh_period = "600000";
 	
 	//private static List<String> symbolsIT = Arrays.asList("EMC", "ORCL", "IBM", "INTC", "AMD", "HPQ", "CSCO", "AAPL");
 	//private static List<String> symbolsFS = Arrays.asList("JPM", "C", "MS", "BAC", "GS", "WFC","BK");
@@ -51,7 +49,7 @@ public class MarketSummaryService {
 		return summary;
 	}
 	
-	@Scheduled(initialDelay=5000,fixedRate = REFRESH_PERIOD)
+	@Scheduled(fixedRateString = refresh_period)
 	protected void retrieveMarketSummary() {
 		logger.debug("Scheduled retrieval of Market Summary");
 		/*
@@ -62,36 +60,23 @@ public class MarketSummaryService {
 		//List<Quote> quotesFS = pickRandomThree(Arrays.asList(symbolsFS.split(","))).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
 		
 		//List<Quote> quotesFS = pickRandomThree(Arrays.asList(symbolsFS.split(","))).stream().map(symbol -> marketService.getQuote(symbol)).collect(Collectors.toList());
-		summary.setTopGainers(getTopGainers());
-		summary.setTopLosers(getTopLosers());
+		summary.setTopGainers(getTopThree(symbolsIT));
+		summary.setTopLosers(getTopThree(symbolsFS));
 	}
+
 	/**
-	 * Retrieve the list of top gainers.
-	 * Currently retrieving list of IT companies.
+	 * Retrieve the list of top winners/losers.
+	 * Currently retrieving list of 3 random.
 	 */
-	private List<Quote> getTopGainers() {
-		List<Quote> quotesIT = new ArrayList<>();
-		for(Iterator<String> i = pickRandomThree(Arrays.asList(symbolsIT.split(","))).iterator(); i.hasNext();) {
-			Quote quote = marketService.getQuote(i.next());
-			if (quote.getStatus().equalsIgnoreCase("SUCCESS")) {
-				quotesIT.add(quote);
+	private List<Quote> getTopThree(String symbols) {
+		StringBuilder builder = new StringBuilder();
+		for(Iterator<String> i = pickRandomThree(Arrays.asList(symbols.split(","))).iterator(); i.hasNext();) {
+			builder.append(i.next());
+			if (i.hasNext()) {
+				builder.append(",");
 			}
 		}
-		return quotesIT;
-	}
-	/**
-	 * Retrieve the list of top losers.
-	 * Currently retrieving list of FS companies.
-	 */
-	private List<Quote> getTopLosers() {
-		List<Quote> quotesFS = new ArrayList<>();
-		for(Iterator<String> i = pickRandomThree(Arrays.asList(symbolsFS.split(","))).iterator(); i.hasNext();) {
-			Quote quote = marketService.getQuote(i.next());
-			if (quote.getStatus().equalsIgnoreCase("SUCCESS")) {
-				quotesFS.add(quote);
-			}
-		}
-		return quotesFS;
+		return marketService.getMultipleQuotes(builder.toString());
 	}
 	
 	private List<String> pickRandomThree(List<String> symbols) {
