@@ -133,6 +133,8 @@ TODO: document how to operate/monitor several microservices, using Spring Boot A
 The roadmap for this project is constantly evolving. Please feel free to reach out with ideas.
 - **Better APIs:**
   Better APIs with documentation that conform to some standard and logic.
+- **Security:**
+  Secure microservices with OAUTH2.
 - **Monitoring/Operations:**
   Show how to monitor a distributed system comprising of multiple microservices.
   This will comprise of:
@@ -141,7 +143,7 @@ The roadmap for this project is constantly evolving. Please feel free to reach o
    - Zipkin
 - **Stock analysis system:**
    A microservice, or set of microservices, to analyse stock and provide recommendations. Also, to show polyglot persistence as well as more sophisticated data workloads.
-- **Mobile UI:** 
+- **Mobile UI:**
   Mobile interface to expose the services on an iOS device and/or Android device natively, making use of the [Pivotal Cloud Foundry Mobile Services](http://docs.pivotal.io/mobile/index.html).
 
 #Contributing
