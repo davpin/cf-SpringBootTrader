@@ -8,7 +8,7 @@ version = new ProjectVersion()
 class ProjectVersion {
 	String build
 	ProjectVersion() {
-                def file = new File('../version/number')
+                def file = new File('version/number')
                 if(file.exists()) {
                    this.build = file.text
                 } else {
