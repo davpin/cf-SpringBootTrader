@@ -9,7 +9,7 @@ buildscript {
 		dependencyPlugin = '0.5.3.RELEASE'
 	}
 
-	repositories { 
+	repositories {
 		mavenCentral()
 		maven { url "http://repo.spring.io/milestone" }
 		maven { url "http://repo.spring.io/snapshot" }
@@ -24,29 +24,50 @@ buildscript {
 	}
 }
 
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
 // Apply versioning to all projects from versioning script.
-allprojects { apply from: "$rootDir/gradle/versioning.gradle" }
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'jacoco'
+	apply from: "$rootDir/gradle/versioning.gradle"
+}
 
 subprojects {
-	
-	apply plugin: 'java'
+
 	apply plugin: 'eclipse'
-	apply plugin: 'jacoco'
 	apply plugin: 'spring-boot'
 	apply plugin: "io.spring.dependency-management"
 	apply plugin: "com.gorylenko.gradle-git-properties"
 	
+	println version
 
+	test { finalizedBy jacocoTestReport }
 
-	jacoco { toolVersion = "0.7.1.201405082137" //	reportsDir = file("$buildDir/customJacocoReportDir")
-	}
 	jacocoTestReport {
 		group = "Reporting"
 		description = "Generate Jacoco coverage reports after running tests."
+		reports {
+
+			csv.enabled false
+
+			html{
+				enabled true
+				destination "${buildDir}/reports/jacoco"
+			}
+
+			xml.enabled false
+		}
+
 		additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
 	}
 
-	test { finalizedBy jacocoTestReport }
+
+	jacoco { toolVersion = "0.7.5+" //	reportsDir = file("$buildDir/customJacocoReportDir")
+	}
 
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
@@ -59,13 +80,11 @@ subprojects {
 	}
 
 	dependencyManagement {
-		imports {
-			mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
-			//mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springCloudStarterParentTrain}"
+		imports { mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}" //mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springCloudStarterParentTrain}"
 		}
 	}
 	dependencies {
-		
+
 		// shared dependencies for all services
 		compile "org.springframework.boot:spring-boot-starter-web"
 		compile "org.springframework.boot:spring-boot-starter-actuator"
@@ -81,12 +100,10 @@ subprojects {
 	}
 	// process substitutions in yml files.
 	processResources {
-		filesMatching("**/*.yml") {
-			expand(project.properties)
-		}
+		filesMatching("**/*.yml") { expand(project.properties) }
 	}
-	
-	
+
+
 }
 
 project(':springboottrades-accounts') {
@@ -147,5 +164,30 @@ project(':springboottrades-web') {
 		//test packages
 	}
 }
+
+//create a joint code coverage report from subprojects
+task codeCoverageReport(type: JacocoReport) {
+
+	// Gather execution data from all subprojects
+	// (change this if you e.g. want to calculate unit test/integration test coverage separately)
+	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+	// Add all relevant sourcesets from the subprojects
+	subprojects.each { sourceSets it.sourceSets.main }
+
+	reports {
+		xml.enabled false
+		html.enabled true
+		html.destination "${buildDir}/reports/jacoco"
+		csv.enabled false
+	}
+	jacoco { toolVersion = "0.7.5+" //	reportsDir = file("$buildDir/customJacocoReportDir")
+	}
+}
+
+// always run the tests before generating the report
+codeCoverageReport.dependsOn { subprojects*.test }
+//run full report after test
+test.finalizedBy(codeCoverageReport)
 
 task wrapper(type: Wrapper) { gradleVersion = '2.7' }
