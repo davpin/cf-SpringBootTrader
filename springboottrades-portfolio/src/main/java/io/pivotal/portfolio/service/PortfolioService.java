@@ -1,7 +1,9 @@
 package io.pivotal.portfolio.service;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import io.pivotal.portfolio.domain.Holding;
 import io.pivotal.portfolio.domain.Order;
@@ -39,125 +43,144 @@ public class PortfolioService {
 	 */
 	@Autowired
 	OrderRepository repository;
-	
+
+	/**
+	 * The service than handles the calls to get quotes.
+	 */
+	@Autowired
+	QuoteRemoteCallService quoteService;
+
 	@Autowired
 	@LoadBalanced
 	private RestTemplate restTemplate;
-	
-	@Value("${pivotal.quotesService.name}")
-	protected String quotesService;
-	
+
+	// @Value("${pivotal.quotesService.name}")
+	// protected String quotesService;
+
 	@Value("${pivotal.accountsService.name}")
 	protected String accountsService;
-	
+
 	/**
-	 * Retrieves the portfolio for the given accountId. 
+	 * Retrieves the portfolio for the given accountId.
 	 * 
-	 * @param accountId The account id to retrieve for.
+	 * @param accountId
+	 *            The account id to retrieve for.
 	 * @return The portfolio.
 	 */
 	public Portfolio getPortfolio(String accountId) {
 		/*
-		 * Retrieve all orders for accounts id and build portfolio.
-		 * - for each order create holding.
-		 * - for each holding find current price.
+		 * Retrieve all orders for accounts id and build portfolio. - for each
+		 * order create holding. - for each holding find current price.
 		 */
 		logger.debug("Getting portfolio for accountId: " + accountId);
 		List<Order> orders = repository.findByAccountId(accountId);
-		return createPortfolio(new Portfolio(), orders);
+		Portfolio folio = new Portfolio();
+		folio.setAccountId(accountId);
+		return createPortfolio(folio, orders);
 	}
 
 	/**
 	 * Builds a portfolio object with the list of orders.
 	 * 
-	 * @param portfolio the portfolio object to build.
-	 * @param orders the list of orders.
+	 * @param portfolio
+	 *            the portfolio object to build.
+	 * @param orders
+	 *            the list of orders.
 	 * @return the portfolio object
 	 */
 	private Portfolio createPortfolio(Portfolio portfolio, List<Order> orders) {
-		//TODO: change to forEach() and maybe in parallel?
-		for (Order order: orders) {
-			Holding holding = portfolio.getHolding(order.getSymbol());
-			if ( holding == null) {
+		// TODO: change to forEach() and maybe in parallel?
+		Set<String> symbols = new HashSet<>();
+		Holding holding = null;
+		for (Order order : orders) {
+			holding = portfolio.getHolding(order.getSymbol());
+			if (holding == null) {
 				holding = new Holding();
 				holding.setSymbol(order.getSymbol());
 				portfolio.addHolding(holding);
+				symbols.add(order.getSymbol());
 			}
 			holding.addOrder(order);
 		}
 		
-		// getLatestQuotes in parallel
-		//portfolio.getHoldings().values().parallelStream().forEach(holding -> refreshHolding(holding));
-		/*
-		 * Sleuth currently doesn't work with parallelStream.
-		 * TODO: re-implement parallel calls.
-		 */
-		portfolio.getHoldings().values().stream().forEach(holding -> refreshHolding(holding));
-		
+		List<Quote> quotes = quoteService.getMultipleQuotes(symbols);
+
+		for (Quote quote : quotes) {
+			portfolio.getHolding(quote.getSymbol()).setCurrentValue(quote.getLastPrice());
+		}
 		portfolio.refreshTotalValue();
 		logger.debug("Portfolio: " + portfolio);
 		return portfolio;
 	}
-	
+
 	/**
-	 * Calculates the current value of th holding.
+	 * Calculates the current value of the holding.
 	 * 
-	 * @param holding the holding to refresh.
+	 * @param holding
+	 *            the holding to refresh.
 	 */
-	private void refreshHolding(Holding holding) {
-		Quote quote = getQuote(holding.getSymbol());
-		holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
+
+	/*private void refreshHolding(Holding holding) {
+		Quote quote = quoteService.getQuote(holding.getSymbol());
+		if (quote.getStatus().equalsIgnoreCase(Quote.STATUS_SUCCESS)) {
+			holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
+		}
+
 	}
-	
-	/**
-	 * Retrieve up to date quotes.
-	 * 
-	 * @param symbol the symbol of the quote to fetch.
-	 * @return
-	 */
-	private Quote getQuote(String symbol) {
-		logger.debug("Fetching quote: " + symbol);
-		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
-		return quote;
-	}
-	
+	*/
+
 	/**
 	 * Add an order to the repository and modify account balance.
 	 * 
-	 * @param order the order to add.
+	 * @param order
+	 *            the order to add.
 	 * @return the saved order.
 	 */
 	@Transactional
 	public Order addOrder(Order order) {
 		logger.debug("Adding order: " + order);
 		if (order.getOrderFee() == null) {
-			order.setOrderFee(new BigDecimal(10.50));
+			order.setOrderFee(Order.DEFAULT_ORDER_FEE);
 			logger.debug("Adding Fee to order: " + order);
 		}
 		if (order.getOrderType() == OrderType.BUY) {
-			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			double amount = order.getQuantity()
+					* order.getPrice().doubleValue()
+					+ order.getOrderFee().doubleValue();
+			ResponseEntity<Double> result = restTemplate.getForEntity("http://"
+					+ accountsService
+					+ "/accounts/{userid}/decreaseBalance/{amount}",
+					Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
-				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
+				logger.info(String
+						.format("Account funds updated successfully for account: %s and new funds are: %s",
+								order.getAccountId(), result.getBody()));
 				return repository.save(order);
 			} else {
-				//TODO: throw exception - not enough funds!
+				// TODO: throw exception - not enough funds!
+				// SK - Whats the expected behaviour?
 				logger.warn("PortfolioService:addOrder - decresing balance HTTP not ok: ");
 				return null;
 			}
 		} else {
-			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
-			ResponseEntity<Double>  result= restTemplate.getForEntity("http://" + accountsService + "/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			double amount = order.getQuantity()
+					* order.getPrice().doubleValue()
+					- order.getOrderFee().doubleValue();
+			ResponseEntity<Double> result = restTemplate.getForEntity("http://"
+					+ accountsService
+					+ "/accounts/{userid}/increaseBalance/{amount}",
+					Double.class, order.getAccountId(), amount);
 			if (result.getStatusCode() == HttpStatus.OK) {
-				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
+				logger.info(String
+						.format("Account funds updated successfully for account: %s and new funds are: %s",
+								order.getAccountId(), result.getBody()));
 				return repository.save(order);
 			} else {
-				//TODO: throw exception - negative value???
+				// TODO: throw exception - negative value???
 				logger.warn("PortfolioService:addOrder - increasing balance HTTP not ok: ");
 				return null;
 			}
 		}
-		
-			
+
 	}
 }

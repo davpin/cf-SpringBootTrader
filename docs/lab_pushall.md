@@ -51,6 +51,16 @@ Now that we have all the required services created, let's push all the services.
 > How could you push all the services in one go?
 > The **Cloud Foundry** manifest file allows us to [define multiple applications in a single file](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/manifest.html#multi-apps)
 
+2. When the script has finished, set the `CF_TARGET` environment variable in both applications to the API endpoint of your Elastic Runtime instance (as in `https://api.example.com`), then restage the applications so that the changes will take effect.
+  ```
+  $ cf set-env accounts CF_TARGET https://api.cloudfoundry.com
+  Setting env variable 'CF_TARGET' to 'https://api.cloudfoundry.com' for app accounts in org myorg / space outer as user...
+  OK
+  TIP: Use 'cf restage' to ensure your env variable changes take effect
+  $ cf restage accounts
+  ```
+  > You only need to do this once per application.
+
 Once completed, go to the URL of the Web service in your browser.
 
 ##Deploying without Spring Cloud Services
@@ -60,7 +70,7 @@ Once completed, go to the URL of the Web service in your browser.
   Thus all you'll need to do is push the applications as above. Ensure you create the **traderdb** RDBMS service.
 
   ### Exercise
-    2. push the applications
+    1. push the applications
 
 ##Running it locally
   To run the service locally, you can use the gradle wrapper script as such:

@@ -1,73 +1,121 @@
 buildscript {
 	ext {
-		springBootVersion = '1.2.6.RELEASE'
-		springCloudStarterParentTrain = 'Angel.SR3'
-		scsVersion = '1.0.0.M1'
+		springBootVersion = '1.3.0.RC1'
+		//springCloudStarterParentTrain = 'Brixton.BUILD-SNAPSHOT'
+		scsVersion = '1.0.0.RELEASE'
 		junitVersion = '4.12'
 		bootstrapVersion = '2.3.2'
 		thymeleafExtras = '2.1.2.RELEASE'
 		dependencyPlugin = '0.5.3.RELEASE'
 	}
 
-	repositories { mavenCentral() }
+	repositories {
+		mavenCentral()
+		maven { url "http://repo.spring.io/milestone" }
+		maven { url "http://repo.spring.io/snapshot" }
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
 
 
 	dependencies {
-		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
 		classpath "io.spring.gradle:dependency-management-plugin:${dependencyPlugin}"
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+		classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.7"
 	}
 }
 
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
 
 // Apply versioning to all projects from versioning script.
-allprojects { apply from: "$rootDir/gradle/versioning.gradle" }
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'jacoco'
+	apply from: "$rootDir/gradle/versioning.gradle"
+}
 
 subprojects {
-	apply plugin: 'java'
+
 	apply plugin: 'eclipse'
-	apply plugin: 'jacoco'
-	apply plugin: "io.spring.dependency-management"
 	apply plugin: 'spring-boot'
+	apply plugin: "io.spring.dependency-management"
+	apply plugin: "com.gorylenko.gradle-git-properties"
+	
+	println version
 
-
-	jacoco { toolVersion = "0.7.1.201405082137" //	reportsDir = file("$buildDir/customJacocoReportDir")
+	test { finalizedBy jacocoTestReport }
+	
+	task manifestFilter(type: Copy) {
+		from 'manifest-unversioned.yml'
+		into "${buildDir}/"
+		rename { String fileName ->
+			fileName.replace('-unversioned', '')
+		}
+		def myPath = System.getenv("JAR_PATH") ?: "${libsDir}/"
+		expand(version: "${version}", path: "${myPath}")
 	}
+
+	assemble { finalizedBy manifestFilter }
+	
 	jacocoTestReport {
 		group = "Reporting"
 		description = "Generate Jacoco coverage reports after running tests."
+		reports {
+
+			csv.enabled false
+
+			html{
+				enabled true
+				destination "${buildDir}/reports/jacoco"
+			}
+
+			xml.enabled false
+		}
+
 		additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
 	}
 
-	test { finalizedBy jacocoTestReport }
+
+	jacoco { toolVersion = "0.7.5+" //	reportsDir = file("$buildDir/customJacocoReportDir")
+	}
 
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 
 	repositories {
 		mavenCentral()
+		maven { url "http://repo.spring.io/release" }
 		maven { url "http://repo.spring.io/milestone" }
+		maven { url "http://repo.spring.io/snapshot" }
 	}
 
 	dependencyManagement {
-		imports {
-			mavenBom "io.pivotal.spring.cloud:spring-cloud-services-starter-parent:${scsVersion}"
-			mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+		imports { mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}" //mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springCloudStarterParentTrain}"
 		}
 	}
 	dependencies {
+
+		// shared dependencies for all services
 		compile "org.springframework.boot:spring-boot-starter-web"
 		compile "org.springframework.boot:spring-boot-starter-actuator"
-		compile "org.springframework.cloud:spring-cloud-starter-eureka"
-		compile "org.springframework.cloud:spring-cloud-starter-hystrix"
-		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-config-client"
-		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry"
-		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker"
+		compile "org.springframework.cloud:spring-cloud-starter-sleuth:1.0.0.M2"
+		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-config-client:${scsVersion}"
+		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry:${scsVersion}"
+		compile "io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker:${scsVersion}"
 
 		//test packages
-		testCompile "org.springframework.boot:spring-boot-starter-test"
+		testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 		testCompile "junit:junit:$junitVersion"
 
 	}
+	// process substitutions in yml files.
+	processResources {
+		filesMatching("**/*.yml") { expand(project.properties) }
+	}
+
+
 }
 
 project(':springboottrades-accounts') {
@@ -75,7 +123,7 @@ project(':springboottrades-accounts') {
 	description = "Micro-service to deal with accounts and user logins"
 
 	dependencies {
-		compile "org.springframework.boot:spring-boot-starter-data-jpa"
+		compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 
 		// test packages
 		testRuntime "com.jayway.jsonpath:json-path"
@@ -102,13 +150,13 @@ project(':springboottrades-portfolio') {
 	jar { baseName = 'portfolio' }
 	description = "Micro-service to manage portfolios"
 	dependencies {
-		compile "org.springframework.boot:spring-boot-starter-data-jpa"
+		compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 
 		//runtime
 		runtime "org.hsqldb:hsqldb"
 
 		//test packages
-		testRuntime "com.jayway.jsonpath:json-path:2.0.0"
+		testRuntime "com.jayway.jsonpath:json-path"
 		testRuntime "org.hsqldb:hsqldb"
 	}
 }
@@ -117,15 +165,41 @@ project(':springboottrades-web') {
 	jar { baseName = 'web' }
 	description = "Web interface to the springboot set of services"
 	dependencies {
-		compile "org.springframework.boot:spring-boot-starter-thymeleaf"
-		compile "org.springframework.boot:spring-boot-starter-security"
+		compile "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
+		compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
 		compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleafExtras}"
 
 		//runtime
 		runtime "org.webjars:bootstrap:${bootstrapVersion}"
+		runtime "org.webjars:jquery:2.1.1"
 
 		//test packages
 	}
 }
+
+//create a joint code coverage report from subprojects
+task codeCoverageReport(type: JacocoReport) {
+
+	// Gather execution data from all subprojects
+	// (change this if you e.g. want to calculate unit test/integration test coverage separately)
+	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+	// Add all relevant sourcesets from the subprojects
+	subprojects.each { sourceSets it.sourceSets.main }
+
+	reports {
+		xml.enabled false
+		html.enabled true
+		html.destination "${buildDir}/reports/jacoco"
+		csv.enabled false
+	}
+	jacoco { toolVersion = "0.7.5+" //	reportsDir = file("$buildDir/customJacocoReportDir")
+	}
+}
+
+// always run the tests before generating the report
+codeCoverageReport.dependsOn { subprojects*.test }
+//run full report after test
+test.finalizedBy(codeCoverageReport)
 
 task wrapper(type: Wrapper) { gradleVersion = '2.7' }

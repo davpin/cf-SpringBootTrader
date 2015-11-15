@@ -25,8 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(AccountService.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	/**
 	 * The accounts repository.
@@ -35,10 +34,11 @@ public class AccountService {
 	AccountRepository accounts;
 
 	/**
-	 * Retrieve an account with given id.
-	 * The id here is the unique id value of the account managed by the repository (auto-increment).
+	 * Retrieve an account with given id. The id here is the unique id value of
+	 * the account managed by the repository (auto-increment).
 	 * 
-	 * @param id The id of the account.
+	 * @param id
+	 *            The id of the account.
 	 * @return The account object if found or throws a NoRecordsFoundException.
 	 */
 	public Account findAccount(Integer id) {
@@ -57,10 +57,11 @@ public class AccountService {
 	}
 
 	/**
-	 * Retrieve an account with given id.
-	 * The id here is the unique user id value of the account, ie the username.
+	 * Retrieve an account with given id. The id here is the unique user id
+	 * value of the account, ie the username.
 	 * 
-	 * @param id The user id of the account.
+	 * @param id
+	 *            The user id of the account.
 	 * @return The account object if found or throws a NoRecordsFoundException.
 	 */
 	public Account findAccount(String id) {
@@ -79,24 +80,25 @@ public class AccountService {
 	}
 
 	/**
-	 * Retrieves the account by the authorization token associated with that account and current login.
+	 * Retrieves the account by the authorization token associated with that
+	 * account and current login.
 	 * 
-	 * @param token The token to search for.
+	 * @param token
+	 *            The token to search for.
 	 * @return The account object if found or AuthenticationException otherwise.
 	 */
 	@Cacheable(value = "authorizationCache")
 	public Account findAccountprofileByAuthtoken(String token) {
 		logger.debug("AccountService.findAccountprofileByAuthtoken looking for authToken: " + token);
 		if (token == null) {
-			//TODO: no point in checking database. throw exception here.
+			// TODO: no point in checking database. throw exception here.
 			logger.error("AccountService.findAccountprofileByAuthtoken(): token is null");
 			throw new AuthenticationException("Authorization Token is null");
 		}
 		Account accountProfile = null;
 		accountProfile = accounts.findByAuthtoken(token);
 		if (accountProfile == null) {
-			logger.error("AccountService.findAccountprofileByAuthtoken(): accountProfile is null for token="
-					+ token);
+			logger.error("AccountService.findAccountprofileByAuthtoken(): accountProfile is null for token=" + token);
 			throw new AuthenticationException("Authorization Token not found");
 		}
 
@@ -106,7 +108,8 @@ public class AccountService {
 	/**
 	 * Saves the given account in the repository.
 	 * 
-	 * @param accountRequest The account to save.
+	 * @param accountRequest
+	 *            The account to save.
 	 * @return the id of the account.
 	 */
 	public Integer saveAccount(Account accountRequest) {
@@ -126,11 +129,14 @@ public class AccountService {
 	}
 
 	/**
-	 * Attempts to login the user with the given username and password.
-	 * Throws AuthenticationException if an account with the given username and password cannot be found.
+	 * Attempts to login the user with the given username and password. Throws
+	 * AuthenticationException if an account with the given username and
+	 * password cannot be found.
 	 * 
-	 * @param username The username to login.
-	 * @param password The password to use.
+	 * @param username
+	 *            The username to login.
+	 * @param password
+	 *            The password to use.
 	 * @return a map with the authtoken, account Id.
 	 */
 	public Map<String, Object> login(String username, String password) {
@@ -148,16 +154,13 @@ public class AccountService {
 
 			loginResponse.put("authToken", account.getAuthtoken());
 			loginResponse.put("accountid", account.getId());
-			//loginResponse.put("password", account.getPasswd());
-			
-			logger.info("AccountService.login success for " + username
-					+ " username::token=" + loginResponse.get("authToken"));
-			
+			// loginResponse.put("password", account.getPasswd());
+
+			logger.info("AccountService.login success for " + username + " username::token=" + loginResponse.get("authToken"));
+
 		} else {
-			logger.warn("AccountService.login failed to find username="
-					+ username + " password=" + password);
-			throw new AuthenticationException("Login failed for user: "
-					+ username);
+			logger.warn("AccountService.login failed to find username=" + username + " password=" + password);
+			throw new AuthenticationException("Login failed for user: " + username);
 		}
 		return loginResponse;
 	}
@@ -165,7 +168,8 @@ public class AccountService {
 	/**
 	 * logs the give user out of the system.
 	 * 
-	 * @param userId the userid to logout.
+	 * @param userId
+	 *            the userid to logout.
 	 * @return The account object or null;
 	 */
 	public Account logout(String userId) {

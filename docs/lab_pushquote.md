@@ -22,6 +22,19 @@ Luckily, Pivotal Cloud Foundry allows us to assign a [`random-route`](http://doc
 
   > HINT: user the -f option to the push command.
 
+  > Manifest files are generated as part of the build. They are placed in `springboottrades-quotes/build`
+
+2. When the script has finished, set the `CF_TARGET` environment variable in both applications to the API endpoint of your Elastic Runtime instance (as in `https://api.example.com`), then restage the applications so that the changes will take effect.
+
+  ```
+  $ cf set-env quotes CF_TARGET https://api.cloudfoundry.com
+  Setting env variable 'CF_TARGET' to 'https://api.cloudfoundry.com' for app quotes in org myorg / space outer as user...
+  OK
+  TIP: Use 'cf restage' to ensure your env variable changes take effect
+  $ cf restage quotes
+  ```
+  > You only need to do this once per application.
+
 ##Deploying without Spring Cloud Services
 
   If Spring Cloud Services are not available, you should have pushed an instance of the [discovery service](https://github.com/dpinto-pivotal/cf-SpringBootTrader-extras) to the cloud. Now, you'll have to create a [*User-provided service*](http://docs.pivotal.io/pivotalcf/devguide/services/user-provided.html) and bind it to the quote service.

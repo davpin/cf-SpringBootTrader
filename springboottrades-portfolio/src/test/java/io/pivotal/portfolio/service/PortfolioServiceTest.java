@@ -37,6 +37,9 @@ public class PortfolioServiceTest {
 	@Mock
 	RestTemplate restTemplate;
 	
+	@Mock
+	QuoteRemoteCallService quoteService;
+	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -49,7 +52,8 @@ public class PortfolioServiceTest {
  
 		when(repo.findByAccountId(ServiceTestConfiguration.ACCOUNT_ID)).thenReturn(ServiceTestConfiguration.orders());
 		//when(quoteService.getUri()).thenReturn(uri);
-		when(restTemplate.getForObject("http://" + service.quotesService +"/quote/{symbol}", Quote.class, ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
+		when(quoteService.getQuote(ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
+		//when(restTemplate.getForObject("http://" + service.quotesService +"/quote/{symbol}", Quote.class, ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
 		Portfolio folio = service.getPortfolio(ServiceTestConfiguration.ACCOUNT_ID);
 	}
 	@Test

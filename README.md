@@ -8,7 +8,7 @@ This repository holds a collection of micro services that work together to prese
 
 It was created to support workshops and demonstrations of building and using `microservices` architectures and running these in **Cloud Foundry** (although it is possible to run these on other runtimes).
 
-The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises [below](#workshps).
+The workshops follow a series of exercises, or labs, and you can find links to the guides for these exercises [below](#workshops).
 
 ##Table of Contents
 
@@ -79,6 +79,7 @@ At Pivotal we love education, not just educating ourselves, but also educating o
 7. [Scaling the services] [scale]
 8. Auto Scaling - TODO: use autoscaler service!
 9. [Blue/Green deployments] [bluegreen]
+10. Monitor workshop - TODO: show how to monitor microservices using springbootadmin, ELK tile and Zipkin.
 
 
 [setup]: docs/lab_setup.md
@@ -99,28 +100,51 @@ TODO: document a walk through of this demo. This is a walkthough of the workshop
 
 ###2. Service discovery.
 TODO: document a walk through of this demo.
+
 ###3. Scalability
 TODO: document a walk through of this demo.
 - provide a load generator to mimic users.
 - scale instances.
 
-###3. Configuration Management.
+###4. Configuration Management.
 TODO: document a walk through of this demo.
-###4. Traceability across all services.
+
+###5. Traceability across all services.
+TODO: document a walk through of this demo using Zipkin and Kibana.
+
+###6. Continuous Integration/Continuous Delivery.
 TODO: document a walk through of this demo.
-###5. Continuous Integration/Continuous Delivery.
-TODO: document a walk through of this demo.
+
+###7. Operations Demo
+TODO: document how to operate/monitor several microservices, using Spring Boot Admin and ELK tile
+
+
+#Features
+
+- **Discovery service:**
+  All microservices register with the [Discovery Service](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html) and discover other microservices through it.
+- **Correlation/Traceability:**
+  Traceability of requests through all the microservices. This is done using [Spring-cloud-sleuth](http://cloud.spring.io/spring-cloud-sleuth/).
+- **Config Server:**
+  The microservices obtain the configuration from a [Configuration Service](http://cloud.spring.io/spring-cloud-config/) backed by a git repository. This means that configuration is now auditables and version controlled, as well as providing the ability to refresh configuration during runtime.
 
 #Roadmap
 
 The roadmap for this project is constantly evolving. Please feel free to reach out with ideas.
-- **Correlation/Traceability**
-  Provide a way to trace calls/requests through the microservices. This will be done with [Spring-cloud-sleuth](http://cloud.spring.io/spring-cloud-sleuth/).
-- **Config Server:**
-  Currently, the microservices obtain their configuration from the application.yml file packaged with each of them or the configuration is in the code. In the future, they'll obtain their configuration from a [Config Server](http://cloud.spring.io/spring-cloud-config/) backed by github repos.
-- **Better APIs:** Better APIs with documentation that conform to some standard and logic.
-- **Stock analysis system:** a microservice, or set of microservices, to analyse stock and provide recommendations. Also, to show polyglot persistence as well as more sophisticated data workloads.
-- **Mobile UI:** Mobile interface to expose the services on an iOS device and/or Android device natively, making use of the [Pivotal Cloud Foundry Mobile Services](http://docs.pivotal.io/mobile/index.html).
+- **Better APIs:**
+  Better APIs with documentation that conform to some standard and logic.
+- **Security:**
+  Secure microservices with OAUTH2.
+- **Monitoring/Operations:**
+  Show how to monitor a distributed system comprising of multiple microservices.
+  This will comprise of:
+   - Spring Boot Admin
+   - ELK tile
+   - Zipkin
+- **Stock analysis system:**
+   A microservice, or set of microservices, to analyse stock and provide recommendations. Also, to show polyglot persistence as well as more sophisticated data workloads.
+- **Mobile UI:**
+  Mobile interface to expose the services on an iOS device and/or Android device natively, making use of the [Pivotal Cloud Foundry Mobile Services](http://docs.pivotal.io/mobile/index.html).
 
 #Contributing
 Everyone is encouraged to help improved this project.

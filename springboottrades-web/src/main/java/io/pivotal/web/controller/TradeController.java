@@ -122,10 +122,16 @@ public class TradeController {
 		logger.debug("Fetching quotes for companies that have: " + companyName + " in name or symbol");
 		List<CompanyInfo> companies = marketService.getCompanies(companyName);
 		
+		/*
+		 * Sleuth currently doesn't work with parallelStreams
+		 */
 		//get district companyinfos and get their respective quotes in parallel.
+		//List<Quote> result = companies.stream().collect(Collectors.toCollection(
+		//	      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
+		//		)).parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
 		List<Quote> result = companies.stream().collect(Collectors.toCollection(
 			      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
-				)).parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
+				)).stream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
 		
 		List<Quote> quotes = result.parallelStream().filter(n -> n.getStatus().startsWith("SUCCESS")).collect(Collectors.toList());
 		return quotes;
@@ -138,11 +144,11 @@ public class TradeController {
 	@ExceptionHandler({ Exception.class })
 	public ModelAndView error(HttpServletRequest req, Exception exception) {
 		logger.debug("Handling error: " + exception);
+		logger.warn("Exception:", exception);
 		ModelAndView model = new ModelAndView();
 		model.addObject("errorCode", exception.getMessage());
 		model.addObject("errorMessage", exception);
 		model.setViewName("error");
-		exception.printStackTrace();
 		return model;
 	}
 }

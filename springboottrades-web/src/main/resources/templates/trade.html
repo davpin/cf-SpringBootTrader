@@ -7,7 +7,7 @@
 <div th:include="fragments/header_fragment :: header-includes" th:remove="tag"></div>
 </head>
 <body>
-	<div sec:authorize="hasRole('USER')" th:remove="tag">
+	<div sec:authorize="hasAnyAuthority('USER')" th:remove="tag">
 		<div th:include="fragments/navbar_fragment :: navbar" class="navbar-fixed-top"></div>
 		<div class="container page">
 			<div th:include="fragments/trade_fragment :: saved_order" th:remove="tag"></div>

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import io.pivotal.web.domain.Order;
 import io.pivotal.web.domain.Search;
 import io.pivotal.web.service.MarketService;
+import io.pivotal.web.service.MarketSummaryService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,14 @@ public class PortfolioController {
 	
 	@Autowired
 	private MarketService marketService;
+	
+	@Autowired
+	private MarketSummaryService summaryService;
+	
 	@RequestMapping(value = "/portfolio", method = RequestMethod.GET)
 	public String portfolio(Model model) {
 		logger.debug("/portfolio");
-		model.addAttribute("marketSummary", marketService.getMarketSummary());
+		model.addAttribute("marketSummary", summaryService.getMarketSummary());
 		
 		//check if user is logged in!
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -54,11 +59,11 @@ public class PortfolioController {
 	@ExceptionHandler({ Exception.class })
 	public ModelAndView error(HttpServletRequest req, Exception exception) {
 		logger.debug("Handling error: " + exception);
+		logger.warn("Exception: ", exception);
 		ModelAndView model = new ModelAndView();
 		model.addObject("errorCode", exception.getMessage());
 		model.addObject("errorMessage", exception);
 		model.setViewName("error");
-		exception.printStackTrace();
 		return model;
 	}
 

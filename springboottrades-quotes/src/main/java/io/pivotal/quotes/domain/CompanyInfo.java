@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author David Ferreira Pinto
  *
  */
-public class CompanyInfo {
+public class CompanyInfo implements Comparable<CompanyInfo> {
 
 	@JsonProperty("Symbol")
 	private String symbol;
@@ -48,5 +48,47 @@ public class CompanyInfo {
 				.append(name).append(", exchange=").append(exchange)
 				.append("]");
 		return builder.toString();
+	}
+	@Override
+	public int compareTo(CompanyInfo o) {
+		if(o == null){
+			return -1;
+		}
+		return this.getSymbol().compareTo(o.getSymbol());
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((exchange == null) ? 0 : exchange.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((symbol == null) ? 0 : symbol.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CompanyInfo other = (CompanyInfo) obj;
+		if (exchange == null) {
+			if (other.exchange != null)
+				return false;
+		} else if (!exchange.equals(other.exchange))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (symbol == null) {
+			if (other.symbol != null)
+				return false;
+		} else if (!symbol.equals(other.symbol))
+			return false;
+		return true;
 	}
 }

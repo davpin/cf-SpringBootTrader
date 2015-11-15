@@ -1,6 +1,6 @@
 # Creating the discovery service.
 
-All our microservices will connect to a Service Registry. We will use the Discovery service provided by the [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services)  fi available. There are [notes below](#Deploying without Spring Cloud Services) on how to create this service if [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services) is not available in your cloud or you want to run it [locally](#Running it locally).
+All our microservices will connect to a Service Registry. We will use the Discovery service provided by the [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services)  if available. There are [notes below](#Deploying without Spring Cloud Services) on how to create this service if [Spring Cloud Services for PCF](https://network.pivotal.io/products/p-spring-cloud-services) is not available in your cloud or you want to run it [locally](#Running it locally).
 
 Underneath the covers, this discovery service is implemented using the [Spring Cloud Netflix - Eureka](http://cloud.spring.io/spring-cloud-netflix/).
 

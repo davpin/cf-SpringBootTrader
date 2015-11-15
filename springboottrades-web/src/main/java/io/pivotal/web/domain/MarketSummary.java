@@ -85,5 +85,22 @@ public class MarketSummary {
 	public void setSummaryDate(Date summaryDate) {
 		this.summaryDate = summaryDate;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("MarketSummary [topLosers=").append(topLosers)
+				.append(", topGainers=").append(topGainers)
+				.append(", tradeStockIndexAverage=")
+				.append(tradeStockIndexAverage)
+				.append(", tradeStockIndexVolume=")
+				.append(tradeStockIndexVolume)
+				.append(", tradeStockIndexOpenAverage=")
+				.append(tradeStockIndexOpenAverage).append(", change=")
+				.append(change).append(", percentGain=").append(percentGain)
+				.append(", summaryDate=").append(summaryDate).append("]");
+		return builder.toString();
+	}
+	
 	
 }

@@ -1,7 +1,9 @@
 package io.pivotal.quotes.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,9 +19,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -32,8 +36,9 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-public class QuoteController {
-	private static final Logger logger = LoggerFactory.getLogger(QuoteController.class);
+@RequestMapping(value = "/v1")
+public class QuoteV1Controller {
+	private static final Logger logger = LoggerFactory.getLogger(QuoteV1Controller.class);
 
 	/**
 	 * The service to delegate calls to.
@@ -42,7 +47,7 @@ public class QuoteController {
 	private QuoteService service;
 
 	/**
-	 * Retrives the current quote for the given symbol.
+	 * Retrieves the current quote for the given symbol.
 	 * 
 	 * @param symbol
 	 *            The symbol to retrieve the quote for.
@@ -50,12 +55,40 @@ public class QuoteController {
 	 * @throws SymbolNotFoundException
 	 *             if the symbol is not valid.
 	 */
-	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
+	//TODO: should we leave this call here? we have the /quotes/
+	/*@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
 	public ResponseEntity<Quote> getQuote(@PathVariable("symbol") final String symbol) throws SymbolNotFoundException {
 		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
 		Quote quote = service.getQuote(symbol);
 		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, quote));
 		return new ResponseEntity<Quote>(quote, getNoCacheHeaders(), HttpStatus.OK);
+	}*/
+	/**
+	 * Retrieves the current quotes for the given symbols.
+	 * 
+	 * @param query
+	 *            request parameter with q=symbol,symbol
+	 * @return The Quote
+	 * @throws SymbolNotFoundException
+	 *             if the symbol is not valid.
+	 */
+	@RequestMapping(value = "/quotes", method = RequestMethod.GET)
+	public ResponseEntity<List<Quote>> getQuotes(@RequestParam(value="q", required=false) String query) throws SymbolNotFoundException{
+		logger.debug("received Quote query for: %s", query);
+		if (query == null) {
+			//return empty list.
+			return new ResponseEntity<List<Quote>>(new ArrayList<Quote>(), getNoCacheHeaders(), HttpStatus.OK);
+		}
+		List<Quote> quotes;
+		String[] splitQuery = query.split(",");
+		if (splitQuery.length > 1) {
+			quotes = service.getQuotes(query);
+		} else {
+			quotes = new ArrayList<>();
+			quotes.add(service.getQuote(splitQuery[0]));
+		}
+		logger.info(String.format("Retrieved symbols: %s with quotes {}", query, quotes));
+		return new ResponseEntity<List<Quote>>(quotes, getNoCacheHeaders(), HttpStatus.OK);
 	}
 
 	/**

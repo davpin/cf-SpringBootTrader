@@ -1,5 +1,7 @@
 build/
 .gradle/
-
+*.classpath
+*.project
+*.settings/
 *.ipr
 *.iws
