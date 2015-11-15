@@ -10,5 +10,5 @@ env:
 applications:
 - name: accounts
   random-route: true
-  path: springboottrades-accounts/build/libs/accounts-${version}.jar
+  path: ${path}accounts-${version}.jar
   services: [ traderdb, discovery-service, circuit-breaker-dashboard, config-server ]
