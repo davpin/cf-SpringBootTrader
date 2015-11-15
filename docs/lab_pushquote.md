@@ -22,6 +22,8 @@ Luckily, Pivotal Cloud Foundry allows us to assign a [`random-route`](http://doc
 
   > HINT: user the -f option to the push command.
 
+  > Manifest files are generated as part of the build. They are placed in `springboottrades-quotes/build`
+
 2. When the script has finished, set the `CF_TARGET` environment variable in both applications to the API endpoint of your Elastic Runtime instance (as in `https://api.example.com`), then restage the applications so that the changes will take effect.
 
   ```

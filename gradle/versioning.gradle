@@ -10,9 +10,9 @@ class ProjectVersion {
 	ProjectVersion() {
                 def file = new File('version/number')
                 if(file.exists()) {
-                   this.build = file.text
+                   this.build = file.text.trim()
                 } else {
-                    this.build = "0.0.0"
+                    this.build = "0.3.0"
                 }
 	}
 	@Override

@@ -46,7 +46,18 @@ subprojects {
 	println version
 
 	test { finalizedBy jacocoTestReport }
+	
+	task manifestFilter(type: Copy) {
+		from 'manifest-unversioned.yml'
+		into "${buildDir}/"
+		rename { String fileName ->
+			fileName.replace('-unversioned', '')
+		}
+		expand(version: "${version}")
+	}
 
+	assemble { finalizedBy manifestFilter }
+	
 	jacocoTestReport {
 		group = "Reporting"
 		description = "Generate Jacoco coverage reports after running tests."

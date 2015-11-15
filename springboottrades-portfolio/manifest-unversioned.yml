@@ -8,7 +8,7 @@ env:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
     JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: { memory_sizes: { metaspace: 100m }}]'
 applications:
-- name: quotes
+- name: portfolio
   random-route: true
-  path: springboottrades-quotes/build/libs/quotes-0.3.jar
-  services: [ discovery-service, circuit-breaker-dashboard, config-server ]
+  path: springboottrades-portfolio/build/libs/portfolio-${version}.jar
+  services: [ traderdb, discovery-service, circuit-breaker-dashboard, config-server ]
