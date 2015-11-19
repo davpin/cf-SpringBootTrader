@@ -53,8 +53,7 @@ subprojects {
 		rename { String fileName ->
 			fileName.replace('-unversioned', '')
 		}
-		def myPath = System.getenv("JAR_PATH") ?: "${libsDir}/"
-		expand(version: "${version}", path: "${myPath}")
+		expand(version: "${version}")
 	}
 
 	assemble { finalizedBy manifestFilter }
