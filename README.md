@@ -1,9 +1,13 @@
+>We welcome contributions from the community. Please feel free to fork this project, there are many committers already and I welcome many more :) Do feel free to review my development branch as we're constantly improving this project and ... just maybe we're already implementing the changes you want! Finally, do feel free to review open issues on the development branch too.
+
 # cf-SpringBootTrader
+
 Microservice version of the Spring Trader app using spring boot
 
 ![Spring Trader](/docs/springtrader2.png)
 
 #Introduction
+
 This repository holds a collection of micro services that work together to present a trading application surfaced though a web UI, but more interfaces can be created that re-utilise the microservices.
 
 It was created to support workshops and demonstrations of building and using `microservices` architectures and running these in **Cloud Foundry** (although it is possible to run these on other runtimes).
@@ -149,9 +153,11 @@ The roadmap for this project is constantly evolving. Please feel free to reach o
 #Contributing
 Everyone is encouraged to help improved this project.
 
+The master branch has the latest stable release. development happens in the development branch (or feature branches that get merged into development branch). So please check if want you to develop is already in the development branch.
+
 Here are some ways you can contribute:
 
-- by using alpha, beta, and prerelease versions
+- by using alpha, beta, and prerelease versions (ie from the development branch)
 - by reporting bugs
 - by suggesting new features
 - by writing or editing documentation
@@ -169,4 +175,4 @@ We use the [GitHub issue tracker](https://github.com/dpinto-pivotal/cf-SpringBoo
 2. Create a topic branch.
 3. Implement your feature or bug fix.
 4. Commit and push your changes.
-5. Submit a pull request.
+5. Submit a pull request (to the development branch).
