@@ -35,6 +35,8 @@ Luckily, Pivotal Cloud Foundry allows us to assign a [`random-route`](http://doc
   ```
   > You only need to do this once per application.
 
+  > IMPORTANT: The Starters for Spring Cloud Services has a dependency on Spring Security, and by default, this will cause all client application endpoints to be protected by HTTP Basic authentication. You can disable this; see ["Disable HTTP Basic Authentication"](http://docs.pivotal.io/spring-cloud-services/service-registry/registering-a-service.html#disable-http-basic-auth) in the [Spring Cloud Services documentation for Service Registry](http://docs.pivotal.io/spring-cloud-services/service-registry/).
+
 ##Deploying without Spring Cloud Services
 
   If Spring Cloud Services are not available, you should have pushed an instance of the [discovery service](https://github.com/dpinto-pivotal/cf-SpringBootTrader-extras) to the cloud. Now, you'll have to create a [*User-provided service*](http://docs.pivotal.io/pivotalcf/devguide/services/user-provided.html) and bind it to the quote service.
