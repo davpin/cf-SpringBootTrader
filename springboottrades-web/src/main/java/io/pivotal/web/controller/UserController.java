@@ -98,6 +98,7 @@ public class UserController {
 		model.addAttribute("account", new Account());
 		return "registration";
 	}
+
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public String register(Model model, @ModelAttribute(value="account") Account account) {
 		logger.info("register: user:" + account.getUserid());

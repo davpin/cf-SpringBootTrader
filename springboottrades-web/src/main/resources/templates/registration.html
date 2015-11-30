@@ -7,7 +7,7 @@
 <div th:include="fragments/header_fragment :: header-includes" th:remove="tag"></div>
 </head>
 <body>
-	<div sec:authorize="isAnonymous()" class="container page">
+	<div sec:authorize="isAnonymous()" class="container">
 		<div th:include="fragments/registration_fragment :: registration"></div>
 	</div>
 
