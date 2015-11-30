@@ -1,49 +1,89 @@
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 
-<th:block th:fragment="navbar" class="navbar-fixed-top">
-	<div class="navbar">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse"> <!--a class="btn btn-navbar"-->
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-				</a> <a href="/" th:href="@{/}" class="logo brand">Home</a>
-				<div class="nav-collapse">
-					<ul class="nav nav-top">
-						<li class="divider-vertical"></li>
-						<li><a id="nb-dashboard" class="nav-link" th:href="@{/}"><span id="nb-icon-dashboard"
-								class="icon-home icon-white"></span>Home</a></li>
-						<li class="divider-vertical"></li>
-						<li><a id="nb-portfolio" class="nav-link" th:href="@{/portfolio}"><span
-								id="nb-portfolio-icon" class="icon-custom icon-portfolio"></span>Portfolio</a></li>
-						<li class="divider-vertical"></li>
-						<li><a id="nb-trade" class="nav-link" th:href="@{/trade}"><span
-								id="nb-trade-icon" class="icon-custom icon-trade"></span>Trade</a></li>
-						<li class="divider-vertical"></li>
-					</ul>
-					<div class="navbar-text pull-right">
-						<ul class="nav">
-							<li class="divider-vertical"></li>
-							<li class="dropdown" id="fat-menu"><a class="dropdown-toggle pull-right"
-								data-toggle="dropdown"> <span class="icon-custom icon-user"></span> <span
-									id="nb-username" sec:authentication="name">Username</span> <span
-									class="icon-down-arrow"></span>
-							</a>
-								<div class="dropdown-menu">
-									<ul class="dropdown-nav">
-										<li class="disabled"><a id="profile" href="/">Profile</a></li>
-										<li class="disabled"><a id="help" href="/">Help</a></li>
-										<li class="divider"></li>
-										<li><form id="logoutform" th:action="@{/logout}" method="post">
-												<a id="logout" onclick="document.getElementById('logoutform').submit()">Logout</a>
-											</form></li>
-									</ul>
-								</div></li>
-								<li class="divider-vertical"></li>
-						</ul>
-					</div>
-				</div>
-			</div>
+<th:block th:fragment="navbar">
+	<div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#trader-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://pivotal.io">
+                <img alt="Pivotal" src="https://d213dhlpdb53mu.cloudfront.net/assets/pivotal-square-logo-c766713bf8f203d45e0dbd6fdd5640de.svg" width="22px;"/>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="trader-navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li><a id="nb-dashboard" th:href="@{/}">
+                    <i class="fa fa-home"></i>&nbsp;&nbsp;Home
+                </a></li>
+				<li><a id="nb-portfolio" th:href="@{/portfolio}">
+                    <i class="fa fa-book"></i>&nbsp;&nbsp;Portfolio
+                </a></li>
+				<li><a id="nb-trade" th:href="@{/trade}">
+                    <i class="fa fa-line-chart"></i>&nbsp;&nbsp;Trade
+                </a></li>
+			</ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="navbar-brand" href="#">
+                        <img alt="Spring Trader" src="../images/logo.png" width="120px;"/>
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <i class="fa fa-user"></i>&nbsp;&nbsp;
+                        <span id="nb-username" sec:authentication="name">Username</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!--<li class="disabled"><a id="profile" href="/">Profile</a></li>-->
+                        <!--<li class="disabled"><a id="help" href="/">Help</a></li>-->
+                        <!--<li role="separator" class="divider"></li>-->
+                        <li><a id="logout" href="#">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form id="logoutform" th:action="@{/logout}" method="post">
+            </form>
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                $('#logout').click( function() {
+                    $('#logoutform').submit();
+                });
+                /*]]>*/
+            </script>
 		</div>
 	</div>
 </th:block>
+
+<th:block th:fragment="navbar-empty">
+	<div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#empty-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://pivotal.io">
+                <img alt="Pivotal" src="https://d213dhlpdb53mu.cloudfront.net/assets/pivotal-square-logo-c766713bf8f203d45e0dbd6fdd5640de.svg" width="22px;"/>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="empty-navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="navbar-brand" href="#">
+                        <img alt="Spring Trader" src="../images/logo.png" width="120px;"/>
+                    </a>
+                </li>
+            </ul>
+		</div>
+	</div>
+</th:block>
+
+
 </html>
