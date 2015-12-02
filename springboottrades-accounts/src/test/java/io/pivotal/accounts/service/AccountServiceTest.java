@@ -31,7 +31,7 @@ public class AccountServiceTest {
 	MockMvc mockMvc;
 
 	@InjectMocks
-	AccountService service;
+	AccountService service = new AccountServiceImpl();
 	
 	@Mock
 	AccountRepository repo;
