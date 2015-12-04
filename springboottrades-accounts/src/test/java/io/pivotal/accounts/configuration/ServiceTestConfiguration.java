@@ -16,6 +16,7 @@
 package io.pivotal.accounts.configuration;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anySetOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -24,12 +25,17 @@ import io.pivotal.accounts.repository.AccountRepository;
 import io.pivotal.accounts.service.AccountService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import io.pivotal.accounts.service.AccountServiceImpl;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -112,7 +118,7 @@ public class ServiceTestConfiguration  {
 	
 	@Bean 
 	public AccountService accountService() {
-		AccountService accountService = Mockito.mock(AccountServiceImpl.class);
+		AccountService accountService = Mockito.mock(AccountService.class);
 		//when(accountService.findAccountProfile(400)).thenReturn(accountProfile());
 		//when(accountService.findAccountProfile(NOT_A_VALID_PROFILE)).thenReturn(null);
 		//when(accountService.updateAccountProfile(any(Accountprofile.class), any(String.class))).thenReturn(accountProfile());
