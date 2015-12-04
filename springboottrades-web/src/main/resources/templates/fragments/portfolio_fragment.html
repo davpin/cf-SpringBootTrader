@@ -79,7 +79,7 @@
 							<td
 								th:text="${#numbers.formatDecimal(entry.value.currentValue * entry.value.quantity, 0, 'COMMA', 2, 'POINT')}">0</td>
 							<td
-								th:class="${entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity}  &gt; 0? 'green-color gray' : 'red-color gray'">
+								th:class="${entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity}  &gt; 0? 'text-success gray' : 'text-danger gray'">
 								<span
 								th:text="${entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity}  &gt; 0? ${#numbers.formatDecimal(entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity, 0, 'COMMA', 2, 'POINT')} +' &uarr;' : ${#numbers.formatDecimal(entry.value.sellValue - entry.value.purchaseValue + entry.value.currentValue * entry.value.quantity, 0, 'COMMA', 2, 'POINT')} +' &darr;'"></span>
 							</td>

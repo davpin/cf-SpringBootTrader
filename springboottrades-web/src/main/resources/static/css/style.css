@@ -25,7 +25,10 @@ body {
     background-color: #0F635D;
     border-color: #333333;
 }
-.label-success {
+.panel-default>.panel-heading {
     background-color: #138078;
+}
+.panel-title {
+    color: white;
 }
 

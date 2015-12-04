@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div sec:authorize="isAnonymous()" class="container">
+		<div th:include="fragments/navbar_fragment :: navbar-empty" class="navbar navbar-inverse navbar-fixed-top"></div>
 		<div th:include="fragments/registration_fragment :: registration"></div>
 	</div>
 
