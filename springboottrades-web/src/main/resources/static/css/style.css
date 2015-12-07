@@ -32,3 +32,15 @@ body {
     color: white;
 }
 
+.completed {
+    padding:2px 5px;
+    background:#5daf1b;
+    color:#ffffff;
+    border-radius:3px;
+}
+.uncompleted {
+    padding:2px 5px;
+    background:#a09f9f;
+    color:#ffffff;
+    border-radius:3px;
+}

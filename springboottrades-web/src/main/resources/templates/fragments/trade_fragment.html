@@ -1,7 +1,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="company_input">
-	<div th:if="${search != null}" class="row col-md-12">
+	<div th:if="${search != null}" class="col-md-12">
 		<div id="quote-control" class="panel panel-default">
             <div class="panel-body">
                 <form class="form-inline" action="#" th:action="@{/trade}" method="post" th:object="${search}">
@@ -49,7 +49,7 @@
 						<input type="hidden" th:value="${quote.lastPrice}" id="price" name="price" />
 						<input type="hidden" th:value="BUY" id="orderType" name="orderType" />
 						<input type="number" id="quantity-input" class="input-mini" min="1"
-							max="9999999999" th:field="*{quantity}" /> <a id="buyBtn" th:attr="onclick='document.getElementById(\'form'+${quoteStat.index}+'\').submit()'" class="btn green-btn">Buy</a>
+							max="9999999999" th:field="*{quantity}" /> <a id="buyBtn" th:attr="onclick='document.getElementById(\'form'+${quoteStat.index}+'\').submit()'" class="btn-sm btn-success">Buy</a>
 							</form></td>
 					</tr>
 				
