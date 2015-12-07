@@ -16,7 +16,7 @@
 </th:block>
 
 <th:block th:fragment="quote_list">
-	<div th:if="${quotes != null }" class="row col-md-12">
+	<div th:if="${quotes != null }" class="col-md-12">
 		<div id="quote-result" class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">Quotes - <span th:text="${#lists.size(quotes)}" th:remove="tag"></span> result(s)</h3>
@@ -60,7 +60,7 @@
 </th:block>
 
 <th:block th:fragment="saved_order">
-	<div th:if="${savedOrder != null}" class="row col-md-12">
+	<div th:if="${savedOrder != null}" class="col-md-12">
 		<div class="panel panel-default">
 		<div class="title alert alert-success">
 			<h3>Order Successful</h3>
