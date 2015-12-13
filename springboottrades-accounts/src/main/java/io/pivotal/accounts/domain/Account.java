@@ -17,9 +17,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 /**
  * Represents the account.
- * 
+ *
  * Entity object that represents a user account.
- * 
+ *
  * @author David Ferreira Pinto
  *
  */
@@ -27,7 +27,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "ACCOUNT")
 public class Account implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3057275461420965784L;
 
@@ -45,7 +45,7 @@ public class Account implements Serializable {
 	@Column(name = "userid", length = 250, unique = true)
     @NotNull
     private String userid;
-	
+
 	@Column(name = "email", length = 250)
     private String email;
 
@@ -54,30 +54,32 @@ public class Account implements Serializable {
 
 	@Column(name = "fullname", length = 250)
     private String fullname;
-	
+
 	@Column(name = "authtoken", length = 100)
     private String authtoken;
-    
+
 	@Column(name = "creationdate")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "LL")
     private Date creationdate;
-    
-	@Column(name = "openbalance", precision = 14, scale = 2)
-    private BigDecimal openbalance;
-    
+
+	@Column(name = "openbalance", precision = 14, scale = 2, nullable=false)
+	@NotNull
+    private BigDecimal openbalance = new BigDecimal(0);
+
 	@Column(name = "logoutcount")
 	@NotNull
     private Integer logoutcount;
-    
-	@Column(name = "balance", precision = 14, scale = 2)
-    private BigDecimal balance;
-    
+
+	@Column(name = "balance", precision = 14, scale = 2, nullable=false)
+	@NotNull
+    private BigDecimal balance = new BigDecimal(0);
+
 	@Column(name = "lastlogin")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "LL")
     private Date lastlogin;
-    
+
 	@Column(name = "logincount")
 	@NotNull
     private Integer logincount;
@@ -151,7 +153,8 @@ public class Account implements Serializable {
 	}
 
 	public void setOpenbalance(BigDecimal openbalance) {
-		this.openbalance = openbalance;
+		if (openbalance != null)
+			this.openbalance = openbalance;
 	}
 
 	public Integer getLogoutcount() {
@@ -167,7 +170,8 @@ public class Account implements Serializable {
 	}
 
 	public void setBalance(BigDecimal balance) {
-		this.balance = balance;
+		if (balance != null)
+			this.balance = balance;
 	}
 
 	public Date getLastlogin() {
@@ -321,5 +325,5 @@ public class Account implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }

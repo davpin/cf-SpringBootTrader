@@ -2,7 +2,6 @@
 timeout: 180
 instances: 1
 memory: 512M
-#buildpack: toms-java-buildpack
 env:
     SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
@@ -10,5 +9,5 @@ env:
 applications:
 - name: quotes
   random-route: true
-  path: ${path}quotes-${version}.jar
+  path: libs/quotes-${version}.jar
   services: [ discovery-service, circuit-breaker-dashboard, config-server ]

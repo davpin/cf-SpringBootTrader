@@ -109,7 +109,9 @@ public class QuoteMapper {
 		
 		Quote mappedQuote = new Quote();
 		mappedQuote.setChange(yQuote.getChange());
-		mappedQuote.setChangePercent(Float.parseFloat(yQuote.getPercentChange().replace("%", "")));
+		if (yQuote.getPercentChange() != null) {
+			mappedQuote.setChangePercent(Float.parseFloat(yQuote.getPercentChange().replace("%", "")));
+		}
 		mappedQuote.setChangePercentYTD(null);
 		mappedQuote.setChangeYTD(null);
 		mappedQuote.setHigh(yQuote.getDaysHigh());

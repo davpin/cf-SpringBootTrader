@@ -52,6 +52,7 @@ Now that we have all the required services created, let's push all the services.
 > The **Cloud Foundry** manifest file allows us to [define multiple applications in a single file](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/manifest.html#multi-apps)
 
 2. When the script has finished, set the `CF_TARGET` environment variable in both applications to the API endpoint of your Elastic Runtime instance (as in `https://api.example.com`), then restage the applications so that the changes will take effect.
+
   ```
   $ cf set-env accounts CF_TARGET https://api.cloudfoundry.com
   Setting env variable 'CF_TARGET' to 'https://api.cloudfoundry.com' for app accounts in org myorg / space outer as user...

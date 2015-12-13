@@ -1,20 +1,39 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="summary">
-	<div th:if="${marketSummary != null}" class="row show-table">
-		<div
-			th:include="fragments/marketsummary_fragment :: summary-quote(${marketSummary.topGainers},'IT VEndors')" th:remove="tag"></div>
-		<div
-			th:include="fragments/marketsummary_fragment :: summary-central" th:remove="tag"></div>	
-		<div
-			th:include="fragments/marketsummary_fragment :: summary-quote(${marketSummary.topLosers},'FS Organisations')" th:remove="tag"></div>
-	</div>
+    <div id="market-carousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#market-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#market-carousel" data-slide-to="1"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <div th:include="fragments/marketsummary_fragment :: summary-quote(${marketSummary.topGainers},'Information Technology')" th:remove="tag"></div>
+            </div>
+            <div class="item">
+                <div th:include="fragments/marketsummary_fragment :: summary-quote(${marketSummary.topLosers},'Financial Services')" th:remove="tag"></div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $('#market-carousel').carousel({
+            pause: "none"
+        });
+        /*]]>*/
+    </script>
 </th:block>
-	
-	<th:block th:fragment="summary-central">
-    <div class="span4 center-table">
+
+<th:block th:fragment="summary-central">
+    <div>
         <table class="table">
             <tr>
-                <th colspan="2"><div class="logo-table" title="NanoTrader"/></th>
+                <th colspan="2">
+                    <div class="logo-table" title="NanoTrader"></div>
+                </th>
             </tr>
             <tr>
                 <td>Index:</td>
@@ -32,17 +51,12 @@
             </tr>
         </table>
     </div>
-    </th:block>
-     
+</th:block>
 
 <th:block th:fragment="summary-quote(quoteList, title)">
-
-	<div class="span4">
+	<div>
+		<h3><span class="label label-primary" th:text="${title}"></span></h3>
 		<table class="table">
-			<tr>
-				<th colspan="5"><span class="icon-custom icon-gains"> </span><strong
-					th:text="${title}"></strong></th>
-			</tr>
 			<tr>
 				<th>Symbol</th>
 				<th>Price</th>
@@ -50,7 +64,7 @@
 				<th>High</th>
 				<th>Low</th>
 			</tr>
-			<tr th:class="${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} &gt; 0? 'text-success caps' : 'text-error caps'" th:each="quote : ${quoteList}">
+			<tr th:class="${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} &gt; 0? 'text-success' : 'text-danger'" th:each="quote : ${quoteList}">
 				<td><strong th:text="${quote.symbol}"></strong></td>
 				<td th:text="${quote.lastPrice}"></td>
 				<td th:text="${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} &gt; 0? ${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} +' &uarr;' : ${#numbers.formatDecimal(quote.change, 0, 'COMMA', 2, 'POINT')} +' &darr;'"></td>
@@ -59,7 +73,6 @@
 			</tr>
 			<tr></tr>
 		</table>
-
 	</div>
 </th:block>
 </html>

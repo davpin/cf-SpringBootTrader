@@ -1,5 +1,6 @@
 package io.pivotal.web.controller;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
@@ -95,9 +96,12 @@ public class UserController {
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
 	public String registration(Model model) {
-		model.addAttribute("account", new Account());
+		Account account = new Account();
+		account.setBalance(new BigDecimal(100000));
+		model.addAttribute("account", account);
 		return "registration";
 	}
+
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public String register(Model model, @ModelAttribute(value="account") Account account) {
 		logger.info("register: user:" + account.getUserid());

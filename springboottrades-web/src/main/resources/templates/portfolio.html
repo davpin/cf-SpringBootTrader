@@ -10,16 +10,17 @@
 <body>
 
 	<div sec:authorize="isAuthenticated()" th:include="fragments/navbar_fragment :: navbar"
-		class="navbar-fixed-top"></div>
+		 class="navbar navbar-inverse navbar-fixed-top">
+	</div>
 
-	<div class="container page">
-		<div th:include="fragments/marketsummary_fragment :: summary"></div>
-
+	<div class="container well well-lg">
 		<div sec:authorize="hasAnyAuthority('USER')" th:remove="tag">
-			<div class="row">
+			<div class="col-md-6">
 				<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>
 				<div th:if="${portfolioRetrievalError != null}" th:include="fragments/portfolio_fragment :: portfolio-error" th:remove="tag"></div>
 			</div>
+            <div class="col-md-6" th:include="fragments/marketsummary_fragment :: summary"></div>
+
 			<div class="row">
 				<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: portfolio-listing" th:remove="tag"></div>
 			</div>
