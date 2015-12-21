@@ -117,7 +117,7 @@ public class QuoteV1ControllerTest {
 		when(service.getCompanyInfo(TestConfiguration.QUOTE_NAME)).thenReturn(
 				comps);
 		mockMvc.perform(
-				get("/v1/company/" + TestConfiguration.QUOTE_NAME).contentType(
+				get("/v1/companies?q=" + TestConfiguration.QUOTE_NAME).contentType(
 						MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 						.andDo(print())
 						.andExpect(jsonPath("$").isArray());
@@ -157,8 +157,8 @@ public class QuoteV1ControllerTest {
 	public void getQuotesOneQuote() throws Exception {
 		List<Quote> quotes = new ArrayList<>();
 		quotes.add(TestConfiguration.quote());
-		when(service.getQuote(TestConfiguration.QUOTE_SYMBOL)).thenReturn(
-				TestConfiguration.quote());
+		when(service.getQuotes(TestConfiguration.QUOTE_SYMBOL)).thenReturn(
+				quotes);
 		mockMvc.perform(
 				get("/v1/quotes?q=" + TestConfiguration.QUOTE_SYMBOL).contentType(
 						MediaType.APPLICATION_JSON)).andExpect(status().isOk())

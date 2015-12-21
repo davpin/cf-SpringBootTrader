@@ -74,35 +74,29 @@ public class QuoteV1Controller {
 	 */
 	@RequestMapping(value = "/quotes", method = RequestMethod.GET)
 	public ResponseEntity<List<Quote>> getQuotes(@RequestParam(value="q", required=false) String query) throws SymbolNotFoundException{
-		logger.debug("received Quote query for: %s", query);
+		logger.debug("received Quote query for: {}", query);
 		if (query == null) {
 			//return empty list.
 			return new ResponseEntity<List<Quote>>(new ArrayList<Quote>(), getNoCacheHeaders(), HttpStatus.OK);
 		}
-		List<Quote> quotes;
-		String[] splitQuery = query.split(",");
-		if (splitQuery.length > 1) {
-			quotes = service.getQuotes(query);
-		} else {
-			quotes = new ArrayList<>();
-			quotes.add(service.getQuote(splitQuery[0]));
-		}
-		logger.info(String.format("Retrieved symbols: %s with quotes {}", query, quotes));
+		List<Quote> quotes = service.getQuotes(query);
+		
+		logger.info("Retrieved symbols: {} with quotes {}", query, quotes);
 		return new ResponseEntity<List<Quote>>(quotes, getNoCacheHeaders(), HttpStatus.OK);
 	}
 
 	/**
 	 * Searches for companies that have a name or symbol matching the parameter.
 	 * 
-	 * @param name
-	 *            The name or symbol to search for.
+	 * @param query
+	 *            The name to search for.
 	 * @return The list of companies that match the search parameter.
 	 */
-	@RequestMapping(value = "/company/{name}", method = RequestMethod.GET)
-	public ResponseEntity<List<CompanyInfo>> getCompanies(@PathVariable("name") final String name) {
-		logger.debug("QuoteController.getCompanies: retrieving companies for: " + name);
-		List<CompanyInfo> companies = service.getCompanyInfo(name);
-		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
+	@RequestMapping(value = "/companies", method = RequestMethod.GET)
+	public ResponseEntity<List<CompanyInfo>> getCompanies(@RequestParam(value="q", required=false) String query) {
+		logger.debug("QuoteController.getCompanies: retrieving companies matching: " + query);
+		List<CompanyInfo> companies = service.getCompanyInfo(query);
+		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", query), companies);
 		return new ResponseEntity<List<CompanyInfo>>(companies, HttpStatus.OK);
 	}
 

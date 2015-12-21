@@ -1,6 +1,5 @@
 package io.pivotal.quotes.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -8,20 +7,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import io.pivotal.quotes.domain.CompanyInfo;
-import io.pivotal.quotes.domain.CompanyInfoMapper;
 import io.pivotal.quotes.domain.Quote;
 import io.pivotal.quotes.domain.YahooQuoteResponse;
 import io.pivotal.quotes.domain.QuoteMapper;
-import io.pivotal.quotes.domain.XigniteDelayedQuote;
 import io.pivotal.quotes.exception.SymbolNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
@@ -36,8 +36,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 public class QuoteService {
 	@Value("${pivotal.quotes.quotes_url}")
 	protected String quote_url;
-	@Value("${pivotal.quotes.quotes_url2}")
-	protected String quote_url2;
 	@Value("${pivotal.quotes.companies_url}")
 	protected String company_url;
 
@@ -59,7 +57,19 @@ public class QuoteService {
 	/*
 	 * cannot autowire as don't want ribbon here.
 	 */
-	private RestTemplate restTemplate = new RestTemplate();
+	private RestTemplate restTemplate = getRestTemplate();
+	
+	private static RestTemplate getRestTemplate() {
+		RestTemplate template = new RestTemplate();
+		for (HttpMessageConverter<?> conv : template.getMessageConverters() ) {
+			if (conv instanceof MappingJackson2HttpMessageConverter ) {
+				//found
+				MappingJackson2HttpMessageConverter converter = (MappingJackson2HttpMessageConverter) conv;
+				converter.getObjectMapper().enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+			}
+		}
+		return template;
+	}
 
 	/**
 	 * Retrieves an up to date quote for the given symbol.
@@ -69,7 +79,7 @@ public class QuoteService {
 	 * @return The quote object or null if not found.
 	 * @throws SymbolNotFoundException
 	 */
-	@HystrixCommand(fallbackMethod = "getXigniteQuote")
+	@HystrixCommand(fallbackMethod = "getQuoteFallback")
 	public Quote getQuote(String symbol) throws SymbolNotFoundException {
 		logger.debug("QuoteService.getQuote: retrieving quote for: " + symbol);
 		Map<String, String> params = new HashMap<String, String>();
@@ -81,38 +91,6 @@ public class QuoteService {
 		if (quote.getSymbol() == null) {
 			throw new SymbolNotFoundException("Symbol not found: " + symbol);
 		}
-		return quote;
-	}
-
-	@HystrixCommand(fallbackMethod = "getQuoteFallback")
-	public Quote getXigniteQuote(String symbol) throws SymbolNotFoundException {
-		logger.debug("QuoteService2.getQuote: retrieving quote for: " + symbol);
-
-		return QuoteMapper.INSTANCE
-				.mapFromXigniteQuote(callXigniteQuote(symbol));
-	}
-
-	private XigniteDelayedQuote callXigniteQuote(String symbol)
-			throws SymbolNotFoundException {
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("symbol", symbol);
-
-		XigniteDelayedQuote quote = null;
-		try {
-			quote = restTemplate.getForObject(quote_url2,
-					XigniteDelayedQuote.class, params);
-			logger.debug("QuoteService2.getQuote: retrieved quote: " + quote);
-		} catch (Exception e) {
-			logger.info("Exception: ", e);
-			throw new IllegalStateException(
-					"An Exception occurred getting stock quote for: " + symbol,
-					e);
-		}
-
-		if (quote.getSecurity().getSymbol() == null) {
-			throw new SymbolNotFoundException("Symbol not found: " + symbol);
-		}
-
 		return quote;
 	}
 
@@ -133,7 +111,7 @@ public class QuoteService {
 	 *            The search parameter for company name or symbol.
 	 * @return The list of company information.
 	 */
-	@HystrixCommand(fallbackMethod = "getXigniteCompanyInfo",
+	@HystrixCommand(fallbackMethod = "getCompanyInfoFallback",
 		    commandProperties = {
 		      @HystrixProperty(name="execution.timeout.enabled", value="false")
 		    })
@@ -153,7 +131,7 @@ public class QuoteService {
 	 * Retrieve multiple quotes at once.
 	 * 
 	 * @param symbols
-	 *            comma delimeted list of symbols.
+	 *            comma delimited list of symbols.
 	 * @return a list of quotes.
 	 */
 	public List<Quote> getQuotes(String symbols) {
@@ -173,28 +151,6 @@ public class QuoteService {
 		return quotes;
 	}
 
-	/**
-	 * Fallback method to get Company Info
-	 * 
-	 * @author skazi
-	 * @param symbol
-	 * @return Company Info
-	 * @throws SymbolNotFoundException
-	 */
-	@HystrixCommand(fallbackMethod = "getCompanyInfoFallback")
-	public List<CompanyInfo> getXigniteCompanyInfo(String symbol)
-			throws SymbolNotFoundException {
-		logger.debug("QuoteService.getCompanyInfo2: retrieving info for: "
-				+ symbol);
-		XigniteDelayedQuote quote = callXigniteQuote(symbol);
-
-		List<CompanyInfo> myList = new ArrayList<CompanyInfo>();
-		myList.add(CompanyInfoMapper.INSTANCE.mapXigniteCompanyInfo(quote));
-		logger.debug("QuoteService.getCompanyInfo: retrieved info: "
-				+ myList.toString());
-
-		return myList;
-	}
 
 	@SuppressWarnings("unused")
 	private Quote getCompanyInfoFallback(String symbol)

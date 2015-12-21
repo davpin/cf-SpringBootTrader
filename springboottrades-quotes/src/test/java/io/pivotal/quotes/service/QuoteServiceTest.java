@@ -140,7 +140,8 @@ public class QuoteServiceTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected=org.springframework.http.converter.HttpMessageNotReadableException.class)
+	//@Test(expected=org.springframework.http.converter.HttpMessageNotReadableException.class)
+	@Test
 	public void getQuotesOneQuote()  throws Exception {
 		List<Quote> quotes = service.getQuotes(TestConfiguration.QUOTE_SYMBOL);
 		assertNotNull("should have 1 quotes",quotes);
