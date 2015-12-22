@@ -13,7 +13,7 @@
 		 class="navbar navbar-inverse navbar-fixed-top">
 	</div>
 
-	<div class="container">
+	<div class="container well well-lg">
 		<div sec:authorize="hasAnyAuthority('USER')" th:remove="tag">
 			<div class="col-md-6">
 				<div th:if="${portfolio != null}" th:include="fragments/portfolio_fragment :: portfolio-summary" th:remove="tag"></div>

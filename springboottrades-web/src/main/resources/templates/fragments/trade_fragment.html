@@ -1,25 +1,27 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="company_input">
-	<div th:if="${search != null}" class="row col-md-12">
-		<div id="quote-control" class="well show-quote-box">
-            <form class="form-inline" action="#" th:action="@{/trade}" method="post" th:object="${search}">
-                <div class="form-group">
-                    <input id="quote-input" type="text" maxlength="20" th:field="*{name}" style="width: 300px;" placeholder="Enter Company Name or Symbol"/>
-                </div>
-                <button type="submit" class="btn btn-success">Get Quotes</button>
-            </form>
+	<div th:if="${search != null}" class="col-md-12">
+		<div id="quote-control" class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-inline" action="#" th:action="@{/trade}" method="post" th:object="${search}">
+                    <div class="form-group">
+                        <input id="quote-input" type="text" maxlength="20" th:field="*{name}" style="width: 300px;" placeholder="Enter Company Name or Symbol"/>
+                    </div>
+                    &nbsp;<button type="submit" class="btn btn-success">Get Quotes</button>
+                </form>
+            </div>
 		</div>
 	</div>
 </th:block>
 
 <th:block th:fragment="quote_list">
-	<div th:if="${quotes != null }" class="row col-md-12">
-		<div id="quote-result" class="well show-well">
-			<div class="title">
-				<h3>Quotes - <span th:text="${#lists.size(quotes)}" th:remove="tag"></span> result(s)</h3>
+	<div th:if="${quotes != null }" class="col-md-12">
+		<div id="quote-result" class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Quotes - <span th:text="${#lists.size(quotes)}" th:remove="tag"></span> result(s)</h3>
 			</div>
-			<div class="table-outer">
+			<div class="panel-body">
 			<table id="list-of-quotes" class="table table-striped table-bordered table-condensed">
 				
 					<tr>
@@ -47,7 +49,7 @@
 						<input type="hidden" th:value="${quote.lastPrice}" id="price" name="price" />
 						<input type="hidden" th:value="BUY" id="orderType" name="orderType" />
 						<input type="number" id="quantity-input" class="input-mini" min="1"
-							max="9999999999" th:field="*{quantity}" /> <a id="buyBtn" th:attr="onclick='document.getElementById(\'form'+${quoteStat.index}+'\').submit()'" class="btn green-btn">Buy</a>
+							max="9999999999" th:field="*{quantity}" /> <a id="buyBtn" th:attr="onclick='document.getElementById(\'form'+${quoteStat.index}+'\').submit()'" class="btn-sm btn-success">Buy</a>
 							</form></td>
 					</tr>
 				
@@ -58,12 +60,12 @@
 </th:block>
 
 <th:block th:fragment="saved_order">
-	<div th:if="${savedOrder != null}" class="row col-md-12">
-		<div class="well show-well">
+	<div th:if="${savedOrder != null}" class="col-md-12">
+		<div class="panel panel-default">
 		<div class="title alert alert-success">
 			<h3>Order Successful</h3>
 		</div>
-		<div class="table-outer">
+		<div class="panel-body">
 			<table class="table">
 				<tbody>
 					<tr>
