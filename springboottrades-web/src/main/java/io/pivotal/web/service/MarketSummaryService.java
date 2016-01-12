@@ -2,28 +2,24 @@ package io.pivotal.web.service;
 
 import io.pivotal.web.domain.MarketSummary;
 import io.pivotal.web.domain.Quote;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 @RefreshScope
 public class MarketSummaryService {
-	private static final Logger logger = LoggerFactory
-			.getLogger(MarketSummaryService.class);
+	private static final Logger logger = LoggerFactory.getLogger(MarketSummaryService.class);
+
 	@Value("${pivotal.summary.quotes:3}")
 	private Integer numberOfQuotes;
 	
@@ -31,8 +27,6 @@ public class MarketSummaryService {
 	@Value("${pivotal.summary.refresh:600000}")
 	private final static String refresh_period = "600000";
 	
-	//private static List<String> symbolsIT = Arrays.asList("EMC", "ORCL", "IBM", "INTC", "AMD", "HPQ", "CSCO", "AAPL");
-	//private static List<String> symbolsFS = Arrays.asList("JPM", "C", "MS", "BAC", "GS", "WFC","BK");
 	@Value("${pivotal.summary.symbols.it:EMC,IBM,VMW}")
 	private String symbolsIT;
     @Value("${pivotal.summary.symbols.fs:JPM,C,MS}")
@@ -76,13 +70,12 @@ public class MarketSummaryService {
 				builder.append(",");
 			}
 		}
-		return marketService.getMultipleQuotes(builder.toString());
+		return marketService.getQuotes(builder.toString());
 	}
 	
 	private List<String> pickRandomThree(List<String> symbols) {
-		List<String> list = new ArrayList<>();
 		Collections.shuffle(symbols);
-	    list = symbols.subList(0, numberOfQuotes);
+        List<String> list = symbols.subList(0, numberOfQuotes);
 	    return list;
 	}
 }

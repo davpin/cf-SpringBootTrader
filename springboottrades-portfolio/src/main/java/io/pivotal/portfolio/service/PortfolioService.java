@@ -35,8 +35,7 @@ import io.pivotal.portfolio.repository.OrderRepository;
 @Service
 @RefreshScope
 public class PortfolioService {
-	private static final Logger logger = LoggerFactory
-			.getLogger(PortfolioService.class);
+	private static final Logger logger = LoggerFactory.getLogger(PortfolioService.class);
 
 	/**
 	 * The order repository to store Order objects.
@@ -103,7 +102,7 @@ public class PortfolioService {
 			holding.addOrder(order);
 		}
 		
-		List<Quote> quotes = quoteService.getMultipleQuotes(symbols);
+		List<Quote> quotes = quoteService.getQuotes(symbols);
 
 		for (Quote quote : quotes) {
 			portfolio.getHolding(quote.getSymbol()).setCurrentValue(quote.getLastPrice());
@@ -112,22 +111,6 @@ public class PortfolioService {
 		logger.debug("Portfolio: " + portfolio);
 		return portfolio;
 	}
-
-	/**
-	 * Calculates the current value of the holding.
-	 * 
-	 * @param holding
-	 *            the holding to refresh.
-	 */
-
-	/*private void refreshHolding(Holding holding) {
-		Quote quote = quoteService.getQuote(holding.getSymbol());
-		if (quote.getStatus().equalsIgnoreCase(Quote.STATUS_SUCCESS)) {
-			holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
-		}
-
-	}
-	*/
 
 	/**
 	 * Add an order to the repository and modify account balance.
@@ -181,6 +164,5 @@ public class PortfolioService {
 				return null;
 			}
 		}
-
 	}
 }

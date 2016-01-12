@@ -4,24 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class YahooQuoteResponse {
+public class YahooQuoteResponses {
 
 	@JsonProperty("query")
-	private YahooResult result;
+	private YahooResults results;
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("YahooQuoteResponse [result=").append(result)
+		builder.append("YahooQuoteResponses [results=").append(results)
 				.append("]");
 		return builder.toString();
 	}
 
-	public YahooResult getResult() {
-		return result;
+	public YahooResults getResults() {
+		return results;
 	}
 
-	public void setResult(YahooResult result) {
-		this.result = result;
+	public void setResults(YahooResults results) {
+		this.results = results;
 	}
 }

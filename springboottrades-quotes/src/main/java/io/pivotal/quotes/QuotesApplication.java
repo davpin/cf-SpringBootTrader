@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Bean;
 @EnableCircuitBreaker
 public class QuotesApplication {
 	
-	@Bean
+//	@Bean
 	public Sampler<?> defaultSampler() {
 		return new AlwaysSampler();
 	}

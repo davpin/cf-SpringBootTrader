@@ -38,58 +38,26 @@ public class QuoteRemoteCallService {
 	private RestTemplate restTemplate;
 
 	/**
-	 * Retrieve up to date quotes.
-	 * 
-	 * @param symbol
-	 *            the symbol of the quote to fetch.
-	 * @return The quote
-	 */
-	@HystrixCommand(fallbackMethod = "getQuoteFallback")
-	public Quote getQuote(String symbol) {
-		logger.debug("Fetching quote: " + symbol);
-		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
-		return quote;
-	}
-
-	/**
-	 * Fallback for the quote service.
-	 * 
-	 * @param symbol
-	 *            the symbol of the quote to fetch.
-	 * @return Empty quote in FAILED state.
-	 */
-	@SuppressWarnings("unused")
-	private Quote getQuoteFallback(String symbol) {
-		logger.debug("Fetching fallback quote for: " + symbol);
-		// Quote quote =
-		// restTemplate.getForObject("http://quotes/quote/{symbol}",
-		// Quote.class, symbol);
-		Quote quote = new Quote();
-		quote.setSymbol(symbol);
-		quote.setStatus("FAILED");
-		return quote;
-	}
-	/**
 	 * Retrieve multiple quotes.
 	 * 
 	 * @param symbols comma separated list of symbols.
 	 * @return
 	 */
-	public List<Quote> getMultipleQuotes(String symbols) {
+	public List<Quote> getQuotes(String symbols) {
 		logger.debug("retrieving multiple quotes: " + symbols);
-		Quote[] quotesArr = restTemplate.getForObject("http://" + quotesService + "/v1/quotes?q={symbols}", Quote[].class, symbols);
+		Quote[] quotesArr = restTemplate.getForObject("http://" + quotesService + "/quotes?q={symbols}", Quote[].class, symbols);
 		List<Quote> quotes = Arrays.asList(quotesArr);
 		logger.debug("Received quotes: {}",quotes);
 		return quotes;
-		
 	}
+
 	/**
 	 * Retrieve multiple quotes.
 	 * 
 	 * @param symbols
 	 * @return
 	 */
-	public List<Quote> getMultipleQuotes(Collection<String> symbols) {
+	public List<Quote> getQuotes(Collection<String> symbols) {
 		logger.debug("Fetching multiple quotes array: {} ",symbols);
 		StringBuilder builder = new StringBuilder();
 		for (Iterator<String> i = symbols.iterator(); i.hasNext();) {
@@ -98,6 +66,6 @@ public class QuoteRemoteCallService {
 				builder.append(",");
 			}
 		}
-		return getMultipleQuotes(builder.toString());
+		return getQuotes(builder.toString());
 	}
 }
