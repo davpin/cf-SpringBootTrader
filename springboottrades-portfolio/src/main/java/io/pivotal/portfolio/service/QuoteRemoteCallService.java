@@ -1,9 +1,6 @@
 package io.pivotal.portfolio.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import io.pivotal.portfolio.domain.Quote;
 
@@ -43,6 +40,7 @@ public class QuoteRemoteCallService {
 	 * @param symbols comma separated list of symbols.
 	 * @return
 	 */
+    @HystrixCommand(fallbackMethod = "getQuoteFallback")
 	public List<Quote> getQuotes(String symbols) {
 		logger.debug("retrieving multiple quotes: " + symbols);
 		Quote[] quotesArr = restTemplate.getForObject("http://" + quotesService + "/quotes?q={symbols}", Quote[].class, symbols);
@@ -68,4 +66,18 @@ public class QuoteRemoteCallService {
 		}
 		return getQuotes(builder.toString());
 	}
+
+    @SuppressWarnings("unused")
+    private List<Quote> getQuoteFallback(String symbols) {
+        List<Quote> result = new ArrayList<>();
+        String[] splitSymbols = symbols.split(",");
+
+        for (String symbol : splitSymbols) {
+            Quote quote = new Quote();
+            quote.setSymbol(symbol);
+            quote.setStatus("FAILED");
+            result.add( quote );
+        }
+        return result;
+    }
 }

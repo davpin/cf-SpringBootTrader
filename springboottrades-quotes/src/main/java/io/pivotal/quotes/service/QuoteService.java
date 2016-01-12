@@ -52,6 +52,8 @@ public class QuoteService {
     @HystrixCommand(fallbackMethod = "getMarkitondemandQuotes")
     public List<Quote> getQuotes(String symbols) throws SymbolNotFoundException {
         logger.debug("retrieving quotes for: " + symbols);
+        if ( symbols.isEmpty() ) return new ArrayList<>();
+
         List<YahooQuote> yahooQuotes;
         Date createDate;
         if ( symbols.indexOf( ',' ) == -1 ) {

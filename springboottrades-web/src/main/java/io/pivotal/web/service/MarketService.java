@@ -71,7 +71,6 @@ public class MarketService {
 
     @SuppressWarnings("unused")
     private List<Quote> getQuotesFallback(String symbols) {
-        logger.debug("Fetching fallback quote for: " + symbols);
         List<Quote> result = new ArrayList<>();
         String[] splitSymbols = symbols.split(",");
 

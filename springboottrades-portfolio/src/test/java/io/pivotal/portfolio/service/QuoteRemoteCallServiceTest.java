@@ -23,6 +23,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -67,6 +68,6 @@ public class QuoteRemoteCallServiceTest {
 		Quote emptyQuote = new Quote();
 		emptyQuote.setSymbol(ServiceTestConfiguration.SYMBOL);
 		emptyQuote.setStatus("FAILED");
-		assertEquals(emptyQuote,quote);
+		assertEquals(Collections.singletonList(emptyQuote),quote);
 	}
 }
