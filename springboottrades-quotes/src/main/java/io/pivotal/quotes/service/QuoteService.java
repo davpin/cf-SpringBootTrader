@@ -1,5 +1,7 @@
 package io.pivotal.quotes.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.pivotal.quotes.domain.*;
@@ -8,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -41,7 +45,17 @@ public class QuoteService {
 	/*
 	 * cannot autowire as don't want ribbon here.
 	 */
-	private RestTemplate restTemplate = new RestTemplate();
+	private RestTemplate restTemplate;
+
+    public QuoteService() {
+        restTemplate = new RestTemplate();
+        ObjectMapper objectMapper = new ObjectMapper().enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+        messageConverter.setObjectMapper(objectMapper);
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        messageConverters.add(messageConverter);
+        restTemplate.setMessageConverters(messageConverters);
+    }
 
     /**
      * Retrieve one or more quotes.
@@ -54,20 +68,10 @@ public class QuoteService {
         logger.debug("retrieving quotes for: " + symbols);
         if ( symbols.isEmpty() ) return new ArrayList<>();
 
-        List<YahooQuote> yahooQuotes;
-        Date createDate;
-        if ( symbols.indexOf( ',' ) == -1 ) {
-            YahooQuoteResponse response = restTemplate.getForObject(yahoo_url, YahooQuoteResponse.class, symbols, FMT, ENV);
-            logger.debug("Got response: " + response);
-            yahooQuotes = Collections.singletonList( response.getResult().getQuote() );
-            createDate = response.getResult().getCreated();
-        }
-        else {
-            YahooQuoteResponses responses = restTemplate.getForObject(yahoo_url, YahooQuoteResponses.class, symbols, FMT, ENV);
-            logger.debug("Got responses: " + responses);
-            yahooQuotes = responses.getResults().getQuoteList().getQuote();
-            createDate = responses.getResults().getCreated();
-        }
+        YahooQuoteResponses responses = restTemplate.getForObject(yahoo_url, YahooQuoteResponses.class, symbols, FMT, ENV);
+        logger.debug("Got responses: " + responses);
+        List<YahooQuote> yahooQuotes = responses.getResults().getQuoteList().getQuote();
+        Date createDate = responses.getResults().getCreated();
 
         List<Quote> quotes = yahooQuotes
                 .stream()
