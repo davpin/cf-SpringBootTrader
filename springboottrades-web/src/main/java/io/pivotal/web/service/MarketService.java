@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.pivotal.web.domain.CompanyInfo;
 import io.pivotal.web.domain.Order;
 import io.pivotal.web.domain.Portfolio;
@@ -60,7 +61,8 @@ public class MarketService {
 	 * @param symbols comma separated list of symbols.
 	 * @return
 	 */
-    @HystrixCommand(fallbackMethod = "getQuotesFallback")
+    @HystrixCommand(fallbackMethod = "getQuotesFallback",
+            commandProperties = {@HystrixProperty(name="execution.timeout.enabled", value="false")})
 	public List<Quote> getQuotes(String symbols) {
 		logger.debug("retrieving multiple quotes: " + symbols);
 		Quote[] quotesArr = restTemplate.getForObject("http://" + quotesService + "/quotes?q={symbols}", Quote[].class, symbols);

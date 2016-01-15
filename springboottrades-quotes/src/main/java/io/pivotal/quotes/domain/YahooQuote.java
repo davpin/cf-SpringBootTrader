@@ -5,7 +5,9 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class YahooQuote {
 	/*
 	 * { "symbol": "IBM", "Ask": "140.25", "AverageDailyVolume": "4611000",
@@ -79,7 +81,7 @@ public class YahooQuote {
 	@JsonProperty("Currency")
 	private String currency;
 	// "ChangeRealtime": null
-	@JsonProperty("ChangeRealTime")
+	@JsonProperty("ChangeRealtime")
 	private BigDecimal changeRealTime;
 	// "AfterHoursChangeRealtime": null
 	@JsonProperty("AfterHoursChangeRealtime")

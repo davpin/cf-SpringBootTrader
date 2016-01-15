@@ -2,6 +2,7 @@ package io.pivotal.portfolio.service;
 
 import java.util.*;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.pivotal.portfolio.domain.Quote;
 
 import org.slf4j.Logger;
@@ -40,7 +41,8 @@ public class QuoteRemoteCallService {
 	 * @param symbols comma separated list of symbols.
 	 * @return
 	 */
-    @HystrixCommand(fallbackMethod = "getQuoteFallback")
+    @HystrixCommand(fallbackMethod = "getQuoteFallback",
+            commandProperties = {@HystrixProperty(name="execution.timeout.enabled", value="false")})
 	public List<Quote> getQuotes(String symbols) {
 		logger.debug("retrieving multiple quotes: " + symbols);
 		Quote[] quotesArr = restTemplate.getForObject("http://" + quotesService + "/quotes?q={symbols}", Quote[].class, symbols);

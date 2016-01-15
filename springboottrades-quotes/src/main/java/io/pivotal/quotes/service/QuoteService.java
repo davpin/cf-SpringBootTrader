@@ -63,7 +63,8 @@ public class QuoteService {
      * @param symbols comma delimited list of symbols.
      * @return a list of quotes.
      */
-    @HystrixCommand(fallbackMethod = "getMarkitondemandQuotes")
+    @HystrixCommand(fallbackMethod = "getMarkitondemandQuotes",
+            commandProperties = {@HystrixProperty(name="execution.timeout.enabled", value="false")})
     public List<Quote> getQuotes(String symbols) throws SymbolNotFoundException {
         logger.debug("retrieving quotes for: " + symbols);
         if ( symbols.isEmpty() ) return new ArrayList<>();
@@ -91,7 +92,8 @@ public class QuoteService {
 	 * @return The quote object or null if not found.
 	 * @throws SymbolNotFoundException
 	 */
-	@HystrixCommand(fallbackMethod = "getQuotesFallback")
+	@HystrixCommand(fallbackMethod = "getQuotesFallback",
+            commandProperties = {@HystrixProperty(name="execution.timeout.enabled", value="false")})
     @SuppressWarnings("unused")
 	public List<Quote> getMarkitondemandQuotes(String symbols) throws SymbolNotFoundException {
         List<Quote> result = new ArrayList<>();
@@ -130,9 +132,7 @@ public class QuoteService {
      * @return The list of company information.
      */
     @HystrixCommand(fallbackMethod = "getCompanyInfoFallback",
-            commandProperties = {
-                    @HystrixProperty(name="execution.timeout.enabled", value="false")
-            })
+            commandProperties = {@HystrixProperty(name="execution.timeout.enabled", value="false")})
     public List<CompanyInfo> getCompanyInfo(String name) {
         logger.debug("QuoteService.getCompanyInfo: retrieving info for: " + name);
         Map<String, String> params = new HashMap<>();
