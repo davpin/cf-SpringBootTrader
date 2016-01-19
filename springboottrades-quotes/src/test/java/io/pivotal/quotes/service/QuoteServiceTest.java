@@ -1,19 +1,10 @@
 package io.pivotal.quotes.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
-import java.util.List;
-
 import io.pivotal.quotes.QuotesApplication;
 import io.pivotal.quotes.configuration.TestConfiguration;
 import io.pivotal.quotes.domain.CompanyInfo;
 import io.pivotal.quotes.domain.Quote;
 import io.pivotal.quotes.exception.SymbolNotFoundException;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,33 +14,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.SpringApplicationContextLoader;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.isA;
+import static org.junit.Assert.*;
 
 /**
  * Tests the QuoteService.
  * @author David Ferreira Pinto
  *
  */
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@TestPropertySource(properties = { "pivotal.quotes.quotes_url:http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}","pivotal.quotes.companies_url:http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}" })
-//@PropertySource("classpath:application.yml")
-//@ContextConfiguration(loader = SpringApplicationContextLoader.class)
-//@SpringApplicationConfiguration(classes = TestContextConfiguration.class)
-//@WebAppConfiguration
-//@ContextConfiguration(initializers=ConfigFileApplicationContextInitializer.class)
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = QuotesApplication.class)
@@ -78,7 +60,7 @@ public class QuoteServiceTest {
 	 */
 	@Test
 	public void getQuote() throws Exception {
-		Quote quote = service.getQuote(TestConfiguration.QUOTE_SYMBOL);
+		Quote quote = service.getQuotes(TestConfiguration.QUOTE_SYMBOL).get(0);
 		assertEquals(TestConfiguration.QUOTE_SYMBOL, quote.getSymbol());
 		assertEquals(TestConfiguration.QUOTE_NAME, quote.getName());
 	}
@@ -93,7 +75,7 @@ public class QuoteServiceTest {
 	public void getNullQuote() throws Exception{
 		thrown.expect(com.netflix.hystrix.exception.HystrixRuntimeException.class);
 		thrown.expectCause(isA(SymbolNotFoundException.class));
-		Quote quote = service.getQuote(TestConfiguration.NULL_QUOTE_SYMBOL);
+		service.getQuotes(TestConfiguration.NULL_QUOTE_SYMBOL);
 	}
 	
 	/**
@@ -131,20 +113,6 @@ public class QuoteServiceTest {
 		List<Quote> quotes = service.getQuotes(TestConfiguration.QUOTE_SYMBOLS);
 		assertNotNull("should have 2 quotes",quotes);
 		assertEquals("should have 2 quotes",quotes.size(), 2);
-	}
-	
-	/**
-	 * test yahoo service with one quote.
-	 * Yahoo does not wrap quote in json array so deserialization fails. Once this works we can
-	 * make this the main quote retrieval service, and the others as fallbacks.
-	 * 
-	 * @throws Exception
-	 */
-	@Test(expected=org.springframework.http.converter.HttpMessageNotReadableException.class)
-	public void getQuotesOneQuote()  throws Exception {
-		List<Quote> quotes = service.getQuotes(TestConfiguration.QUOTE_SYMBOL);
-		assertNotNull("should have 1 quotes",quotes);
-		assertEquals("should have 1 quotes",quotes.size(), 1);
 	}
 }
 

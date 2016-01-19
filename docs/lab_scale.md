@@ -13,7 +13,7 @@ One of the benefits of a micro service architecture is that each service can be 
 
 3. Use the REST api of the quote service to retrieve quotes, for example:
 
-`curl http://<ROUTE_TO_QUOTE_SERVICE>/quote/EMC`
+`curl http://<ROUTE_TO_QUOTE_SERVICE>/quotes?q=EMC`
 
 or put the URL in your browser window.
 

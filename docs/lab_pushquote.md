@@ -67,7 +67,7 @@ Luckily, Pivotal Cloud Foundry allows us to assign a [`random-route`](http://doc
 
 Ensure you have a working quote service application by sending HTTP requests to it, for example:
 
-`curl http://<ROUTE_TO_QUOTE_SERVICE>/quote/EMC`
+`curl http://<ROUTE_TO_QUOTE_SERVICE>/quotes?q=EMC`
 
 > You can also put the above URL in your browser.
 
