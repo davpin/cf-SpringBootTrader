@@ -23,6 +23,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
+import java.util.List;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PortfolioApplication.class)
@@ -49,19 +52,22 @@ public class QuoteRemoteCallServiceTest {
 	@Test
 	@Ignore
 	public void doGetQuote() {
-		when(restTemplate.getForObject("http://" + quotesURI + "/quote/{symbol}", Quote.class, ServiceTestConfiguration.SYMBOL)).thenReturn(ServiceTestConfiguration.quote());
-		Quote quote = service.getQuote(ServiceTestConfiguration.SYMBOL);
-		assertEquals(ServiceTestConfiguration.quote(),quote);
+		when(restTemplate.getForObject("http://" + quotesURI + "/quotes?q={symbol}", Quote[].class, ServiceTestConfiguration.SYMBOL)).
+				thenReturn( new Quote[]{ServiceTestConfiguration.quote()});
+
+		List<Quote> quote = service.getQuotes(ServiceTestConfiguration.SYMBOL);
+		assertEquals(ServiceTestConfiguration.quote(),quote.get(0));
 	}
 	@Test
 	public void doGetQuoteFailure() {
-		when(restTemplate.getForObject("http://" + quotesURI + "/quote/{symbol}", Quote.class, ServiceTestConfiguration.SYMBOL)).thenThrow(new RuntimeException("Deliberately throwing an exception 1"));
-		
-		Quote quote = service.getQuote(ServiceTestConfiguration.SYMBOL);
-		assertNotEquals(ServiceTestConfiguration.quote(),quote);
+		when(restTemplate.getForObject("http://" + quotesURI + "/quotes?q={symbol}", Quote[].class, ServiceTestConfiguration.SYMBOL)).
+				thenThrow(new RuntimeException("Deliberately throwing an exception 1"));
+
+		List<Quote> quote = service.getQuotes(ServiceTestConfiguration.SYMBOL);
+		assertNotEquals(ServiceTestConfiguration.quote(),quote.get(0));
 		Quote emptyQuote = new Quote();
 		emptyQuote.setSymbol(ServiceTestConfiguration.SYMBOL);
 		emptyQuote.setStatus("FAILED");
-		assertEquals(emptyQuote,quote);
+		assertEquals(Collections.singletonList(emptyQuote),quote);
 	}
 }

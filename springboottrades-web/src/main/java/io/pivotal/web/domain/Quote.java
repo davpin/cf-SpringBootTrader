@@ -13,30 +13,30 @@ public class Quote {
 	@JsonProperty("Symbol")
 	private String symbol;
 	@JsonProperty("LastPrice")
-	private Double lastPrice;
+	private Double lastPrice = 0d;
 	@JsonProperty("Change")
-	private Double change;
+	private Double change = 0d;
 	@JsonProperty("ChangePercent")
-	private Double changePercent;
+	private Double changePercent = 0d;
 	@JsonProperty("Timestamp")
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy")
 	private Date timestamp;
 	@JsonProperty("MSDate")
 	private Double mSDate;
 	@JsonProperty("MarketCap")
-	private Double marketCap;
+	private Double marketCap = 0d;
 	@JsonProperty("Volume")
-	private Integer volume;
+	private Integer volume = 0;
 	@JsonProperty("ChangeYTD")
-	private Double changeYTD;
+	private Double changeYTD = 0d;
 	@JsonProperty("ChangePercentYTD")
-	private Double changePercentYTD;
+	private Double changePercentYTD = 0d;
 	@JsonProperty("High")
-	private Double high;
+	private Double high = 0d;
 	@JsonProperty("Low")
-	private Double low;
+	private Double low = 0d;
 	@JsonProperty("Open")
-	private Double open;
+	private Double open = 0d;
 	public String getStatus() {
 		return status;
 	}

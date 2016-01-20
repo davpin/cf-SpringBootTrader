@@ -31,8 +31,8 @@ The system is composed of 4 microservices. The relationship between the microser
 
 ##1. Quote Microservice
 This service is a spring boot application responsible for providing up to date company and ticker/quote information. It does this by providing a REST api with 2 calls:
-* ``/quote/{symbol}``
-Returns an up to date quote for the given symbol.
+* ``/quotes?q={symbols}``
+Returns an up to date quote for each symbol in the comma-delimited list.
 * ``/company/{search}``
 Returns a list of companies that have the search parameter in their names or symbols.
 
