@@ -45,7 +45,7 @@ public class QuoteMapper {
 		mappedQuote.setmSDate(null);
 		mappedQuote.setName(yQuote.getName());
 		mappedQuote.setOpen(yQuote.getOpen());
-		mappedQuote.setStatus("SUCESS");
+		mappedQuote.setStatus("SUCCESS");
 		mappedQuote.setSymbol(yQuote.getSymbol());
 		mappedQuote.setTimestamp(created);
 		mappedQuote.setVolume(yQuote.getVolume());

@@ -128,9 +128,9 @@ public class TradeController {
 		//	      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
 		//		)).parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
 		List<Quote> result = companies.stream().
-				collect(Collectors.toCollection(() -> new TreeSet<>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())))).
-				stream().map(n -> getQuote(n.getSymbol()).get(0)).
-				collect(Collectors.toList());
+				collect(Collectors.toCollection(() -> new TreeSet<>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())))).stream().
+				map(n -> getQuote(n.getSymbol()).get(0)).
+                collect(Collectors.toList());
 		
 		List<Quote> quotes = result.parallelStream().filter(n -> n.getStatus().startsWith("SUCCESS")).collect(Collectors.toList());
 		return quotes;
