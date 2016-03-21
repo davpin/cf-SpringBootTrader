@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.pivotal.web.domain.CompanyInfo;
 import io.pivotal.web.domain.Order;
 import io.pivotal.web.domain.Portfolio;
@@ -30,77 +31,67 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @Service
 @RefreshScope
 public class MarketService {
-	private static final Logger logger = LoggerFactory
-			.getLogger(MarketService.class);
+	private static final Logger logger = LoggerFactory.getLogger(MarketService.class);
+
 	@Autowired
 	@LoadBalanced
 	private RestTemplate restTemplate;
-
 
     @Value("${pivotal.quotesService.name}")
 	private String quotesService;
 	
     @Value("${pivotal.portfolioService.name}")
 	private String portfolioService;
-    
-	
-	@HystrixCommand(fallbackMethod = "getQuoteFallback")
-	public Quote getQuote(String symbol) {
-		logger.debug("Fetching quote: " + symbol);
-		Quote quote = restTemplate.getForObject("http://" + quotesService + "/quote/{symbol}", Quote.class, symbol);
-		return quote;
-	}
-	
-	private Quote getQuoteFallback(String symbol) {
-		logger.debug("Fetching fallback quote for: " + symbol);
-		//Quote quote = restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, symbol);
-		Quote quote = new Quote();
-		quote.setSymbol(symbol);
-		quote.setStatus("FAILED");
-		return quote;
-	}
+
 	@HystrixCommand(fallbackMethod = "getCompaniesFallback")
 	public List<CompanyInfo> getCompanies(String name) {
 		logger.debug("Fetching companies with name or symbol matching: " + name);
-		CompanyInfo[] infos = restTemplate.getForObject("http://" + quotesService + "/v1/company/{name}", CompanyInfo[].class, name);
+		CompanyInfo[] infos = restTemplate.getForObject("http://" + quotesService + "/company/{name}", CompanyInfo[].class, name);
 		return Arrays.asList(infos);
 	}
+
+	@SuppressWarnings("unused")
 	private List<CompanyInfo> getCompaniesFallback(String name) {
-		List<CompanyInfo> infos = new ArrayList<>();
-		return infos;
+        return new ArrayList<>();
 	}
+
 	/**
 	 * Retrieve multiple quotes.
 	 * 
 	 * @param symbols comma separated list of symbols.
 	 * @return
 	 */
-	public List<Quote> getMultipleQuotes(String symbols) {
+    @HystrixCommand(fallbackMethod = "getQuotesFallback",
+            commandProperties = {@HystrixProperty(name="execution.timeout.enabled", value="false")})
+	public List<Quote> getQuotes(String symbols) {
 		logger.debug("retrieving multiple quotes: " + symbols);
-		Quote[] quotesArr = restTemplate.getForObject("http://" + quotesService + "/v1/quotes?q={symbols}", Quote[].class, symbols);
+		Quote[] quotesArr = restTemplate.getForObject("http://" + quotesService + "/quotes?q={symbols}", Quote[].class, symbols);
 		List<Quote> quotes = Arrays.asList(quotesArr);
 		logger.debug("Received quotes: {}",quotes);
 		return quotes;
-		
 	}
-	/**
-	 * Retrieve multiple quotes.
-	 * 
-	 * @param symbols
-	 * @return
-	 */
-	public List<Quote> getMultipleQuotes(String[] symbols) {
+
+    @SuppressWarnings("unused")
+    private List<Quote> getQuotesFallback(String symbols) {
+        List<Quote> result = new ArrayList<>();
+        String[] splitSymbols = symbols.split(",");
+
+        for (String symbol : splitSymbols) {
+            Quote quote = new Quote();
+            quote.setSymbol(symbol);
+            quote.setStatus("FAILED");
+            result.add( quote );
+        }
+        return result;
+    }
+
+	public List<Quote> getQuotes(String[] symbols) {
 		logger.debug("Fetching multiple quotes array: {} ",Arrays.asList(symbols));
 		
-		return getMultipleQuotes(Arrays.asList(symbols));
+		return getQuotes(Arrays.asList(symbols));
 	}
-	/**
-	 * Retrieve multiple quotes.
-	 * 
-	 * @param symbols
-	 * @return
-	 */
-	public List<Quote> getMultipleQuotes(Collection<String> symbols) {
+
+	public List<Quote> getQuotes(Collection<String> symbols) {
 		logger.debug("Fetching multiple quotes array: {} ",symbols);
 		StringBuilder builder = new StringBuilder();
 		for (Iterator<String> i = symbols.iterator(); i.hasNext();) {
@@ -109,12 +100,10 @@ public class MarketService {
 				builder.append(",");
 			}
 		}
-		return getMultipleQuotes(builder.toString());
+		return getQuotes(builder.toString());
 	}
-	
-	
-	
-	public Order sendOrder(Order order ) throws OrderNotSavedException{
+
+    public Order sendOrder(Order order ) throws OrderNotSavedException{
 		logger.debug("send order: " + order);
 		
 		//check result of http request to ensure its ok.
@@ -133,7 +122,8 @@ public class MarketService {
 		logger.debug("Portfolio received: " + folio);
 		return folio;
 	}
-	
+
+	@SuppressWarnings("unused")
 	private Portfolio getPortfolioFallback(String accountId) {
 		logger.debug("Portfolio fallback");
 		Portfolio folio = new Portfolio();
