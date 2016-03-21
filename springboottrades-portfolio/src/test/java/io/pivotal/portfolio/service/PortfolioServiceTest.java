@@ -7,6 +7,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
 import io.pivotal.portfolio.config.ServiceTestConfiguration;
 import io.pivotal.portfolio.domain.Order;
@@ -52,7 +53,7 @@ public class PortfolioServiceTest {
  
 		when(repo.findByAccountId(ServiceTestConfiguration.ACCOUNT_ID)).thenReturn(ServiceTestConfiguration.orders());
 		//when(quoteService.getUri()).thenReturn(uri);
-		when(quoteService.getQuote(ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
+		when(quoteService.getQuotes(ServiceTestConfiguration.quote().getSymbol())).thenReturn(Collections.singletonList(ServiceTestConfiguration.quote()));
 		//when(restTemplate.getForObject("http://" + service.quotesService +"/quote/{symbol}", Quote.class, ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
 		Portfolio folio = service.getPortfolio(ServiceTestConfiguration.ACCOUNT_ID);
 	}

@@ -41,8 +41,7 @@ public class TradeController {
 	@RequestMapping(value = "/trade", method = RequestMethod.GET)
 	public String showTrade(Model model) {
 		logger.debug("/trade.GET");
-		//model.addAttribute("marketSummary", marketService.getMarketSummary());
-		
+
 		model.addAttribute("search", new Search());
 		//check if user is logged in!
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -64,7 +63,6 @@ public class TradeController {
 	public String showTrade(Model model, @ModelAttribute("search") Search search) {
 		logger.debug("/trade.POST - symbol: " + search.getName());
 		
-		//model.addAttribute("marketSummary", marketService.getMarketSummary());
 		model.addAttribute("search", search);
 		
 		if (search.getName() == null || search.getName().equals("") ) {
@@ -129,16 +127,17 @@ public class TradeController {
 		//List<Quote> result = companies.stream().collect(Collectors.toCollection(
 		//	      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
 		//		)).parallelStream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
-		List<Quote> result = companies.stream().collect(Collectors.toCollection(
-			      () -> new TreeSet<CompanyInfo>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())) 
-				)).stream().map(n -> getQuote(n.getSymbol())).collect(Collectors.toList());
+		List<Quote> result = companies.stream().
+				collect(Collectors.toCollection(() -> new TreeSet<>((p1, p2) -> p1.getSymbol().compareTo(p2.getSymbol())))).stream().
+				map(n -> getQuote(n.getSymbol()).get(0)).
+                collect(Collectors.toList());
 		
 		List<Quote> quotes = result.parallelStream().filter(n -> n.getStatus().startsWith("SUCCESS")).collect(Collectors.toList());
 		return quotes;
 	}
 	
-	private Quote getQuote(String symbol) {
-		return marketService.getQuote(symbol);
+	private List<Quote> getQuote(String symbol) {
+		return marketService.getQuotes(symbol);
 	}
 	
 	@ExceptionHandler({ Exception.class })
