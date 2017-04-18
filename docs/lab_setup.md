@@ -1,4 +1,4 @@
-#Setting up the environment.
+# Setting up the environment.
 In this exercise, we will be setting up the environment and all the tools required.
 
 It assumes you are running Linux or MacOS, although it is possible to configure on Windows too.

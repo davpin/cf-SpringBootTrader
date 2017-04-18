@@ -64,7 +64,7 @@ Now that we have all the required services created, let's push all the services.
 
 Once completed, go to the URL of the Web service in your browser.
 
-##Deploying without Spring Cloud Services
+## Deploying without Spring Cloud Services
 
   If Spring Cloud Services are not available, you should have pushed an instance of the [discovery service](https://github.com/dpinto-pivotal/cf-SpringBootTrader-extras) to the cloud and you should already have a [*User-provided service*](http://docs.pivotal.io/pivotalcf/devguide/services/user-provided.html).
 
@@ -73,7 +73,7 @@ Once completed, go to the URL of the Web service in your browser.
   ### Exercise
     1. push the applications
 
-##Running it locally
+## Running it locally
   To run the service locally, you can use the gradle wrapper script as such:
 
   ```

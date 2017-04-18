@@ -32,7 +32,7 @@ When prompted for the name of the service, insert **"circuit-breaker-dashboard"*
 
 > You can pick any name of the service, however, the service is already specified in the manifest files, so it is easier to re-use that name. If you do modify the name, ensure you modify it in the manifest files as well.
 
-##Deploying without Spring Cloud Services
+## Deploying without Spring Cloud Services
 If the cloud does not provide us with the services, then we can deploy the services ourselves. Bare in mind that our deployment of the Circuit Breaker Dashboard Service will not be highly available or load balanced.
 
 Follow the guidelines to deploy the Discover service [here](https://github.com/dpinto-pivotal/cf-SpringBootTrader-extras) - TODO!
@@ -53,7 +53,7 @@ In order for our microservices to be able to connect to the Circuit breaker dash
 
   > Do **not** specify the protocol!!! ie. "http://"
 
-##Running it locally
+## Running it locally
 If you want to run all the services locally, you'll need to start the circuit breaker dashboard service.
 
 Follow the guidelines to run the Discover service locally  [here](https://github.com/dpinto-pivotal/cf-SpringBootTrader-extras).
